@@ -137,7 +137,10 @@
     z-index: 0;
     background: radial-gradient(circle var(--glow-size) at var(--mx, 50%) var(--my, 50%),
                 var(--glow-color), transparent 70%);
-    opacity: 0;
+    /* 用 !important 是刻意的：页面自身有一条 .life-panel.active::before { opacity: 1 }
+       ——「选中即常亮」。用户反馈鼠标离开后光晕仍留在原处，正是这条规则所致。
+       这里统一改成**只在悬停时显示**，离开即隐。 */
+    opacity: 0 !important;
     transition: opacity 0.28s var(--ease);
   }
 
@@ -145,7 +148,7 @@
       .navcard, .works-card, .work-card, .tool-card, .link-card, .info-card,
       .tn-links a, .tn-gh, .theme-toggle, .lang-toggle, .btn-enter, .btn,
       button, [role="button"], a[href]):hover::before {
-    opacity: 1;
+    opacity: 1 !important;
   }
 
   /* 发光需要定位上下文；只给尚未定位的元素补 relative */

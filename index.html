@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlanLumier · 欢迎你的到来 | 个人主页 · 失眠夜空间 · 作品与日常</title>
-<meta name="description" content="欢迎来到 AlanLumier 的个人主页（失眠夜空间）：记录着咖啡、音乐、游戏与作品，精选校园工具到游戏辅助的自研项目，还有全世界的「欢迎你的到来」。在这里可以看到精选作品、开源仓库、今夜月色与详细更新日志。">
+<title>AlanLumier · 欢迎你的到来 | 个人主页 · 作品与日常</title>
+<meta name="description" content="欢迎来到 AlanLumier 的个人主页（AlanLumier）：记录着咖啡、音乐、游戏与作品，精选校园工具到游戏辅助的自研项目，还有全世界的「欢迎你的到来」。在这里可以看到精选作品、开源仓库、今夜月色与详细更新日志。">
   <meta name="theme-color" content="#0C0E0D" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#F7F5EF" media="(prefers-color-scheme: light)">
-<meta name="keywords" content="AlanLumier,个人主页,个人空间,欢迎你的到来,博客,作品集,GitHub Pages,失眠夜">
+<meta name="keywords" content="AlanLumier,个人主页,个人空间,欢迎你的到来,博客,作品集,GitHub Pages,AlanLumier">
 <meta name="author" content="AlanLumier">
 <link rel="canonical" href="https://alanlumier.github.io/">
 <link rel="alternate" type="application/atom+xml" title="AlanLumier 的个人空间" href="https://alanlumier.github.io/atom.xml">
@@ -23,14 +23,14 @@
 <meta property="og:image" content="https://alanlumier.github.io/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="AlanLumier · 失眠夜空间 · 个人主页">
+<meta property="og:image:alt" content="AlanLumier · 个人主页">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="AlanLumier · 欢迎你的到来">
 <meta name="twitter:description" content="欢迎来到 AlanLumier 的个人主页。这里记录着咖啡、音乐、游戏与作品。">
 <meta name="twitter:image" content="https://alanlumier.github.io/og-image.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='45' font-family='Georgia, serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"AlanLumier 失眠夜空间","alternateName":"AlanLumier.github.io","url":"https://alanlumier.github.io/","inLanguage":["zh-CN","en"],"publisher":{"@type":"Person","name":"AlanLumier","url":"https://github.com/AlanLumier"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"AlanLumier","alternateName":"AlanLumier.github.io","url":"https://alanlumier.github.io/","inLanguage":["zh-CN","en"],"publisher":{"@type":"Person","name":"AlanLumier","url":"https://github.com/AlanLumier"}}
 </script>
 <style>
   :root {
@@ -1060,7 +1060,11 @@
     font-size: clamp(96px, 22vw, 340px);
     font-weight: 700;
     line-height: 0.7;
-    color: rgba(255, 255, 255, 0.05);
+    color: var(--ink);
+    /* 原来写死 rgba(255,255,255,0.05) —— 只有 5% 白，用户反馈「看不出来，不明显」。
+       改为跟随主题的 --ink + 明确的不透明度，深浅两套下都清晰可见；
+       用 opacity 而不是把透明度写进颜色里，是为了能跟着 --ink 一起换主题。 */
+    opacity: 0.22;
     padding: 0;
     margin: 0;
     user-select: none;
@@ -1289,7 +1293,7 @@
   <script>document.documentElement.classList.add('js-ready');</script>
 <!-- 深夜特调：月亮 + 星空（22:00-06:00 显示） -->
 <nav class="topnav" id="topNav">
-  <a class="tn-logo" href="#hero">AlanLumier<span data-i18n="nav.tag">失眠夜空间</span></a>
+  <a class="tn-logo" href="#hero">AlanLumier</a>
   <div class="tn-links">
     <a href="#works" data-i18n="nav.works">精选作品</a>
     <a href="#life" data-i18n="nav.life">生活数据</a>
@@ -1356,7 +1360,7 @@
 <section class="enter-section rv" id="enter">
   <div class="wrap">
     <p class="kicker" data-i18n="enter.kicker">PERSONAL SPACE</p>
-    <h2 data-i18n="enter.h2">失眠夜 · 个人空间</h2>
+    <h2 data-i18n="enter.h2">AlanLumier · 个人空间</h2>
     <p class="desc" data-i18n="enter.desc">这里收纳着关于我的一切——爱好的碎片、写过的项目、走过的路，还有一些零零散散的日常。</p>
     <a class="btn-enter" href="/space/">
       <svg class="enter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"/><path d="M7 12l5 5 5-5"/><path d="M3 19h18"/></svg>
@@ -1400,7 +1404,7 @@
           <h3><span data-i18n="life.c2">网易云音乐</span> <span class="tag" data-i18n="life.tag2">循环播放中</span></h3>
           <div class="data-number"><span id="hours">2000</span><small data-i18n="life.un1">小时</small></div>
           <p class="data-desc"><span data-i18n="life.h1">累计收听</span> <span id="songs">305</span><span data-i18n="life.hours"> 首 · 那些旋律陪我度过的夜晚</span></p>
-          <p class="data-desc" style="margin-top:8px" data-i18n="life.d3">深夜的旋律，陪我度过每一个失眠夜。</p>
+          <p class="data-desc" style="margin-top:8px" data-i18n="life.d3">深夜的旋律，陪我度过每一个AlanLumier。</p>
           <p class="data-desc daily-song" style="margin-top:8px"><span data-i18n="life.song">今日推荐：</span><a id="dailySong" href="#" target="_blank" rel="noopener" data-i18n="life.songload">正在挑选…</a></p>
         </div>
       </div>
@@ -1709,7 +1713,7 @@
       <div class="footer-col">
         <h4 data-i18n="footer.works">作品</h4>
         <ul>
-          <li><a href="/space/" data-i18n="footer.space2">失眠夜个人空间</a></li>
+          <li><a href="/space/" data-i18n="footer.space2">AlanLumier个人空间</a></li>
           <li><a href="/space/#awards" data-i18n="footer.awards">荣誉奖项</a></li>
           <li><a href="/space/#contact" data-i18n="footer.contactme">联系我</a></li>
         </ul>
@@ -1828,7 +1832,7 @@
     var list = document.getElementById('searchResults');
     if (!mask || !input) return;
     var INDEX = [
-      { k: ['个人空间', 'space', '失眠夜'], t: '个人空间', href: 'space.html', sk: 'PAGE' },
+      { k: ['个人空间', 'space', 'AlanLumier'], t: '个人空间', href: 'space.html', sk: 'PAGE' },
       { k: ['生活瞬间', 'life', '咖啡', '音乐', '游戏'], t: '生活瞬间', href: '#life', sk: 'SECTION' },
       { k: ['精选作品', 'works', '项目', '作品'], t: '精选作品', href: '#works', sk: 'SECTION' },
       { k: ['今夜', 'now', '月色', '推荐', '天气'], t: '今夜', href: '#now', sk: 'SECTION' },
@@ -1991,7 +1995,7 @@
         var name = h3.textContent.trim() || (en ? 'work' : '作品');
         var detail = card.getAttribute('data-detail') || '';
         var shareUrl = detail ? base.replace(/\/[^/]*$/, '/') + detail : base;
-        var text = en ? 'AlanLumier\'s work "' + name + '" — Insomnia Night Space' : '来自 AlanLumier 的作品「' + name + '」——失眠夜个人空间';
+        var text = en ? 'AlanLumier\'s work "' + name + '" — AlanLumier Space' : '来自 AlanLumier 的作品「' + name + '」——AlanLumier个人空间';
         var wb = pop.querySelector('.sp-wb');
         var qq = pop.querySelector('.sp-qq');
         if (wb) { wb.href = 'https://service.weibo.com/share/share.php?url=' + encodeURIComponent(shareUrl) + '&title=' + encodeURIComponent(text); wb.lastChild.textContent = en ? ' Weibo' : '微博'; }
@@ -2011,7 +2015,7 @@
       var shareUrl = detail
         ? base.replace(/\/[^/]*$/, '/') + detail
         : base;
-      var text = '来自 AlanLumier 的作品「' + name + '」——失眠夜个人空间';
+      var text = '来自 AlanLumier 的作品「' + name + '」——AlanLumier个人空间';
       var foot = document.createElement('div');
       foot.className = 'card-foot';
       meta.parentNode.insertBefore(foot, meta);
@@ -2374,7 +2378,7 @@
     ];
     var NIGHTQ = [
       ['深夜适合想念，也适合慢慢把事情做完。', 'AlanLumier'],
-      ['失眠夜不孤单，还有代码陪你。', 'AlanLumier'],
+      ['AlanLumier不孤单，还有代码陪你。', 'AlanLumier'],
       ['月亮不睡我不睡，我是人间小宝贝。', '网络'],
       ['晚安，世界；早安，自己。', 'AlanLumier'],
       ['夜晚是白天的另一个版本，安静而有光。', 'AlanLumier'],
@@ -2806,7 +2810,7 @@
       { lv: "[ADD]", time: "2026-09-26 09:00:00", text: "今晚月色 / 星星计数器 / 世界失眠时钟：实时月相（API 校验 + 天文公式兜底）、数星星三级徽章、全球 8 城失眠时钟。", en: "Tonight's moon / star counter / world insomnia clock: live moon phase (API-verified with local fallback), 3-tier star badges, and an 8-city world clock." }
     ]},
     { ver: "v22.6", date: "2026-09-26 09:40:00", current: false, list: [
-      { lv: "[ADD]", time: "2026-09-26 09:40:00", text: "勋章弹窗贴合失眠夜主题：深蓝夜渐变 + 青色辉光 + 星空纹理，解锁弹窗内可查看勋章墙历史记录。", en: "Badge modal restyled to the insomnia-night theme: deep-blue gradient, cyan glow and starfield; badge wall history viewable inside the unlock modal." },
+      { lv: "[ADD]", time: "2026-09-26 09:40:00", text: "勋章弹窗贴合AlanLumier主题：深蓝夜渐变 + 青色辉光 + 星空纹理，解锁弹窗内可查看勋章墙历史记录。", en: "Badge modal restyled to the insomnia-night theme: deep-blue gradient, cyan glow and starfield; badge wall history viewable inside the unlock modal." },
       { lv: "[ADD]", time: "2026-09-26 09:30:00", text: "晚安灯牌：页脚新增灯串板块，点击点亮一盏灯并同步累计到星星计数器，深夜语境更完整。", en: "Goodnight light bar: a new strand in the footer; tapping lights a lamp and adds to the star counter for a fuller late-night mood." }
     ]},
     { ver: "v22.5", date: "2026-09-26 09:00:00", current: false, list: [
@@ -2816,7 +2820,7 @@
       { lv: "[DEL]", time: "2026-09-25 23:30:00", text: "移除睡眠曲线板块，保留其余今晚月色 / 星星计数器 / 世界失眠时钟。", en: "Removed the sleep-curve section; kept Tonight's Moon, the star counter and the world insomnia clock." }
     ]},
     { ver: "v22.3", date: "2026-09-25 23:00:00", current: false, list: [
-      { lv: "[ADD]", time: "2026-09-25 23:00:00", text: "今晚月色 / 星星计数器 / 睡眠曲线 / 世界失眠时钟：新增失眠夜四大陪伴板块。", en: "Tonight's Moon / star counter / sleep curve / world insomnia clock: four new insomnia-night companion sections." }
+      { lv: "[ADD]", time: "2026-09-25 23:00:00", text: "今晚月色 / 星星计数器 / 睡眠曲线 / 世界失眠时钟：新增AlanLumier四大陪伴板块。", en: "Tonight's Moon / star counter / sleep curve / world insomnia clock: four new insomnia-night companion sections." }
     ]},
     { ver: "v22.2", date: "2026-09-25 22:02:00", current: false, list: [
       { lv: "[ADD]", time: "2026-09-25 22:02:00", text: "深夜特调：22:00-06:00 自动点亮星空与月亮，一言切换深夜语料库。", en: "Night mode: stars & moon light up from 22:00 to 06:00, quotes switch to a late-night pool." },
@@ -2831,7 +2835,7 @@
       { lv: "[ADD]", time: "2026-09-25 20:18:00", text: "整站 i18n：右上角中英一键切换，独立 3 秒伪进度条。", en: "Site-wide i18n: one-click EN/CN switch top-right, with a dedicated 3-second pseudo progress bar." },
       { lv: "[ADD]", time: "2026-09-25 20:09:47", text: "此刻 · 每日推荐：结合节日 / 天气 / 星期，每天一条。", en: "Right Now · Daily pick: holidays / weather / weekday, one per day." },
       { lv: "[ADD]", time: "2026-09-25 19:58:32", text: "页面转场：返回标签页时 View Transitions 衔接。", en: "Page transitions: View Transitions when navigating back to the tab page." },
-      { lv: "[ADD]", time: "2026-09-25 19:50:10", text: "独立 404 页：Y 一笔画 + 「失眠夜迷路了」+ 返回按钮。", en: "Dedicated 404 page: Y stroke animation + 'Lost in the Insomnia Night' + back buttons." }
+      { lv: "[ADD]", time: "2026-09-25 19:50:10", text: "独立 404 页：Y 一笔画 + 「AlanLumier迷路了」+ 返回按钮。", en: "Dedicated 404 page: Y stroke animation + 'Lost in the AlanLumier' + back buttons." }
     ]},
     { ver: "v19.6", date: "2026-09-25 16:20:11", current: false, list: [
       { lv: "[ADD]", time: "2026-09-25 16:20:11", text: "六件作品详情页加入评分系统（兴华 4.9 / 记账 5.0 / 代码 4.8 / 表情 5.0 / CS 5.0 / 棋类 4.9）。" },
@@ -3253,7 +3257,7 @@
       'hero.intro': '这里是我的个人小角落，记录着咖啡、音乐、游戏与作品。不紧不慢，慢慢翻就好。',
       'hero.scroll': '向下滑动',
       'enter.kicker': 'PERSONAL SPACE',
-      'enter.h2': '失眠夜 · 个人空间',
+      'enter.h2': 'AlanLumier · 个人空间',
       'enter.desc': '这里收纳着关于我的一切——爱好的碎片、写过的项目、走过的路，还有一些零零散散的日常。',
       'enter.btn': '进入个人空间',
       'life.h2': '生活瞬间', 'life.desc': '一些悄悄累积的数字，随时间慢慢长大。点击上方切换。',
@@ -3268,10 +3272,10 @@
       'changelog.h2': '更新日志', 'changelog.desc': '这个页面是怎么一点点长成现在这样的。', 'changelog.more': '详细日志',
       'footer.brand': '个人空间入口：这里收录我的作品与项目，全部开源托管在 GitHub 上。',
       'footer.nav': '导航', 'footer.home': '首页', 'footer.space': '个人空间', 'footer.projects': '项目', 'footer.lifedata': '生活数据',
-      'footer.works': '作品', 'footer.space2': '失眠夜个人空间', 'footer.awards': '荣誉奖项', 'footer.contactme': '联系我',
+      'footer.works': '作品', 'footer.space2': 'AlanLumier个人空间', 'footer.awards': '荣誉奖项', 'footer.contactme': '联系我',
       'footer.contact': '联系', 'footer.email': '邮箱', 'footer.rss': 'RSS 订阅', 'footer.visit1': '本站访问', 'footer.visit2': ' 次',
       'search.placeholder': '搜索作品、板块、页面…', 'search.hint': '↑↓ 选择 · Enter 打开 · Esc 关闭', 'search.empty': '没有找到相关内容',
-      'nav.tag': '失眠夜空间', 'nav.works': '精选作品', 'nav.life': '生活数据', 'nav.tonight': '今夜', 'nav.open': '开源', 'nav.status': '运行状态', 'status.h2': '运行状态', 'status.desc': '本站服务与作品页的实时可用性，打开页面时自动检测。', 'status.state': '站点状态', 'status.online': '一切正常 · 在线', 'status.ver': '站点版本', 'status.uptime': '已运行', 'status.days': '天', 'status.check': '检测时间', 'status.more': '查看完整状态页 →', 'sub.btn': '本地收藏', 'sub.placeholder': '你的邮箱', 'sub.ok': '订阅成功，感谢关注！', 'sub.bad': '请输入有效的邮箱地址',
+      'nav.tag': 'AlanLumier', 'nav.works': '精选作品', 'nav.life': '生活数据', 'nav.tonight': '今夜', 'nav.open': '开源', 'nav.status': '运行状态', 'status.h2': '运行状态', 'status.desc': '本站服务与作品页的实时可用性，打开页面时自动检测。', 'status.state': '站点状态', 'status.online': '一切正常 · 在线', 'status.ver': '站点版本', 'status.uptime': '已运行', 'status.days': '天', 'status.check': '检测时间', 'status.more': '查看完整状态页 →', 'sub.btn': '本地收藏', 'sub.placeholder': '你的邮箱', 'sub.ok': '订阅成功，感谢关注！', 'sub.bad': '请输入有效的邮箱地址',
       'footer.status': '运行状态',
       'heatmap.h2': '开源足迹', 'heatmap.desc': '过去一年在 GitHub 上的每一天，金色越深代表越活跃。',
       'hero.quoteTitle': '换一句',
@@ -3280,7 +3284,7 @@
       'life.d2': '美式、拿铁、生椰……每一杯都是生活的续命剂。', 'life.menu': '已喝菜单',
       'life.c2': '网易云音乐', 'life.tag2': '循环播放中', 'life.un1': '小时',
       'life.h1': '累计收听', 'life.hours': ' 首 · 那些旋律陪我度过的夜晚',
-      'life.d3': '深夜的旋律，陪我度过每一个失眠夜。',
+      'life.d3': '深夜的旋律，陪我度过每一个AlanLumier。',
       'life.song': '今日推荐：', 'life.songload': '正在挑选…',
       'mc.sub1': '布吉岛', 'mc.sub2': '花雨亭',
       'mc.l1': '游戏对局', 'mc.l2': '在线时长', 'mc.l3': '胜场', 'mc.l4': '放置方块',
@@ -3306,7 +3310,7 @@
       'hero.intro': 'This is my little corner — coffee, music, games and works. Take it slow.',
       'hero.scroll': 'Scroll down',
       'enter.kicker': 'PERSONAL SPACE',
-      'enter.h2': 'Insomnia Night · My Space',
+      'enter.h2': 'AlanLumier · My Space',
       'enter.desc': "Everything about me — hobby fragments, projects I've written, roads I've walked, and bits of everyday life.",
       'enter.btn': 'Enter My Space',
       'life.h2': 'Life Moments', 'life.desc': 'Numbers that quietly grow with time. Click to switch.',
@@ -3321,7 +3325,7 @@
       'changelog.h2': 'Changelog', 'changelog.desc': 'How this page grew into what it is today.', 'changelog.more': 'Full Log',
       'footer.brand': 'Entry to my space: my works and projects, all open-sourced on GitHub.',
       'footer.nav': 'Navigate', 'footer.home': 'Home', 'footer.space': 'My Space', 'footer.projects': 'Projects', 'footer.lifedata': 'Life Data',
-      'footer.works': 'Works', 'footer.space2': 'Insomnia Night Space', 'footer.awards': 'Awards', 'footer.contactme': 'Contact',
+      'footer.works': 'Works', 'footer.space2': 'AlanLumier Space', 'footer.awards': 'Awards', 'footer.contactme': 'Contact',
       'footer.contact': 'Contact', 'footer.email': 'Email', 'footer.rss': 'RSS Feed', 'footer.visit1': 'Visits', 'footer.visit2': '',
       'search.placeholder': 'Search works, sections, pages…', 'search.hint': '↑↓ select · Enter open · Esc close', 'search.empty': 'Nothing found',
       'nav.tag': 'Sleepless Night Space', 'nav.works': 'Projects', 'nav.life': 'Life Data', 'nav.tonight': 'Tonight', 'nav.open': 'Open Source', 'nav.status': 'Status', 'status.h2': 'Service Status', 'status.desc': 'Real-time availability of site services and works pages.', 'status.state': 'Site Status', 'status.online': 'All systems normal · Online', 'status.ver': 'Version', 'status.uptime': 'Running for', 'status.days': 'days', 'status.check': 'Checked at', 'status.more': 'View Full Status Page →', 'sub.btn': 'Save locally', 'sub.placeholder': 'Your email', 'sub.ok': 'Subscribed. Thanks!', 'sub.bad': 'Enter a valid email',
