@@ -302,3 +302,52 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '适用场景': 'Use cases',
   '· 一个藏在AlanLumier里的小作品': '· A small project living inside AlanLumier',
 });
+
+/* ---------- 第 4 批：作品详情页正文 —— accounting（自助记账系统）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '自助记账系统 · AlanLumier 作品详情': 'Self-service Accounting System · AlanLumier project',
+  '自助记账系统': 'Self-service Accounting System',
+  '/ 自助记账系统': '/ Self-service Accounting System',
+  '轻量化的单文件本地记账工具，收支分类、统计与可视化开箱即用。':
+    'A lightweight single-file local bookkeeping tool — categorisation, stats and charts out of the box.',
+  '效率工具': 'Productivity tool',
+  '记账': 'Bookkeeping',
+  '数据可视化': 'Data visualisation',
+  '本地运行': 'Runs locally',
+  '一个把「记账」这件事做简单的单文件工具：记录每一笔收入和支出，按分类自动汇总，并用图表直观呈现钱都去了哪里。所有数据都保存在本地，不依赖任何云端服务，隐私安全，导出方便。适合个人日常消费管理与月度复盘。':
+    'A single-file tool that makes bookkeeping simple: record every income and expense, get automatic totals by category, and see clearly where the money went. All data stays on your device — no cloud service, private and easy to export. Great for personal spending management and monthly reviews.',
+  '统计维度': 'Statistics',
+  '分类 / 月度 / 趋势': 'Category / Monthly / Trend',
+  '适用人群': 'Best for',
+  '个人与家庭': 'Individuals and families',
+  '收支记录：一键记一笔，支持收入 / 支出双类型与任意分类。':
+    'Quick entry: record a transaction in one tap, supporting both income and expense with any category.',
+  '分类统计：餐饮、交通、购物、娱乐等分类自动汇总，占比一目了然。':
+    'Category totals: food, transport, shopping, entertainment and more are summed automatically, with shares at a glance.',
+  '数据可视化：月度收支柱状图、分类占比图，趋势看得见。':
+    'Visualisation: monthly income/expense bars and category share charts make trends visible.',
+  '本地保存：所有数据仅存于本机，不联网、不上传，隐私安全。':
+    'Stored locally: all data stays on your device — no network, no uploads.',
+  '导出与重置：支持数据导出备份，随时清空重来。':
+    'Export and reset: back up your data any time, or clear it and start over.',
+  '单文件 HTML 实现，无需安装与联网，任何设备打开即用。':
+    'A single HTML file — no install, no connection, ready on any device.',
+  '记账数据采用本地存储结构，关闭页面不丢失，跨会话持续累积。':
+    'Entries are kept in local storage, surviving page closes and accumulating across sessions.',
+  '图表由原生绘制，无第三方库依赖，加载快、体积小。':
+    'Charts are drawn natively with no third-party libraries — fast to load and small.',
+  '内置月度结算逻辑：自动计算结余、环比与分类占比。':
+    'Built-in monthly settlement: balance, month-over-month change and category shares calculated automatically.',
+  '首次打开即进入记账页，输入金额、选择分类、点击保存即可完成一笔记录。':
+    'It opens straight on the entry page: type an amount, pick a category and save.',
+  '首页默认展示本月概览：总收入、总支出、结余与分类占比。':
+    'The home view shows this month at a glance: total income, total expense, balance and category shares.',
+  '右上角可切换历史月份，回看往月明细与图表。':
+    'Switch months from the top right to revisit earlier details and charts.',
+  '数据备份建议定期导出保存到本地，防止误清。':
+    'Export regularly to keep a local backup in case of accidental clearing.',
+  '当前版本：优化分类体系与月度对比视图，图表交互升级。':
+    'Current version: improved category system and monthly comparison view, upgraded chart interaction.',
+  '新增月度切换与数据导出功能。': 'Added month switching and data export.',
+  '初版：仅支持收支记录与简单汇总。': 'First release: income/expense entry and simple totals.',
+});
