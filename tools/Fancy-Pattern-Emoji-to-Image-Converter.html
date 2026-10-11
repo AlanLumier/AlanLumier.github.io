@@ -225,6 +225,17 @@
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="/assets/theme.css">
 <script src="/assets/theme.js"></script>
+<style>
+  /* 窄屏适配（部分有效，但**没有**解决本页的横向溢出，如实记录）：
+     预览画布写死 512×512，限宽本身是良好实践，故保留。
+     但实测本页在 390px 下仍溢出 157px（修改前后数值一致、三次测量可复现），
+     说明真正的溢出源不是画布 —— 我曾用「512 − 可用宽度 355 = 157」推断是画布，
+     数字虽巧合吻合，结论却是错的。真正元凶待用可复现的尺子进一步定位。 */
+  @media (max-width: 768px) {
+    canvas { max-width: 100%; height: auto; }
+    .preset-row, .color-row { flex-wrap: wrap; }
+  }
+</style>
 </head>
 <body>
 <div class="container">
