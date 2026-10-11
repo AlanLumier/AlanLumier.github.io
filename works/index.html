@@ -27,27 +27,27 @@
 <style>
   :root {
     --bg: #0C0E0D;
-    --ink: #EAE4D5;
-    --ink-2: #A29B8A;
-    --accent: #D4AF37;
-    --accent-2: #E8CC7A;
-    --line: #262B29;
-    --card-bg: #161A18;
-    --soft: #1A1F1D;
+    --ink: #e4e4e4;
+    --ink-2: #9b9b9b;
+    --accent: #b3b3b3;
+    --accent-2: #cecece;
+    --line: #2a2a2a;
+    --card-bg: #191919;
+    --soft: #1e1e1e;
     --footer-bg: #060808;
-    --footer-ink: #C9CDD4;
+    --footer-ink: #cdcdcd;
   }
   :root[data-theme="dark"] {
     --bg: #0C0E0D;
-    --ink: #EAE4D5;
-    --ink-2: #A29B8A;
-    --accent: #D4AF37;
-    --accent-2: #E8CC7A;
-    --line: #262B29;
-    --card-bg: #161A18;
-    --soft: #1A1F1D;
+    --ink: #e4e4e4;
+    --ink-2: #9b9b9b;
+    --accent: #b3b3b3;
+    --accent-2: #cecece;
+    --line: #2a2a2a;
+    --card-bg: #191919;
+    --soft: #1e1e1e;
     --footer-bg: #060808;
-    --footer-ink: #C9CDD4;
+    --footer-ink: #cdcdcd;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -89,7 +89,7 @@
     background: var(--card-bg); color: var(--ink-2);
     transition: border-color .2s, box-shadow .2s;
   }
-  .searchbox:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(212,175,55,.12); }
+  .searchbox:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(179, 179, 179,.12); }
   .searchbox svg { width: 16px; height: 16px; flex: none; }
   .searchbox input {
     border: 0; outline: 0; background: transparent; width: 100%;
@@ -130,7 +130,7 @@
     transition: border-color .18s, transform .18s, box-shadow .18s;
     cursor: pointer;
   }
-  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 14px 34px rgba(212,175,55,.13); }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 14px 34px rgba(179, 179, 179,.13); }
   .card .card-dl {
     position: absolute; top: 14px; right: 14px;
     width: 32px; height: 32px; border-radius: 10px;
@@ -174,13 +174,13 @@
     color: #fff; cursor: pointer; border: 0;
     transition: transform .2s, box-shadow .2s;
   }
-  .go-row .go-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(212,175,55,.3); }
+  .go-row .go-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(179, 179, 179,.3); }
 
   footer {
     background: var(--footer-bg); color: var(--footer-ink);
     text-align: center; padding: 34px 20px;
   }
-  footer .big { font-size: clamp(30px, 6vw, 52px); font-weight: 900; letter-spacing: .12em; color: #6B7079; line-height: 1; }
+  footer .big { font-size: clamp(30px, 6vw, 52px); font-weight: 900; letter-spacing: .12em; color: #707070; line-height: 1; }
   footer .sub { margin-top: 12px; font-size: 12px; color: var(--footer-ink); opacity: .55; }
 
   /* 3 秒进度条遮罩 */

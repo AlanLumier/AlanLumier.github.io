@@ -26,14 +26,14 @@
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Nunito:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
 <style>
   :root {
-    --bg: #0C0E0D; --card: #161A18; --ink: #EAE4D5; --ink-2: #A29B8A;
-    --line: #262B29; --line-strong: #343A38; --accent: #D4AF37; --accent-2: #E8CC7A;
-    --soft: #1A1F1D; --overlay: rgba(0, 0, 0, 0.5);
+    --bg: #0C0E0D; --card: #191919; --ink: #e4e4e4; --ink-2: #9b9b9b;
+    --line: #2a2a2a; --line-strong: #393939; --accent: #b3b3b3; --accent-2: #cecece;
+    --soft: #1e1e1e; --overlay: rgba(0, 0, 0, 0.5);
   }
   :root[data-theme="dark"] {
-    --bg: #0C0E0D; --card: #161A18; --ink: #EAE4D5; --ink-2: #A29B8A;
-    --line: #262B29; --line-strong: #343A38; --accent: #D4AF37; --accent-2: #E8CC7A;
-    --soft: #1A1F1D; --overlay: rgba(0, 0, 0, 0.5);
+    --bg: #0C0E0D; --card: #191919; --ink: #e4e4e4; --ink-2: #9b9b9b;
+    --line: #2a2a2a; --line-strong: #393939; --accent: #b3b3b3; --accent-2: #cecece;
+    --soft: #1e1e1e; --overlay: rgba(0, 0, 0, 0.5);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -64,8 +64,8 @@
   .sub { font-size: 14.5px; color: var(--ink-2); }
   .vs-log { display: flex; flex-direction: column; gap: 16px; }
   .vs-ver {
-    background: #0d1117;
-    border: 1px solid #30363d;
+    background: #111111;
+    border: 1px solid #353535;
     border-radius: 10px;
     overflow: hidden;
     font-family: ui-monospace, "Cascadia Code", Consolas, "SF Mono", monospace;
@@ -73,13 +73,13 @@
   .vs-ver-head {
     display: flex; align-items: center; gap: 12px;
     padding: 10px 16px;
-    background: #161b22;
-    border-bottom: 1px solid #30363d;
+    background: #1b1b1b;
+    border-bottom: 1px solid #353535;
     flex-wrap: wrap;
   }
   .vs-ver-tab {
     display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12.5px; font-weight: 700; color: #e6edf3;
+    font-size: 12.5px; font-weight: 700; color: #ececec;
     letter-spacing: 0.04em;
   }
   .vs-ver-tab::before {
@@ -87,11 +87,11 @@
     background: linear-gradient(180deg, var(--accent), var(--accent-2));
   }
   .vs-ver-date {
-    font-size: 11px; color: #8b949e; letter-spacing: 0.02em;
+    font-size: 11px; color: #939393; letter-spacing: 0.02em;
   }
   .vs-ver-badge {
-    margin-left: auto; font-size: 10.5px; color: #3fb950;
-    border: 1px solid rgba(63,185,80,0.35); background: rgba(63,185,80,0.08);
+    margin-left: auto; font-size: 10.5px; color: #a2a2a2;
+    border: 1px solid rgba(162, 162, 162,0.35); background: rgba(162, 162, 162,0.08);
     border-radius: 999px; padding: 2px 9px; letter-spacing: 0.05em;
   }
   .vs-rows { padding: 8px 0 10px; }
@@ -100,29 +100,29 @@
     padding: 4.5px 16px;
     font-size: 12.5px; line-height: 1.6;
   }
-  .vs-row:hover { background: rgba(56,139,253,0.06); }
+  .vs-row:hover { background: rgba(140, 140, 140,0.06); }
   .vs-dot {
     flex: none; width: 7px; height: 7px; border-radius: 50%;
     transform: translateY(-1px);
-    background: #8b949e;
+    background: #939393;
   }
   .vs-time {
-    flex: none; font-size: 11px; color: #8b949e; letter-spacing: 0.02em;
+    flex: none; font-size: 11px; color: #939393; letter-spacing: 0.02em;
   }
   .vs-tag {
     flex: none; font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
   }
-  .vs-text { color: #c9d1d9; }
-  .vs-row.cat-add .vs-dot { background: #3fb950; }
-  .vs-row.cat-add .vs-tag { color: #3fb950; }
-  .vs-row.cat-info .vs-dot { background: #58a6ff; }
-  .vs-row.cat-info .vs-tag { color: #58a6ff; }
-  .vs-row.cat-fix .vs-dot { background: #f97316; }
-  .vs-row.cat-fix .vs-tag { color: #f97316; }
-  .vs-row.cat-del .vs-dot { background: #f85149; }
-  .vs-row.cat-del .vs-tag { color: #f85149; }
-  .vs-row.cat-warn .vs-dot { background: #e3b341; }
-  .vs-row.cat-warn .vs-tag { color: #e3b341; }
+  .vs-text { color: #d0d0d0; }
+  .vs-row.cat-add .vs-dot { background: #a2a2a2; }
+  .vs-row.cat-add .vs-tag { color: #a2a2a2; }
+  .vs-row.cat-info .vs-dot { background: #a3a3a3; }
+  .vs-row.cat-info .vs-tag { color: #a3a3a3; }
+  .vs-row.cat-fix .vs-dot { background: #9a9a9a; }
+  .vs-row.cat-fix .vs-tag { color: #9a9a9a; }
+  .vs-row.cat-del .vs-dot { background: #8c8c8c; }
+  .vs-row.cat-del .vs-tag { color: #8c8c8c; }
+  .vs-row.cat-warn .vs-dot { background: #bababa; }
+  .vs-row.cat-warn .vs-tag { color: #bababa; }
   .sync-note {
     margin-top: 22px; font-size: 12.5px; color: var(--ink-2); opacity: 0.8;
     border: 1px dashed var(--line); border-radius: 12px; padding: 12px 18px;
@@ -161,14 +161,14 @@
   .load-skip {
     margin-top: 20px; display: inline-flex; align-items: center; gap: 7px;
     font-size: 12.5px; color: var(--accent);
-    border: 1px solid rgba(212,175,55,0.35); background: rgba(212,175,55,0.06);
+    border: 1px solid rgba(179, 179, 179,0.35); background: rgba(179, 179, 179,0.06);
     border-radius: 999px; padding: 9px 20px; cursor: pointer;
     opacity: 0; transition: opacity 0.35s ease;
     font-family: inherit; user-select: none; -webkit-user-select: none;
   }
   .load-skip.show { opacity: 1; }
   .load-skip svg { width: 14px; height: 14px; }
-  .load-skip:active { background: rgba(212,175,55,0.16); }
+  .load-skip:active { background: rgba(179, 179, 179,0.16); }
   .load-skip small { font-size: 11px; opacity: 0.75; }
   .theme-toggle {
     position: fixed; right: 22px; bottom: 22px; z-index: 900;
