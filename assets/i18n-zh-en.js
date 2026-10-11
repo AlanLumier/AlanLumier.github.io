@@ -351,3 +351,53 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '新增月度切换与数据导出功能。': 'Added month switching and data export.',
   '初版：仅支持收支记录与简单汇总。': 'First release: income/expense entry and simple totals.',
 });
+
+/* ---------- 第 5 批：作品详情页正文 —— chess（棋类合集）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '棋类合集 · AlanLumier 作品详情': 'Board Game Collection · AlanLumier project',
+  '棋类合集': 'Board Game Collection',
+  '/ 棋类合集': '/ Board Game Collection',
+  '五子棋与中国象棋同页双开，本地运行，无需联网。':
+    'Gomoku and Chinese Chess on one page — runs locally, no connection needed.',
+  '象棋': 'Chinese Chess',
+  '五子棋': 'Gomoku',
+  '本地对战': 'Local two-player',
+  '一个把五子棋与中国象棋放在同一个页面里的棋类合集。无需联网、无需登录，打开就能和身边的朋友来一局。棋子、棋盘、规则判断全部本地实现，界面清爽，手感流畅，是聚会与课间的解闷利器。':
+    'A board game collection that puts Gomoku and Chinese Chess on the same page. No connection, no login — open it and play a round with whoever is nearby. Pieces, board and rule checking are all implemented locally, with a clean interface and smooth feel. A great way to pass the time between classes or at a gathering.',
+  '游戏数量': 'Games',
+  '2 款': '2',
+  '对战方式': 'Match type',
+  '本地双人': 'Local two-player',
+  '运行要求': 'Requirements',
+  '浏览器即可': 'Just a browser',
+  '五子棋：标准 15×15 棋盘，禁手之外的规则完整实现，支持悔棋。':
+    'Gomoku: a standard 15×15 board with the full ruleset and undo support.',
+  '中国象棋：完整棋规——马走日、象走田、蹩马腿、塞象眼、将帅对脸判定。':
+    "Chinese Chess: complete rules — the horse's L-move, the elephant's 2×2 move, blocked-leg and blocked-eye checks, and the flying-general rule.",
+  '同页切换：两款游戏一键互切，无需刷新页面。':
+    'Switch in place: move between the two games with one click, no page reload.',
+  '胜负判定自动完成：五子连珠、将军、绝杀即时提示。':
+    'Automatic win detection: five in a row, check and checkmate are announced immediately.',
+  '悔棋与复盘：下错可悔，结束后可回放整局。':
+    'Undo and replay: take back a mistake, or replay the whole game afterwards.',
+  '棋盘以 Canvas 渲染，落子动画流畅，移动端同样顺滑。':
+    'The board is rendered on Canvas, with smooth piece animations that feel good on mobile too.',
+  '象棋走法合法性校验完整覆盖，包含吃子与将军状态检测。':
+    'Move legality for Chinese Chess is fully covered, including captures and check detection.',
+  '规则引擎独立实现，不依赖任何第三方库。':
+    'The rules engine is implemented from scratch with no third-party libraries.',
+  '本地会话内保留对局状态，误刷新前可恢复。':
+    'Game state is kept within the local session, so an accidental refresh is recoverable.',
+  '打开页面后在顶部切换「五子棋 / 中国象棋」。':
+    'Open the page and switch between Gomoku and Chinese Chess at the top.',
+  '执黑 / 执红一方先手，点击棋盘落子。':
+    'Black (or Red) moves first — click the board to place a piece.',
+  '对局结束自动弹出胜负提示，可点击复盘或重新开始。':
+    'When the game ends a result prompt appears, with options to replay or restart.',
+  '「悔棋」按钮可回退上一步，适合友谊局。':
+    'The Undo button takes back the last move — handy for friendly games.',
+  '当前版本：修复象棋异常判断，新增悔棋与复盘。':
+    'Current version: fixed an edge case in Chinese Chess adjudication, added undo and replay.',
+  '初版：五子棋上线。': 'First release: Gomoku launched.',
+  '新增中国象棋，双棋合璧。': 'Added Chinese Chess — two games in one.',
+});
