@@ -99,3 +99,183 @@ window.ALAN_TEXT_I18N.en = Object.assign(window.ALAN_TEXT_I18N.en || {}, {
   '知道了': 'Got it',
   '深夜模式已开启': 'Night mode is on',
 });
+
+/* ---------- 第 2 批：space 正文、时间线、游戏档案、装备、荣誉、留言、页脚 ---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  'AlanLumier · 个人空间 | AlanLumier 的作品、荣誉与日常':
+    "AlanLumier · Personal Space | Works, honors and everyday life",
+  '感谢你的关注与支持，新项目上线时会第一时间提醒你，敬请期待精彩内容。':
+    "Thanks for your support — you'll be the first to know when new projects go live.",
+  '目前是一名在读初三学生，始终热衷于将脑海里碎片化的构想，一步步打磨、转化为可以实际运行的实体装置与可交付的程序作品。格外享受完整的从 0 到 1 的搭建闭环：从最初构思需求、拆解问题，到查阅资料选型、动手调试排错，再到最终看到想法真正落地可用，整个过程都能带来很强的成就感。我既沉浸在游戏世界带来的乐趣之中，喜欢钻研游戏内的战术逻辑、机制原理，热衷于在游戏里做创造与搭建，在虚拟环境里打磨策略、推演方案；同时也痴迷现实世界里的机械结构与编程代码，对硬件组装、机械传动、逻辑算法都抱有浓厚的好奇心。习惯用技术思维看待身边遇到的各类细碎问题，善于观察日常里的不便之处，尝试用代码、硬件组合的方式给出切实可行的解决方案。':
+    "I'm a Grade 9 student who loves turning fragmented ideas into working devices and deliverable software. I especially enjoy the full zero-to-one loop: framing the problem, researching options, debugging, and finally seeing an idea become something usable. I'm equally drawn to games — studying tactics and mechanics, and building things inside them — and to mechanical structures and code in the real world; hardware assembly, drivetrains and algorithms all fascinate me. I tend to look at everyday annoyances with an engineer's eye and try to solve them with code and hardware.",
+
+  /* 爱好描述 */
+  '在旋律中寻找宁静与灵感，让节奏抚平心绪，沉浸在音符构筑的世界里。':
+    'Finding calm and inspiration in melody, letting rhythm settle the mind.',
+  '用脚步丈量世界，在路途中遇见更好的自己，享受自然风光与人文探索。':
+    'Measuring the world on foot, meeting a better self along the way — nature and culture alike.',
+  '骑行追风，感受速度与自由，在公路与山野间释放压力，热爱长距离骑行。':
+    'Chasing the wind on two wheels — speed and freedom on road and trail, with a love of long rides.',
+  '在虚拟世界中体验策略与创造，享受竞技的乐趣，专注CS与我的世界。':
+    'Strategy and creativity in virtual worlds — competitive fun, focused on CS and Minecraft.',
+  '运动挥洒汗水，团队协作铸就友谊与活力，日常坚持锻炼保持状态。':
+    'Sweat, teamwork and friendship — staying in shape through daily training.',
+
+  /* 照片说明补遗 */
+  '市级VEX挑战赛，与团队并肩作战，从搭建到调试全程参与':
+    'City VEX challenge — building and debugging alongside the team from start to finish',
+  '从零搭建的自动化装置，红石电路与机械结构的完美结合':
+    'An automated build made from scratch — redstone circuits meeting mechanical design',
+  '新装备到位，ROG全家桶战斗力拉满，外设与主机的完美搭配':
+    'New gear day — a full ROG setup, peripherals and tower in perfect match',
+
+  /* 成长时间线 */
+  '开启机械结构与C++编程学习，踏入机器人工程领域，从零基础开始系统学习电机控制、传感器读取与基础运动逻辑。':
+    'Started learning mechanical design and C++ programming, entering robotics from the ground up: motor control, sensor reading and basic motion logic.',
+  '2023 · 初探': '2023 · First steps',
+  '完成第一个Python小工具': 'Built my first Python tool',
+  '独立编写自动化脚本，体验从想法到落地的完整流程，掌握文件读写、数据处理与GUI界面开发，开始具备将日常需求转化为工具的能力。':
+    'Wrote automation scripts independently and took ideas all the way to working tools: file I/O, data processing and GUI development.',
+  '2023 · 竞技': '2023 · Competition',
+  '入坑CS竞技': 'Getting into competitive CS',
+  '专注枪法与战术打磨，享受回合制博弈的团队配合乐趣，开始系统性训练预瞄架点、投掷物运用与地图战术，在复盘中逐步提升竞技水平。':
+    'Focused on aim and tactics, enjoying round-based teamwork: crosshair placement, utility usage and map strategy, improving through review.',
+  '2024 · 落地': '2024 · Shipped',
+  '开发兴华中学广播站系统': 'Built the Xinghua Middle School broadcasting system',
+  '独立设计开发并投入校园实际使用，解决排班与播放管理问题，涵盖广播排班管理、播放日程控制、站点信息维护等核心功能，从需求调研到部署上线全程独立完成。':
+    'Designed, built and put into real campus use to solve scheduling and playback management — from requirements research to deployment, all done independently.',
+  '2024 · 进阶': '2024 · Levelling up',
+  '接触RoboMaster机甲赛事': 'Discovering RoboMaster',
+  '深入学习工程控制与视觉识别，拓展机器人技术边界，接触机甲工程结构设计、自动化控制程序开发与视觉识别技术，在团队协作中积累工程实践经验。':
+    'Studying engineering control and computer vision to push the boundaries of robotics: structural design, automated control and vision recognition.',
+  '2025 · 效率': '2025 · Efficiency',
+  '开发自助记账系统': 'Built a self-service accounting system',
+  '轻量化单文件本地工具，开箱即用，满足日常收支管理需求，支持收支记录、分类统计与数据可视化，无需安装即可本地运行，为个人财务管理提供便捷高效的解决方案。':
+    'A lightweight single-file local tool that works out of the box: income and expense tracking, category stats and data visualisation, no installation required.',
+
+  /* 游戏档案 */
+  '在虚拟世界中体验策略、创造与竞技': 'Strategy, creativity and competition in virtual worlds',
+  '游戏总时长': 'Total playtime',
+  '小时': 'hours',
+  'CS 系列': 'CS series',
+  '我的世界': 'Minecraft',
+  'CS系列': 'CS series',
+  '游戏平台': 'Platform',
+  '完美世界竞技平台': 'Perfect World Arena',
+  '当前段位': 'Current rank',
+  '普通A+': 'A+ (Standard)',
+  '定位位置': 'Role',
+  '步枪位': 'Rifler',
+  '游戏模式': 'Mode',
+  '竞技模式（5v5回合制）': 'Competitive (5v5, round-based)',
+  '擅长武器': 'Preferred weapons',
+  '游戏时长': 'Playtime',
+  '累计超过 1200 小时': 'Over 1,200 hours',
+  '专注枪法与团队战术配合，享受回合制博弈的乐趣，擅长中路突破与补枪，在复盘中持续提升竞技水平。':
+    'Focused on aim and team tactics, enjoying round-based play; strong at mid pushes and trade kills, improving through review.',
+  '游戏方向': 'Focus',
+  '自由建造、红石电路、生存整合包': 'Free building, redstone circuits, survival modpacks',
+  '偏好玩法': 'Preferred playstyle',
+  '技术向、自动化': 'Technical, automation',
+  '擅长内容': 'Strengths',
+  '红石自动化装置、大型建筑建造、生存模式挑战': 'Redstone automation, large builds, survival challenges',
+  '模组偏好': 'Mod preferences',
+  '科技类模组、机械动力、应用能源': 'Tech mods, Create, Applied Energistics',
+  '累计超过 800 小时': 'Over 800 hours',
+  '喜欢用红石搭建自动化装置，享受从零搭建完整世界的成就感，偏好技术向玩法，在生存与创造中探索无限可能。':
+    'I love building redstone automation and the feeling of creating a whole world from scratch, preferring technical play across survival and creative.',
+
+  /* 装备 */
+  '工欲善其事，必先利其器': 'Sharp tools make good work',
+  '键盘': 'Keyboard',
+  '支持蓝牙/2.4G/有线三模连接，热插拔轴体设计，RGB背光，客制化手感，长时间编程与游戏输入依旧舒适稳定。':
+    'Tri-mode connection (Bluetooth / 2.4G / wired), hot-swappable switches and RGB backlight — comfortable through long coding and gaming sessions.',
+  '鼠标': 'Mouse',
+  '超轻量化机身设计，2.4G无线低延迟连接，高精度传感器，适合FPS游戏快速定位与长时间使用不累手。':
+    'An ultra-light body, low-latency 2.4G wireless and a high-precision sensor — quick flicks in FPS without fatigue.',
+  '显示器': 'Monitor',
+  'ROG 超杀 27Pro 二代 (20周年典藏限定)': 'ROG Swift 27Pro 2nd gen (20th Anniversary Edition)',
+  '540Hz超高刷新率电竞显示器，极低响应时间，画面流畅无拖影，在CS等竞技游戏中提供极致的视觉优势。':
+    'A 540Hz esports monitor with extremely low response time and no visible ghosting — a real edge in games like CS.',
+  '耳机': 'Headset',
+  'ROG 棱镜 2': 'ROG Delta 2',
+  '虚拟7.1环绕声道，精准听声辨位，舒适透气耳罩，长时间佩戴不压迫，在竞技游戏中提供出色的空间定位能力。':
+    'Virtual 7.1 surround for accurate positional audio, with breathable ear cups that stay comfortable over long sessions.',
+  '鼠标垫': 'Mousepad',
+  '卓威专业电竞级鼠标垫，细腻布面提供稳定顺滑的移动手感，防滑橡胶底确保桌面稳固，是FPS玩家的首选装备。':
+    'A ZOWIE esports-grade pad: fine cloth surface for smooth, consistent glide and a non-slip rubber base.',
+
+  /* 机器人与工程 */
+  '机器人与工程': 'Robotics & Engineering',
+  '从机械结构到程序控制，探索机器人的无限可能':
+    'From mechanical design to program control — exploring what robots can do',
+  'VEX V5 机器人': 'VEX V5 robot',
+  '机械结构搭建与动力学优化，包括底盘设计、传动系统选型与结构强度分析':
+    'Mechanical build and dynamics tuning: chassis design, drivetrain selection and structural strength analysis',
+  'C++程序编写与现场调试，涵盖电机PID控制、传感器数据融合与自主运动算法':
+    'C++ development and on-site debugging: motor PID control, sensor fusion and autonomous motion algorithms',
+  '比赛现场快速调试与战术策略调整，根据对手特点灵活优化机器人表现与配合':
+    'Fast on-site debugging and tactical adjustment, adapting the robot to each opponent',
+  '参与多项校级与市级VEX机器人赛事，在实战中积累经验并取得优异成绩':
+    'Competed in school- and city-level VEX events, gaining hands-on experience and strong results',
+  '机甲大师 RoboMaster': 'RoboMaster',
+  '机甲工程结构设计与建模，包括装甲布局、悬挂系统与模块化部件的三维设计':
+    'Engineering structure design and 3D modelling: armour layout, suspension and modular parts',
+  '自动化控制程序开发，实现云台稳定追踪、弹丸发射控制与底盘全向移动协同':
+    'Automated control programs: stable gimbal tracking, projectile firing control and omnidirectional chassis coordination',
+  '视觉识别技术入门学习，基于OpenCV实现目标检测、颜色识别与距离估算功能':
+    'An introduction to computer vision with OpenCV: object detection, colour recognition and distance estimation',
+  '团队协作与赛事参与，在RoboMaster赛事中与队员分工配合，共同完成机甲研发与竞技':
+    'Teamwork and competition — dividing work with teammates to build and compete with our robot',
+
+  /* 荣誉 */
+  '荣誉与奖项': 'Honors & Awards',
+  '每一份荣誉都是努力的证明': 'Every honor is proof of the work behind it',
+  '2025 · 机器人竞赛': '2025 · Robotics',
+  '市级VEX机器人挑战赛 二等奖': 'City VEX Robotics Challenge — Second Prize',
+  '在市级VEX机器人挑战赛中，与团队协作完成机器人设计、编程与现场调试，凭借稳定的赛场表现获得二等奖。':
+    'Worked with the team on robot design, programming and on-site debugging, earning Second Prize for a steady performance.',
+  '2024 · 编程开发': '2024 · Development',
+  '青少年科技创新大赛 编程类三等奖':
+    'Youth Science & Technology Innovation Competition — Third Prize (Programming)',
+  '独立开发的编程项目参加青少年科技创新大赛，从需求分析到代码实现全程自主完成，获得编程类三等奖。':
+    'Entered the competition with a self-developed project, handling everything from requirements analysis to implementation.',
+  '2024 · 校园荣誉': '2024 · School honor',
+  '校园科技创新之星 校级荣誉称号': 'Campus Tech Innovation Star — school-level title',
+  '因在科技创新、机器人竞赛和编程开发方面的突出表现，获得校园科技创新之星校级荣誉称号。':
+    'Awarded the school-level title for outstanding work in innovation, robotics and programming.',
+  '2023 · 机器人竞赛': '2023 · Robotics',
+  '校级VEX机器人联赛 一等奖': 'School VEX Robotics League — First Prize',
+  '在校级VEX机器人联赛中，带领团队完成机器人搭建与战术制定，在多轮对抗中脱颖而出，获得一等奖。':
+    'Led the team through robot assembly and tactics, standing out across multiple rounds to take First Prize.',
+  '2023 · 编程开发': '2023 · Development',
+  '信息学奥赛普及组 市级二等奖': 'Informatics Olympiad (Beginner) — City Second Prize',
+  '参加信息学奥赛普及组比赛，在算法与数据结构方面展现扎实基础，获得市级二等奖。':
+    'Competed in the beginner division, showing solid foundations in algorithms and data structures.',
+  '2022 · 校园荣誉': '2022 · School honor',
+  '优秀学生干部 校级荣誉': 'Outstanding Student Leader — school-level honor',
+  '在担任学生干部期间，认真负责、积极组织各类活动，获得优秀学生干部校级荣誉。':
+    'Recognised for responsibility and active organisation of activities while serving as a student leader.',
+
+  /* 留言与联系 */
+  '来过，便留下你的足迹': 'You came — leave your mark',
+  '留下你的名字吧': 'Leave your name',
+  '记住你の来过': 'Remember you were here',
+  '提交留名': 'Submit',
+  '访客名单': 'Visitor list',
+  '0 人': '0 visitors',
+  '加载中...': 'Loading…',
+  '欢迎交流技术、游戏与一切有趣的话题': 'Happy to talk tech, games and anything interesting',
+  '邮箱': 'Email',
+  '欢迎添加交流': 'Feel free to add me',
+  '个人网站': 'Website',
+
+  /* 页脚 */
+  '· 个人空间 · 用热爱打造每一行代码': '· Personal Space · Every line written with passion',
+  '本站已平稳运行': 'This site has been running for',
+  '天，本次停留': 'days. This visit:',
+  '分': 'min',
+  '秒。': 'sec.',
+  '独立访客使用不蒜子插件进行统计 · 访客数': 'Unique visitors counted by Busuanzi · Visitors',
+  '· 访问量': '· Page views',
+});
