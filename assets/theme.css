@@ -497,3 +497,23 @@ hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6);
   --log-del: #cf222e;
   --log-warn: #9a6700;
 }
+
+/* 作品卡片上的「技术标签」
+   与原有的内容标签（.card-tags）视觉区分：内容标签是实底胶囊，
+   技术标签用等宽字体 + 虚线描边，一眼能看出「这是实现方式，不是分类」。 */
+.card-techs {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 6px 0 0;
+}
+.card-techs span {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  padding: 2px 8px;
+  border: 1px dashed var(--card-border);
+  border-radius: var(--radius-pill);
+  color: var(--ink-3);
+  white-space: nowrap;
+}

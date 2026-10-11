@@ -622,3 +622,16 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '技术探索': 'Tech exploration',
   '还没有人留名，做第一个吧！': 'No one has signed yet — be the first!',
 });
+
+/* ---------- 第 11 批：作品卡片上的技术标签 ---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '二维码点歌': 'QR song requests',
+  '零依赖': 'No dependencies',
+  '图表统计': 'Charts',
+  '本地存储': 'Local storage',
+  '双棋同页': 'Two games, one page',
+  '拖拽交互': 'Drag & drop',
+  '导出 PNG': 'PNG export',
+  '积木式编程': 'Block-based coding',
+  '生成 C++': 'Generates C++',
+});
