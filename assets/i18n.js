@@ -41,6 +41,64 @@
     return d;
   }
 
+  /* ------------------------------------------------------------------
+     文本匹配模式（补充方案）
+     很多页面（space、6 个作品详情页）**完全没有 data-i18n 标记**，
+     逐段补标记既慢又容易出错。这里改为按「原文 → 译文」直接替换文本节点：
+       window.ALAN_TEXT_I18N = { '首页': 'Home', '关于我': 'About', ... }
+     首次进入时把每个文本节点的原文记在 Map 里，切回中文时按原文还原，
+     所以来回切换不会丢字、也不会层层套娃。
+     ------------------------------------------------------------------ */
+  var originalText = new Map();
+
+  function collectOriginals() {
+    if (typeof document.createTreeWalker !== 'function') return;
+    var walker = document.createTreeWalker(document.body || document.documentElement, 4 /* TEXT_NODE */, null);
+    var node;
+    while ((node = walker.nextNode())) {
+      var parent = node.parentNode;
+      if (!parent) continue;
+      var tag = (parent.nodeName || '').toLowerCase();
+      // 脚本、样式、可编辑区不参与翻译
+      if (tag === 'script' || tag === 'style' || tag === 'noscript') continue;
+      if (parent.isContentEditable) continue;
+      var text = node.nodeValue;
+      if (!text) continue;
+      var trimmed = text.trim();
+      if (!trimmed) continue;
+      if (!originalText.has(node)) originalText.set(node, text);
+    }
+  }
+
+  function translateByText(lang) {
+    var table = (window.ALAN_TEXT_I18N || {})[lang];
+    if (!table) {
+      // 没有该语言的表：把已翻译的节点还原成原文（只做一次）
+      if (lang === 'zh') {
+        originalText.forEach(function (original, node) {
+          if (node.nodeValue !== original) node.nodeValue = original;
+        });
+      }
+      return 0;
+    }
+    var applied = 0;
+    originalText.forEach(function (original, node) {
+      if (!node.parentNode) return;                 // 节点已被移除
+      var trimmed = original.trim();
+      var value = table[trimmed];
+      if (typeof value !== 'string') {
+        if (node.nodeValue !== original) node.nodeValue = original;
+        return;
+      }
+      // 保留原文前后的空白，避免破坏排版
+      var lead = original.match(/^\s*/)[0];
+      var tail = original.match(/\s*$/)[0];
+      var next = lead + value + tail;
+      if (node.nodeValue !== next) { node.nodeValue = next; applied += 1; }
+    });
+    return applied;
+  }
+
   function translate(lang) {
     var table = dict()[lang];
     if (!table) return 0;
@@ -108,7 +166,8 @@
     try { localStorage.setItem(KEY, next); } catch (e) {}
     applyLang(next);
     translate(next);
-    // 页面自带的脚本也需要机会重绘（它们监听 alan:lang 或自己的事件）
+    translateByText(next);
+    // 页面自带的脚本也需要机会重绘（它们监听 alan:lang）
     var buttons = document.querySelectorAll('.alan-lang-btn');
     for (var i = 0; i < buttons.length; i += 1) paint(buttons[i]);
     return next;
@@ -129,8 +188,10 @@
 
   function init() {
     var lang = readLang();
+    collectOriginals();          // 先记住原文，之后才能来回切换
     applyLang(lang);
     translate(lang);
+    translateByText(lang);
     ensureButton();
     /* 刻意**不**接管页面自带的语言按钮。
        实测教训：最初我在捕获阶段用 stopImmediatePropagation() 抢下点击，
