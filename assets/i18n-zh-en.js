@@ -279,3 +279,26 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '独立访客使用不蒜子插件进行统计 · 访客数': 'Unique visitors counted by Busuanzi · Visitors',
   '· 访问量': '· Page views',
 });
+
+/* ---------- 第 3 批：作品详情页的跨页共用文案（6 页同时生效）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '正在打开作品…': 'Opening project…',
+  '长按加速': 'Hold to speed up',
+  '按住不放，加载更快': 'Hold to load faster',
+  '返回标签页': 'Back to tabs',
+  '精选作品': 'Featured works',
+  '用户评分 · 满分 5.0': 'User rating · out of 5.0',
+  '立即体验': 'Try it now',
+  '下载文件': 'Download',
+  '项目简介': 'Overview',
+  '开发形式': 'Built with',
+  '单文件 HTML': 'Single-file HTML',
+  '数据存储': 'Data storage',
+  '本地持久化': 'Local persistence',
+  '核心功能': 'Key features',
+  '技术细节': 'Technical details',
+  '使用指南': 'How to use',
+  '版本记录': 'Version history',
+  '适用场景': 'Use cases',
+  '· 一个藏在AlanLumier里的小作品': '· A small project living inside AlanLumier',
+});
