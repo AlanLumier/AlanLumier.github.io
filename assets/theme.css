@@ -210,3 +210,144 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ==========================================================================
+   排版基线（重新排版）
+   --------------------------------------------------------------------------
+   目的：19 个页面此前各写各的间距、字号、圆角与卡片样式，所以整站看起来
+   「不像一个站」。这里定义一套共享的排版令牌与基线规则，最后加载，统一覆盖。
+
+   用 clamp() 而不是固定像素：字号与留白随视口连续变化，
+   小屏自动收紧 —— 这也是移动端不再溢出的原因之一，一举两得。
+
+   注：本段与配色同处一个文件，是因为该文件已接入全部 19 个页面；
+   日后若要拆分，把这一段整体移到 assets/layout.css 即可。
+   ========================================================================== */
+
+:root,
+:root[data-theme="dark"],
+:root[data-theme="light"] {
+  /* 字号阶梯 */
+  --text-xs: 12px;
+  --text-sm: 13.5px;
+  --text-base: 15.5px;
+  --text-lg: 18px;
+  --text-xl: clamp(20px, 2.4vw, 24px);
+  --text-2xl: clamp(26px, 3.6vw, 36px);
+  --text-3xl: clamp(32px, 5vw, 48px);
+
+  /* 行高与字距 */
+  --leading-tight: 1.25;
+  --leading-normal: 1.7;
+  --tracking-tight: -0.01em;
+
+  /* 间距节奏（8 的倍数） */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --section-pad: clamp(48px, 7vw, 88px);
+
+  /* 圆角 */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* 容器与边距 */
+  --container: 1120px;
+  --gutter: clamp(16px, 4vw, 32px);
+}
+
+/* ---------- 1) 正文排版 ---------- */
+body {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- 2) 标题阶梯：统一字号、字重、字距与上下留白 ---------- */
+:is(h1, h2, h3, h4, h5, h6) {
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+  text-wrap: balance;              /* 让长标题断行更均匀 */
+}
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+h5 { font-size: var(--text-base); }
+h6 { font-size: var(--text-sm); }
+/* 相邻标题与段落之间保持呼吸感，但不要叠加出过大空隙 */
+:is(h1, h2, h3, h4) + :is(p, ul, ol) { margin-top: var(--space-4); }
+:is(h1, h2, h3, h4) { margin-bottom: var(--space-3); }
+
+p { text-wrap: pretty; }
+
+/* ---------- 3) 容器与分节留白 ---------- */
+:is(.section, .section-inner, .container, .wrap) {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+:is(.section, section.section) {
+  padding-block: var(--section-pad);
+}
+
+/* ---------- 4) 卡片统一：同一套圆角 / 描边 / 内边距 ---------- */
+:is(.card, .repo-card, .status-card, .now-card, .navcard, .works-card,
+    .work-card, .tool-card, .link-card, .info-card, .contact-card,
+    .panel, .console, .side, .game-card, .robotics-card, .hobby-card,
+    .project-card, .award-card) {
+  border-radius: var(--radius);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  padding: var(--space-5);
+}
+/* 卡片内的标题与描述收紧一点，避免「大盒子装小字」 */
+:is(.card, .panel, .console, .side) :is(h1, h2, h3, h4) { margin-top: 0; }
+:is(.card, .panel, .console, .side) > :last-child { margin-bottom: 0; }
+
+/* ---------- 5) 按钮与链接统一 ---------- */
+:is(button, .btn, .btn-primary, .btn-ghost, [role="button"]) {
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 9px 18px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+a { text-underline-offset: 3px; }
+
+/* ---------- 6) 表单控件统一（工具页大量使用） ---------- */
+:is(input, select, textarea) {
+  font: inherit;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--card-border);
+  background: var(--soft);
+  color: var(--ink);
+  padding: 8px 12px;
+  max-width: 100%;
+}
+:is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 7) 列表与分隔线 ---------- */
+hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6); }
+
+/* ---------- 8) 焦点可见性（全站一致，键盘可用性） ---------- */
+:is(a, button, [role="button"], summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
