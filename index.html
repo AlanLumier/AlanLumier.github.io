@@ -1318,7 +1318,7 @@
 <!-- 开屏简笔画：青色 Y 一笔画 + AlanLumier -->
 <div class="page-loader" id="pageLoader">
   <svg class="loader-svg" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <path class="loader-path" pathLength="100" d="M22 18 L60 54 L98 18 M60 54 L60 102"/>
+    <path class="loader-path" pathLength="100" d="M60 16 L20 102 M60 16 L100 102 M36 74 L84 74"/>
   </svg>
   <p class="loader-name">AlanLumier</p>
 </div>
@@ -2954,7 +2954,7 @@
       loader = document.createElement('div');
       loader.className = 'page-loader';
       loader.id = 'pageLoader';
-      loader.innerHTML = '<svg class="loader-svg" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path class="loader-path" pathLength="100" d="M22 18 L60 54 L98 18 M60 54 L60 102"/></svg><p class="loader-name">AlanLumier</p>';
+      loader.innerHTML = '<svg class="loader-svg" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path class="loader-path" pathLength="100" d="M60 16 L20 102 M60 16 L100 102 M36 74 L84 74"/></svg><p class="loader-name">AlanLumier</p>';
       document.body.insertBefore(loader, document.body.firstChild);
     } else {
       var path = loader.querySelector('.loader-path');
