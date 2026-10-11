@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="zh-CN" data-page="tool">
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    background: linear-gradient(135deg, #868686 0%, #5f5f5f 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
     color: #333;
@@ -57,7 +57,7 @@
     content: '';
     width: 4px;
     height: 18px;
-    background: linear-gradient(180deg, #868686, #5f5f5f);
+    background: linear-gradient(180deg, #667eea, #764ba2);
     border-radius: 2px;
   }
   .form-group {
@@ -81,7 +81,7 @@
   }
   textarea:focus, input:focus, select:focus {
     outline: none;
-    border-color: #868686;
+    border-color: #667eea;
   }
   textarea {
     resize: vertical;
@@ -104,11 +104,11 @@
     color: #555;
   }
   .preset-btn:hover {
-    border-color: #868686;
-    color: #868686;
+    border-color: #667eea;
+    color: #667eea;
   }
   .preset-btn.active {
-    background: linear-gradient(135deg, #868686, #5f5f5f);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: #fff;
     border-color: transparent;
   }
@@ -151,15 +151,15 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #868686, #5f5f5f);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(134, 134, 134,0.4);
+    box-shadow: 0 2px 6px rgba(102,126,234,0.4);
   }
   .slider-value {
     min-width: 50px;
     text-align: center;
     font-size: 13px;
-    color: #868686;
+    color: #667eea;
     font-weight: 600;
   }
   .canvas-wrap {
@@ -182,7 +182,7 @@
     padding: 14px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(135deg, #868686, #5f5f5f);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: #fff;
     font-size: 15px;
     font-weight: 600;
@@ -195,7 +195,7 @@
   }
   .download-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(134, 134, 134,0.4);
+    box-shadow: 0 6px 20px rgba(102,126,234,0.4);
   }
   .download-btn:active {
     transform: translateY(0);
@@ -223,22 +223,8 @@
 <meta property="og:title" content="花式图案表情转图片转换器 · 表情一键转图 | AlanLumier 作品">
 <meta property="og:description" content="表情转图片转换器可以把文字与表情符号一键转成高清 PNG 图片：支持自定义背景色、文字颜色与排版，适合聊天表情包、社交分享与创意海报制作。">
 <meta name="twitter:card" content="summary">
-<link rel="stylesheet" href="/assets/theme.css">
 <script src="/assets/theme.js"></script>
-<style>
-  /* 窄屏适配（部分有效，但**没有**解决本页的横向溢出，如实记录）：
-     预览画布写死 512×512，限宽本身是良好实践，故保留。
-     但实测本页在 390px 下仍溢出 157px（修改前后数值一致、三次测量可复现），
-     说明真正的溢出源不是画布 —— 我曾用「512 − 可用宽度 355 = 157」推断是画布，
-     数字虽巧合吻合，结论却是错的。真正元凶待用可复现的尺子进一步定位。 */
-  @media (max-width: 768px) {
-    canvas { max-width: 100%; height: auto; }
-    .preset-row, .color-row { flex-wrap: wrap; }
-  }
-</style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='45' font-family='Georgia, serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-<script src="/assets/i18n-zh-en.js"></script>
-<script src="/assets/i18n.js"></script>
 </head>
 <body>
 <div class="container">
@@ -286,8 +272,8 @@
             <div class="preset-row">
               <button class="preset-btn" data-fg="#000000">黑色</button>
               <button class="preset-btn active" data-fg="#ffffff">白色</button>
-              <button class="preset-btn" data-fg="#868686">紫色</button>
-              <button class="preset-btn" data-fg="#9b9b9b">红色</button>
+              <button class="preset-btn" data-fg="#667eea">紫色</button>
+              <button class="preset-btn" data-fg="#ff6b6b">红色</button>
             </div>
             <div class="color-row">
               <input type="color" id="fgColor" value="#ffffff">
