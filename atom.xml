@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Yaule 的个人空间</title>
+  <title>AlanLumier 的个人空间</title>
   <subtitle>欢迎你的到来 · 记录咖啡、音乐、游戏与作品</subtitle>
   <link href="https://alanlumier.github.io/"/>
   <link rel="self" href="https://alanlumier.github.io/atom.xml"/>
   <id>https://alanlumier.github.io/</id>
   <updated>2026-09-25T14:05:11+08:00</updated>
   <author>
-    <name>Yaule</name>
+    <name>AlanLumier</name>
     <email>1957784559@qq.com</email>
   </author>
   <entry>
-    <title>Yaule 失眠夜空间更新 v16</title>
+    <title>AlanLumier 失眠夜空间更新 v16</title>
     <link href="https://alanlumier.github.io/"/>
     <id>https://alanlumier.github.io/update-v16-2026-09-25-140511-</id>
     <updated>2026-09-25T14:05:11+08:00</updated>
     <summary>版本 v16（2026-09-25 14:05:11 ）上线：主页完整更新日志已同步，可在 https://alanlumier.github.io/changelog.html 查看全部记录与时间戳。</summary>
   </entry>
   <entry>
-    <title>Yaule 失眠夜空间更新 v15</title>
+    <title>AlanLumier 失眠夜空间更新 v15</title>
     <link href="https://alanlumier.github.io/"/>
     <id>https://alanlumier.github.io/update-v15-2026-09-25-135240</id>
     <updated>2026-09-25T13:52:40+08:00</updated>
     <summary>版本 v15（2026-09-25 13:52:40）上线：主页完整更新日志已同步，可在 https://alanlumier.github.io/changelog.html 查看全部记录与时间戳。</summary>
   </entry>
   <entry>
-    <title>Yaule 失眠夜空间更新 v14</title>
+    <title>AlanLumier 失眠夜空间更新 v14</title>
     <link href="https://alanlumier.github.io/"/>
     <id>https://alanlumier.github.io/update-v14-2026-09-25-124716</id>
     <updated>2026-09-25T12:47:16+08:00</updated>
     <summary>版本 v14（2026-09-25 12:47:16）上线：主页完整更新日志已同步，可在 https://alanlumier.github.io/changelog.html 查看全部记录与时间戳。</summary>
   </entry>
   <entry>
-    <title>Yaule 失眠夜空间更新 v13</title>
+    <title>AlanLumier 失眠夜空间更新 v13</title>
     <link href="https://alanlumier.github.io/"/>
     <id>https://alanlumier.github.io/update-v13-2026-09-25-112004</id>
     <updated>2026-09-25T11:20:04+08:00</updated>
     <summary>版本 v13（2026-09-25 11:20:04）上线：主页完整更新日志已同步，可在 https://alanlumier.github.io/changelog.html 查看全部记录与时间戳。</summary>
   </entry>
   <entry>
-    <title>Yaule 失眠夜空间更新 v12</title>
+    <title>AlanLumier 失眠夜空间更新 v12</title>
     <link href="https://alanlumier.github.io/"/>
     <id>https://alanlumier.github.io/update-v12-2026-09-25-094150</id>
     <updated>2026-09-25T09:41:50+08:00</updated>
     <summary>版本 v12（2026-09-25 09:41:50）上线：主页完整更新日志已同步，可在 https://alanlumier.github.io/changelog.html 查看全部记录与时间戳。</summary>
   </entry>
   <entry>
-    <title>Yaule 失眠夜空间更新 v10</title>
+    <title>AlanLumier 失眠夜空间更新 v10</title>
     <link href="https://alanlumier.github.io/"/>
     <id>https://alanlumier.github.io/update-v10-2026-09-25-081506</id>
     <updated>2026-09-25T08:15:06+08:00</updated>
@@ -99,6 +99,6 @@
     <link href="https://alanlumier.github.io/works/xinghua.html"/>
     <id>https://alanlumier.github.io/works/xinghua.html</id>
     <updated>2026-09-25T14:05:11+08:00</updated>
-    <summary>兴华中学广播站系统是 Yaule 独立设计开发并投入校园实际使用的广播管理工具：广播排班管理、播放日程控制、站点信息维护一站式完成，从需求梳理到上线运营全部独立完成。</summary>
+    <summary>兴华中学广播站系统是 AlanLumier 独立设计开发并投入校园实际使用的广播管理工具：广播排班管理、播放日程控制、站点信息维护一站式完成，从需求梳理到上线运营全部独立完成。</summary>
   </entry>
 </feed>

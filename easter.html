@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>今日彩蛋 · Yaule</title>
-<meta name="description" content="Yaule's easter egg — roll your daily luck.">
+<title>今日彩蛋 · AlanLumier</title>
+<meta name="description" content="AlanLumier's easter egg — roll your daily luck.">
   <link rel="canonical" href="https://alanlumier.github.io/easter.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="今日彩蛋 · Yaule">
-  <meta property="og:description" content="Yaule's easter egg — roll your daily luck.">
+  <meta property="og:title" content="今日彩蛋 · AlanLumier">
+  <meta property="og:description" content="AlanLumier's easter egg — roll your daily luck.">
   <meta property="og:url" content="https://alanlumier.github.io/easter.html">
-  <meta property="og:site_name" content="Yaule 的个人空间">
+  <meta property="og:site_name" content="AlanLumier 的个人空间">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:image" content="https://alanlumier.github.io/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="今日彩蛋 · Yaule">
+  <meta property="og:image:alt" content="今日彩蛋 · AlanLumier">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="今日彩蛋 · Yaule">
-  <meta name="twitter:description" content="Yaule's easter egg — roll your daily luck.">
+  <meta name="twitter:title" content="今日彩蛋 · AlanLumier">
+  <meta name="twitter:description" content="AlanLumier's easter egg — roll your daily luck.">
   <meta name="twitter:image" content="https://alanlumier.github.io/og-image.png">
   <meta name="theme-color" content="#0C0E0D" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#F7F5EF" media="(prefers-color-scheme: light)">
@@ -72,7 +72,7 @@
 </head>
 <body>
 <div class="topbar">
-  <a class="brand" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18c1.5 0 2.5-2 1-4.5S11 13 12.5 12s3-.5 4-3-3-6-4.5-6z"/></svg><span>Yaule</span></a>
+  <a class="brand" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18c1.5 0 2.5-2 1-4.5S11 13 12.5 12s3-.5 4-3-3-6-4.5-6z"/></svg><span>AlanLumier</span></a>
   <button class="lang" id="langBtn" type="button">EN</button>
 </div>
 <div class="wrap">
@@ -87,12 +87,12 @@
   <div class="hist" id="hist"></div>
   <a class="back" href="index.html" data-i18n="e.back">返回首页</a>
 </div>
-<div class="foot"><span class="big">Yaule</span><span data-i18n="e.pw">一只隐藏的小彩蛋 · 连点页脚 Yaule 5 次可再次进入</span></div>
+<div class="foot"><span class="big">AlanLumier</span><span data-i18n="e.pw">一只隐藏的小彩蛋 · 连点页脚 AlanLumier 5 次可再次进入</span></div>
 
 <script>
   var I18N = {
-    zh: { 'e.kick':'EASTER EGG','e.h1':'今日彩蛋','e.sub':'点击彩蛋，摇出今日份的小幸运。','e.btn':'开启彩蛋','e.back':'返回首页','e.pw':'一只隐藏的小彩蛋 · 连点页脚 Yaule 5 次可再次进入','e.num':'幸运数字','e.color':'幸运色','e.quote':'今日一言','e.task':'今日小任务','e.hist':'最近开启','e.empty':'还没有记录，先开一个吧','e.fmt':'{n} · {d}' },
-    en: { 'e.kick':'EASTER EGG','e.h1':'Daily Egg','e.sub':'Tap the egg and roll out a little luck for today.','e.btn':'Open the Egg','e.back':'Back to Home','e.pw':'A hidden easter egg · tap footer Yaule 5 times to re-enter','e.num':'Lucky Number','e.color':'Lucky Color','e.quote':'Quote of the Day','e.task':'Mission of the Day','e.hist':'Recent Rolls','e.empty':'Nothing yet — roll one now','e.fmt':'{n} · {d}' }
+    zh: { 'e.kick':'EASTER EGG','e.h1':'今日彩蛋','e.sub':'点击彩蛋，摇出今日份的小幸运。','e.btn':'开启彩蛋','e.back':'返回首页','e.pw':'一只隐藏的小彩蛋 · 连点页脚 AlanLumier 5 次可再次进入','e.num':'幸运数字','e.color':'幸运色','e.quote':'今日一言','e.task':'今日小任务','e.hist':'最近开启','e.empty':'还没有记录，先开一个吧','e.fmt':'{n} · {d}' },
+    en: { 'e.kick':'EASTER EGG','e.h1':'Daily Egg','e.sub':'Tap the egg and roll out a little luck for today.','e.btn':'Open the Egg','e.back':'Back to Home','e.pw':'A hidden easter egg · tap footer AlanLumier 5 times to re-enter','e.num':'Lucky Number','e.color':'Lucky Color','e.quote':'Quote of the Day','e.task':'Mission of the Day','e.hist':'Recent Rolls','e.empty':'Nothing yet — roll one now','e.fmt':'{n} · {d}' }
   };
   function getLang(){ try{ return localStorage.getItem('yaule_lang')==='en'?'en':'zh'; }catch(e){ return 'zh'; } }
   function t(k){ var L=getLang(); return (I18N[L]&&I18N[L][k])||I18N.zh[k]; }
