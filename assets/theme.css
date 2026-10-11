@@ -543,3 +543,39 @@ hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6);
   color: var(--ink-3);
   white-space: nowrap;
 }
+
+/* hero 的「当前状态」小条
+   静态个人站最容易显得「很久没更新」，一行状态就能改变这个印象。
+   指示点用透明度呼吸而不是彩色发光 —— 这样深浅两套主题下都成立。 */
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  padding: 7px 15px;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.hero-status-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: heroStatusBreath 2.4s ease-in-out infinite;
+}
+@keyframes heroStatusBreath {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.hero-status-label {
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+.hero-status-label::after { content: "·"; margin-left: 9px; opacity: .6; }
+.hero-status-text { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .hero-status-dot { animation: none; } }
