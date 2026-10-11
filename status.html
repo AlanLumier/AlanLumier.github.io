@@ -62,6 +62,7 @@
   .foot { border-top:1px solid var(--line); text-align:center; padding:30px 0; font-size:13px; color:var(--ink-2); }
   .foot .big { font-size:56px; font-weight:900; letter-spacing:.14em; color:var(--accent); opacity:.16; display:block; line-height:1; }
 </style>
+<link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
 <div class="topbar">
@@ -100,7 +101,7 @@
   function t(k){ var L=getLang(); return (I18N[L]&&I18N[L][k])||I18N.zh[k]; }
   document.querySelectorAll('[data-i18n]').forEach(function(el){ el.textContent = t(el.getAttribute('data-i18n')); });
   document.documentElement.lang = getLang()==='en'?'en':'zh-CN';
-  try { if (localStorage.getItem('yaule_theme')==='dark' || (!localStorage.getItem('yaule_theme') && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+  try { if (localStorage.getItem('yaule-theme')==='dark' || (!localStorage.getItem('yaule-theme') && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
   document.getElementById('langBtn').textContent = getLang()==='en'?'中':'EN';
   document.getElementById('langBtn').addEventListener('click', function(){
     var L = getLang()==='en'?'zh':'en';

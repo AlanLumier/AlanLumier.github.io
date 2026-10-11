@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,6 +218,7 @@
     .wgrid { grid-template-columns: 1fr; }
   }
 </style>
+<link rel="stylesheet" href="assets/theme.css">
 </head>
 <body>
 
@@ -417,7 +418,7 @@ document.getElementById('langBtn').addEventListener('click', function () {
 // 主题跟随主页偏好
 (function () {
   try {
-    var t = localStorage.getItem('yaule_theme') || 'light';
+    var t = localStorage.getItem('yaule-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
 })();

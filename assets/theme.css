@@ -1,0 +1,155 @@
+/* ==========================================================================
+   AlanLumier · 全站共享配色 —— 唯一的配色来源
+   --------------------------------------------------------------------------
+   设计意图：**换配色只改这一个文件**。
+   所有页面在 </head> 前引用它，于是它的变量会覆盖各页面内联 <style> 里的同名变量
+   （同优先级下后加载者胜），各页面无需改动自己的样式表。
+
+   要换一套配色，只改下面「深色」段的色值即可；浅色段同理。
+   变量命名沿用站点既有约定，避免破坏已有页面的 var() 引用。
+   ========================================================================== */
+
+/* 选择器刻意写成 :root 与 :root[data-theme="dark"] 两个：
+   各子页面内部往往也有自己的 :root[data-theme="dark"]（特异性 0,2,0），
+   若这里只写 :root（0,1,0），无论加载顺序如何都会被子页面的本地定义压过去。
+   写成同等特异性后，本文件在 </head> 前最后加载，即可稳定覆盖全站。 */
+:root,
+:root[data-theme="dark"] {
+  /* ---------- 深色（默认，也是全站主色）---------- */
+
+  /* 底色层次：由深到浅，分别用于页面底、卡片、次级面、更深的凹陷面 */
+  --bg: #0b0e14;
+  --card-bg: #121724;
+  --soft: #171d2a;
+  --soft-2: #131926;
+  --footer-bg: #0a0d14;
+
+  /* 文字层次 */
+  --ink: #e8eaf0;
+  --ink-2: #9aa3b2;
+  --ink-3: #6b7280;
+  --footer-ink: #c9cdd4;
+  --footer-ink-2: #8b9099;
+  --ink-color: #a9c8ff;
+
+  /* 强调色：--accent 只用于小面积（按钮、链接、图形），不要拿它铺大面 */
+  --accent: #6ea8fe;
+  --accent-2: #a9c8ff;
+  --accent-ink: #0b0e14;          /* 强调色底上的文字 */
+
+  /* 描边与分隔 */
+  --line: #222a3a;
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --card-border: rgba(255, 255, 255, 0.09);
+
+  /* 半透明层（遮罩、玻璃面） */
+  --overlay: rgba(11, 14, 20, 0.96);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-brd: rgba(255, 255, 255, 0.09);
+  --glass-hi: transparent;
+
+  /* 徽标、图片占位 */
+  --badge-bg: #121724;
+  --badge-mask: rgba(0, 0, 0, 0.45);
+  --card-image: #121724;
+
+  /* 强调色的半透明衍生，供发光 / 描边 / 阴影复用 */
+  --accent-08: rgba(110, 168, 254, 0.08);
+  --accent-16: rgba(110, 168, 254, 0.16);
+  --accent-24: rgba(110, 168, 254, 0.24);
+  --accent-40: rgba(110, 168, 254, 0.40);
+
+  /* ---------- 全局悬停发光 ----------
+     原先只有少数组件有发光，这里抽成变量，配合 theme.css 末尾的通用规则
+     让「鼠标碰到就发光」在全站生效。 */
+  --glow-size: 22px;
+  --glow-strength: 0.35;
+  --glow-color: var(--accent);
+  --glow-shadow: 0 0 var(--glow-size) rgba(110, 168, 254, var(--glow-strength));
+  --glow-shadow-soft: 0 0 calc(var(--glow-size) * 0.6) rgba(110, 168, 254, 0.22);
+
+  /* 交互反馈时长 */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ---------- 浅色（仅在保留深浅切换时使用）---------- */
+:root[data-theme="light"] {
+  --bg: #f6f8fc;
+  --card-bg: #ffffff;
+  --soft: #eef2f8;
+  --soft-2: #f6f8fc;
+  --footer-bg: #eef1f7;
+
+  --ink: #10151f;
+  --ink-2: #5a6478;
+  --ink-3: #7b8496;
+  --footer-ink: #5a6478;
+  --footer-ink-2: #8b9099;
+  --ink-color: #2f6fd0;
+
+  --accent: #2f6fd0;
+  --accent-2: #4b8ae6;
+  --accent-ink: #ffffff;
+
+  --line: #dbe2ec;
+  --line-soft: rgba(16, 21, 31, 0.06);
+  --card-border: rgba(16, 21, 31, 0.10);
+
+  --overlay: rgba(246, 248, 252, 0.96);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.88);
+  --glass-brd: rgba(16, 21, 31, 0.10);
+  --glass-hi: transparent;
+
+  --badge-bg: #ffffff;
+  --badge-mask: rgba(16, 21, 31, 0.35);
+  --card-image: #ffffff;
+
+  --accent-08: rgba(47, 111, 208, 0.08);
+  --accent-16: rgba(47, 111, 208, 0.16);
+  --accent-24: rgba(47, 111, 208, 0.24);
+  --accent-40: rgba(47, 111, 208, 0.40);
+
+  --glow-strength: 0.28;
+  --glow-shadow: 0 0 var(--glow-size) rgba(47, 111, 208, var(--glow-strength));
+  --glow-shadow-soft: 0 0 calc(var(--glow-size) * 0.6) rgba(47, 111, 208, 0.20);
+}
+
+/* ==========================================================================
+   全局悬停发光
+   原先发光只写在少数几个组件上；这里用一条通用规则覆盖全站可交互元素。
+   刻意排除：输入框（聚焦已有描边）、纯文字链接（避免整行发亮显得脏）。
+   ========================================================================== */
+@media (hover: hover) {
+  a[href]:hover,
+  button:hover,
+  [role="button"]:hover,
+  .card:hover,
+  .repo-card:hover,
+  .status-card:hover,
+  .nav a:hover,
+  .navcard:hover,
+  .works-card:hover,
+  .theme-toggle:hover,
+  .lang-toggle:hover {
+    box-shadow: var(--glow-shadow);
+    border-color: var(--accent-40);
+    transition: box-shadow 0.28s var(--ease), border-color 0.28s var(--ease),
+      transform 0.28s var(--ease), background-color 0.28s var(--ease);
+  }
+
+  /* 小圆形按钮（主题 / 语言切换）用更收敛的发光，免得糊成一团 */
+  .theme-toggle:hover,
+  .lang-toggle:hover {
+    box-shadow: var(--glow-shadow-soft);
+  }
+}
+
+/* 尊重用户的「减少动态效果」偏好 */
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; }
+  a[href]:hover,
+  button:hover,
+  .card:hover { box-shadow: none; }
+}
