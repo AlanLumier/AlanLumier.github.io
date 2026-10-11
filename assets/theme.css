@@ -1,155 +1,168 @@
 /* ==========================================================================
    AlanLumier · 全站共享配色 —— 唯一的配色来源
    --------------------------------------------------------------------------
-   设计意图：**换配色只改这一个文件**。
-   所有页面在 </head> 前引用它，于是它的变量会覆盖各页面内联 <style> 里的同名变量
-   （同优先级下后加载者胜），各页面无需改动自己的样式表。
+   配色主题：**纯黑极简**（单色，无任何彩色强调）
+     深色 = 黑底白字      浅色 = 白底黑字
+     强调色就是白（深色下）/ 黑（浅色下），靠明度对比而非色相拉开层次。
 
-   要换一套配色，只改下面「深色」段的色值即可；浅色段同理。
-   变量命名沿用站点既有约定，避免破坏已有页面的 var() 引用。
+   换配色只改这一个文件。所有页面在 </head> 前引用它，因此它的变量会覆盖
+   各页面内联 <style> 里的同名变量（同优先级下后加载者胜）。
+
+   选择器写成 :root 与 :root[data-theme="dark"] 两个：各子页面内部往往也有
+   自己的 :root[data-theme="dark"]（特异性 0,2,0），若这里只写 :root（0,1,0），
+   无论加载顺序如何都会被本地定义压过去。
    ========================================================================== */
 
-/* 选择器刻意写成 :root 与 :root[data-theme="dark"] 两个：
-   各子页面内部往往也有自己的 :root[data-theme="dark"]（特异性 0,2,0），
-   若这里只写 :root（0,1,0），无论加载顺序如何都会被子页面的本地定义压过去。
-   写成同等特异性后，本文件在 </head> 前最后加载，即可稳定覆盖全站。 */
 :root,
 :root[data-theme="dark"] {
-  /* ---------- 深色（默认，也是全站主色）---------- */
+  /* ---------- 深色：黑底白字 ---------- */
 
-  /* 底色层次：由深到浅，分别用于页面底、卡片、次级面、更深的凹陷面 */
-  --bg: #0b0e14;
-  --card-bg: #121724;
-  --soft: #171d2a;
-  --soft-2: #131926;
-  --footer-bg: #0a0d14;
+  /* 底色层次：靠极小的明度差拉开层级。纯黑用于页面底，稍亮用于卡片 */
+  --bg: #000000;
+  --card-bg: #0a0a0a;
+  --soft: #111111;
+  --soft-2: #060606;
+  --footer-bg: #000000;
 
   /* 文字层次 */
-  --ink: #e8eaf0;
-  --ink-2: #9aa3b2;
-  --ink-3: #777e8c;
-  --footer-ink: #c9cdd4;
-  --footer-ink-2: #8b9099;
-  --ink-color: #a9c8ff;
+  --ink: #f5f5f5;              /* 正文，对纯黑 19.6:1 */
+  --ink-2: #a3a3a3;            /* 次级，8.4:1 */
+  --ink-3: #8a8a8a;            /* 三级，6.4:1 */
+  --footer-ink: #d4d4d4;
+  --footer-ink-2: #9c9c9c;
+  --ink-color: #ffffff;        /* 高亮文字 */
 
-  /* 强调色：--accent 只用于小面积（按钮、链接、图形），不要拿它铺大面 */
-  --accent: #6ea8fe;
-  --accent-2: #a9c8ff;
-  --accent-ink: #0b0e14;          /* 强调色底上的文字 */
+  /* 强调 = 白。只用于小面积（按钮、链接、图形），不要铺大面 */
+  --accent: #ffffff;
+  --accent-2: #e5e5e5;
+  --accent-ink: #000000;       /* 强调色底上的文字 */
 
   /* 描边与分隔 */
-  --line: #222a3a;
-  --line-soft: rgba(255, 255, 255, 0.06);
-  --card-border: rgba(255, 255, 255, 0.09);
+  --line: #1f1f1f;
+  --line-soft: rgba(255, 255, 255, 0.07);
+  --card-border: rgba(255, 255, 255, 0.14);
 
-  /* 半透明层（遮罩、玻璃面） */
-  --overlay: rgba(11, 14, 20, 0.96);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-bg-strong: rgba(255, 255, 255, 0.08);
-  --glass-brd: rgba(255, 255, 255, 0.09);
+  /* 半透明层 */
+  --overlay: rgba(0, 0, 0, 0.96);
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-strong: rgba(255, 255, 255, 0.07);
+  --glass-brd: rgba(255, 255, 255, 0.14);
   --glass-hi: transparent;
-
-  /* 徽标、图片占位 */
-  --badge-bg: #121724;
-  --badge-mask: rgba(0, 0, 0, 0.45);
-  --card-image: #121724;
+  --badge-bg: #0a0a0a;
+  --badge-mask: rgba(0, 0, 0, 0.5);
+  --card-image: #0a0a0a;
 
   /* 强调色的半透明衍生，供发光 / 描边 / 阴影复用 */
-  --accent-08: rgba(110, 168, 254, 0.08);
-  --accent-16: rgba(110, 168, 254, 0.16);
-  --accent-24: rgba(110, 168, 254, 0.24);
-  --accent-40: rgba(110, 168, 254, 0.40);
+  --accent-08: rgba(255, 255, 255, 0.08);
+  --accent-16: rgba(255, 255, 255, 0.16);
+  --accent-24: rgba(255, 255, 255, 0.24);
+  --accent-40: rgba(255, 255, 255, 0.40);
 
-  /* ---------- 全局悬停发光 ----------
-     原先只有少数组件有发光，这里抽成变量，配合 theme.css 末尾的通用规则
-     让「鼠标碰到就发光」在全站生效。 */
-  --glow-size: 22px;
-  --glow-strength: 0.35;
-  --glow-color: var(--accent);
-  --glow-shadow: 0 0 var(--glow-size) rgba(110, 168, 254, var(--glow-strength));
-  --glow-shadow-soft: 0 0 calc(var(--glow-size) * 0.6) rgba(110, 168, 254, 0.22);
+  /* ---------- 悬停发光 ----------
+     用「圆形」光斑：radial-gradient(circle <半径> at …)。
+     注意不能写成两个半径（如 180px 130px），那会画成椭圆。 */
+  --glow-size: 120px;
+  --glow-color: rgba(255, 255, 255, 0.14);
+  --glow-color-strong: rgba(255, 255, 255, 0.22);
+  --glow-shadow: 0 0 22px rgba(255, 255, 255, 0.30);
+  --glow-shadow-soft: 0 0 14px rgba(255, 255, 255, 0.18);
 
-  /* 交互反馈时长 */
   --ease: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* ---------- 浅色（仅在保留深浅切换时使用）---------- */
+/* ==========================================================================
+   浅色：白底黑字
+   ========================================================================== */
 :root[data-theme="light"] {
-  --bg: #f6f8fc;
+  --bg: #ffffff;
   --card-bg: #ffffff;
-  --soft: #eef2f8;
-  --soft-2: #f6f8fc;
-  --footer-bg: #eef1f7;
+  --soft: #f5f5f5;
+  --soft-2: #fafafa;
+  --footer-bg: #f5f5f5;
 
-  --ink: #10151f;
-  --ink-2: #5a6478;
-  --ink-3: #677082;
-  --footer-ink: #5a6478;
-  --footer-ink-2: #676c75;
-  --ink-color: #2f6fd0;
+  --ink: #0a0a0a;              /* 对纯白 20.4:1 */
+  --ink-2: #525252;            /* 8.6:1 */
+  --ink-3: #6b6b6b;            /* 5.6:1 */
+  --footer-ink: #404040;
+  --footer-ink-2: #6b6b6b;
+  --ink-color: #000000;
 
-  --accent: #2f6fd0;
-  --accent-2: #4b8ae6;
+  --accent: #000000;           /* 强调 = 黑 */
+  --accent-2: #333333;
   --accent-ink: #ffffff;
 
-  --line: #dbe2ec;
-  --line-soft: rgba(16, 21, 31, 0.06);
-  --card-border: rgba(16, 21, 31, 0.10);
+  --line: #e5e5e5;
+  --line-soft: rgba(0, 0, 0, 0.06);
+  --card-border: rgba(0, 0, 0, 0.14);
 
-  --overlay: rgba(246, 248, 252, 0.96);
+  --overlay: rgba(255, 255, 255, 0.96);
   --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-bg-strong: rgba(255, 255, 255, 0.88);
-  --glass-brd: rgba(16, 21, 31, 0.10);
+  --glass-bg-strong: rgba(255, 255, 255, 0.9);
+  --glass-brd: rgba(0, 0, 0, 0.12);
   --glass-hi: transparent;
-
   --badge-bg: #ffffff;
-  --badge-mask: rgba(16, 21, 31, 0.35);
+  --badge-mask: rgba(0, 0, 0, 0.35);
   --card-image: #ffffff;
 
-  --accent-08: rgba(47, 111, 208, 0.08);
-  --accent-16: rgba(47, 111, 208, 0.16);
-  --accent-24: rgba(47, 111, 208, 0.24);
-  --accent-40: rgba(47, 111, 208, 0.40);
+  --accent-08: rgba(0, 0, 0, 0.06);
+  --accent-16: rgba(0, 0, 0, 0.12);
+  --accent-24: rgba(0, 0, 0, 0.18);
+  --accent-40: rgba(0, 0, 0, 0.28);
 
-  --glow-strength: 0.28;
-  --glow-shadow: 0 0 var(--glow-size) rgba(47, 111, 208, var(--glow-strength));
-  --glow-shadow-soft: 0 0 calc(var(--glow-size) * 0.6) rgba(47, 111, 208, 0.20);
+  --glow-color: rgba(0, 0, 0, 0.07);
+  --glow-color-strong: rgba(0, 0, 0, 0.12);
+  --glow-shadow: 0 0 22px rgba(0, 0, 0, 0.16);
+  --glow-shadow-soft: 0 0 14px rgba(0, 0, 0, 0.10);
 }
 
 /* ==========================================================================
-   全局悬停发光
-   原先发光只写在少数几个组件上；这里用一条通用规则覆盖全站可交互元素。
-   刻意排除：输入框（聚焦已有描边）、纯文字链接（避免整行发亮显得脏）。
+   全局悬停发光（正圆）
+   --------------------------------------------------------------------------
+   沿用站内既有的 ::before 光斑机制（JS 会写 --mx / --my 让光斑跟随鼠标），
+   但半径改用 circle 正圆 —— 原写法 radial-gradient(180px 130px …) 给了两个
+   半径，画出来是椭圆，这正是「现在是椭圆形」的原因。
+   同时把选择器扩到全站可交互元素，实现「鼠标碰到就发光」。
+   ::before 是首个伪元素，后续内容会画在它之上，所以光斑不会糊住文字。
    ========================================================================== */
 @media (hover: hover) {
-  a[href]:hover,
-  button:hover,
-  [role="button"]:hover,
-  .card:hover,
-  .repo-card:hover,
-  .status-card:hover,
-  .nav a:hover,
-  .navcard:hover,
-  .works-card:hover,
-  .theme-toggle:hover,
-  .lang-toggle:hover {
-    box-shadow: var(--glow-shadow);
-    border-color: var(--accent-40);
-    transition: box-shadow 0.28s var(--ease), border-color 0.28s var(--ease),
-      transform 0.28s var(--ease), background-color 0.28s var(--ease);
+  :is(.card, .repo-card, .status-card, .now-card, .life-panel, .topnav,
+      .navcard, .works-card, .work-card, .tool-card, .link-card, .info-card,
+      .tn-links a, .tn-gh, .theme-toggle, .lang-toggle, .btn-enter, .btn,
+      button, [role="button"], a[href])::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle var(--glow-size) at var(--mx, 50%) var(--my, 50%),
+                var(--glow-color), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.28s var(--ease);
   }
 
-  /* 小圆形按钮（主题 / 语言切换）用更收敛的发光，免得糊成一团 */
-  .theme-toggle:hover,
-  .lang-toggle:hover {
-    box-shadow: var(--glow-shadow-soft);
+  :is(.card, .repo-card, .status-card, .now-card, .life-panel,
+      .navcard, .works-card, .work-card, .tool-card, .link-card, .info-card,
+      .tn-links a, .tn-gh, .theme-toggle, .lang-toggle, .btn-enter, .btn,
+      button, [role="button"], a[href]):hover::before {
+    opacity: 1;
+  }
+
+  /* 发光需要定位上下文；只给尚未定位的元素补 relative */
+  :is(.tn-links a, .tn-gh, .theme-toggle, .lang-toggle, .btn,
+      button, [role="button"], a[href]):not([style*="position"]) {
+    position: relative;
+  }
+
+  /* 面积小的圆形按钮用更强的光斑，否则看不出来 */
+  :is(.theme-toggle, .lang-toggle, .tn-links a, .tn-gh)::before {
+    background: radial-gradient(circle var(--glow-size) at var(--mx, 50%) var(--my, 50%),
+                var(--glow-color-strong), transparent 70%);
   }
 }
 
-/* 尊重用户的「减少动态效果」偏好 */
+/* 尊重「减少动态效果」偏好 */
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: 0.01ms !important; }
-  a[href]:hover,
-  button:hover,
-  .card:hover { box-shadow: none; }
+  :is(a[href], button, .card)::before { opacity: 0 !important; }
 }
