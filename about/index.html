@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page="about">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>这个站是怎么搭的 · AlanLumier</title>
+<meta name="description" content="AlanLumier 个人站的技术说明：纯静态零依赖、19 个页面共享一份配色变量、中英双语靠文本匹配实现，以及一次把亮色主题整块弄坏的排障记录。">
+<meta name="author" content="AlanLumier">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://alanlumier.github.io/about/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="这个站是怎么搭的 · AlanLumier">
+<meta property="og:description" content="纯静态零依赖、19 个页面共享一份配色变量、中英双语靠文本匹配实现，以及一次把亮色主题整块弄坏的排障记录。">
+<meta property="og:url" content="https://alanlumier.github.io/about/">
+<meta property="og:image" content="https://alanlumier.github.io/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='45' font-family='Georgia, serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/theme.css">
+<style>
+  /* 本页只补少量版式，配色与排版一律走共享变量，避免又出现「各写各的」 */
+  .about-wrap { max-width: var(--container); margin-inline: auto; padding: clamp(88px, 12vw, 140px) var(--gutter) var(--section-pad); }
+  .about-head { margin-bottom: var(--space-8); }
+  .about-kicker { font-size: var(--text-xs); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-2); margin-bottom: var(--space-3); }
+  .about-head h1 { margin-bottom: var(--space-4); }
+  .about-lead { font-size: var(--text-lg); color: var(--ink-2); max-width: 62ch; line-height: 1.8; }
+  .about-toc { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+  .about-toc a { font-size: var(--text-sm); padding: 7px 14px; border: 1px solid var(--card-border); border-radius: var(--radius-pill); color: var(--ink-2); text-decoration: none; }
+  .about-toc a:hover { color: var(--ink); border-color: var(--accent); }
+  .about-card { margin-bottom: var(--space-5); }
+  .about-card h2 { display: flex; align-items: baseline; gap: var(--space-3); }
+  .about-card h2 .num { font-size: var(--text-sm); color: var(--ink-3); font-weight: 600; }
+  .about-card p { max-width: 72ch; }
+  .about-card ul { max-width: 72ch; padding-left: 1.2em; }
+  .about-card li { margin-bottom: var(--space-2); }
+  .about-card code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .9em; background: var(--soft); border: 1px solid var(--card-border); border-radius: 5px; padding: 1px 5px; }
+  .about-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
+  .about-metric { border: 1px solid var(--card-border); border-radius: var(--radius); padding: var(--space-4); background: var(--soft); }
+  .about-metric b { display: block; font-size: var(--text-2xl); line-height: 1.1; }
+  .about-metric span { font-size: var(--text-xs); color: var(--ink-2); }
+  .about-back { display: inline-flex; align-items: center; gap: 8px; margin-top: var(--space-7); font-size: var(--text-sm); color: var(--ink-2); text-decoration: none; }
+  .about-back:hover { color: var(--ink); }
+  .about-foot { border-top: 1px solid var(--line); margin-top: var(--space-8); padding-top: var(--space-5); font-size: var(--text-xs); color: var(--ink-3); }
+</style>
+<script src="/assets/i18n-zh-en.js"></script>
+<script src="/assets/i18n.js"></script>
+<script src="/assets/theme.js"></script>
+</head>
+<body>
+
+<div class="about-wrap">
+
+  <header class="about-head">
+    <p class="about-kicker">How this site is built</p>
+    <h1>这个站是怎么搭的</h1>
+    <p class="about-lead">
+      这里不列功能清单，只讲几件<b>真实发生过的事</b> —— 包括一次我把亮色主题整块弄坏、
+      又花了几轮才找到根因的过程。我认为怎么排错，比会用什么更能说明问题。
+    </p>
+    <nav class="about-toc" aria-label="目录">
+      <a href="#stack">纯静态，零依赖</a>
+      <a href="#tokens">一份变量，十九个页面</a>
+      <a href="#i18n">双语不加标记</a>
+      <a href="#bug">一次真实的排障</a>
+      <a href="#measure">先量再改</a>
+    </nav>
+  </header>
+
+  <div class="about-metrics">
+    <div class="about-metric"><b>0</b><span>运行时依赖与构建步骤</span></div>
+    <div class="about-metric"><b>19</b><span>个页面共用一份样式表</span></div>
+    <div class="about-metric"><b>397</b><span>条中英对照</span></div>
+    <div class="about-metric"><b>1024</b><span>处硬编码颜色已归零为黑白</span></div>
+  </div>
+
+  <section class="about-card card" id="stack">
+    <h2><span class="num">01</span> 纯静态，零依赖</h2>
+    <p>
+      整个站是纯 HTML / CSS / JavaScript，<b>没有构建步骤、没有框架、没有 npm 依赖</b>。
+      改完直接推送到 <code>main</code>，GitHub Pages 立刻发布。
+    </p>
+    <ul>
+      <li>没有打包器，所以不存在「本地能跑、线上白屏」这类构建差异</li>
+      <li>没有第三方运行时，所以不存在依赖被下架或改协议导致站点挂掉</li>
+      <li>体积小、首屏快，任何静态托管都能跑，换平台不需要改代码</li>
+    </ul>
+    <p>
+      代价是很多东西要自己写（比如主题切换、双语、命令面板）。
+      但我更愿意为自己的代码负责，而不是为一堆依赖的升级节奏负责。
+    </p>
+  </section>
+
+  <section class="about-card card" id="tokens">
+    <h2><span class="num">02</span> 一份变量，十九个页面</h2>
+    <p>
+      最初每个页面各写各的颜色：有的是 <code>#D4AF37</code>（金），有的是
+      <code>#2563EB</code>（蓝），有的是 <code>#14B8A6</code>（青）。
+      于是「换一次配色」要改十九个文件，而且必然改漏。
+    </p>
+    <p>
+      现在全站只有一份 <code>assets/theme.css</code>，所有颜色都以 CSS 变量定义，
+      19 个页面在 <code>&lt;/head&gt;</code> 前引用它。换配色只改这一个文件。
+    </p>
+    <p>
+      这里踩过一个不明显的坑：子页面内部往往也有自己的
+      <code>:root[data-theme="dark"]</code>，它的<b>选择器特异性更高</b>，
+      所以无论加载顺序如何都会把共享文件压过去。
+      解决办法是让共享文件用<b>同等特异性</b>（<code>:root, :root[data-theme="dark"]</code>），
+      再靠「最后加载」取胜 —— 这一点写进了文件的注释里。
+    </p>
+  </section>
+
+  <section class="about-card card" id="i18n">
+    <h2><span class="num">03</span> 双语不加标记</h2>
+    <p>
+      常见做法是给每个待翻译元素加 <code>data-i18n="key"</code>。
+      但本站有 19 个页面、几百条文案，<b>逐条标记既慢又必然漏</b>，
+      漏掉的地方就会出现「切了语言但那段还是中文」。
+    </p>
+    <p>
+      所以我用了另一种方式：进入页面时先用 <code>TreeWalker</code> 把每个文本节点的
+      <b>原文记下来</b>，切换语言时按「原文 → 译文」查表替换，切回中文时按记下的原文还原。
+      好处是加译文<b>只改一个文件</b>，且不需要动 HTML。
+    </p>
+    <p>
+      两个刻意的设计：<b>未收录的条目保持原文</b>（宁可留中文，也不要半吊子机翻）；
+      <b>运行时才出现的文字也能翻</b> —— 用一个只监听 <code>childList</code> 的
+      <code>MutationObserver</code> 接管新节点。之所以不监听 <code>characterData</code>，
+      是因为我们修改文本本身就会触发它，一起监听会自触发、陷入死循环。
+    </p>
+  </section>
+
+  <section class="about-card card" id="bug">
+    <h2><span class="num">04</span> 一次真实的排障：亮色主题整块失效</h2>
+    <p>
+      现象是「切换深浅色没反应」。我一开始怀疑切换逻辑写错了，于是在真实浏览器里点了一次，
+      量出来的结果很反常：
+    </p>
+    <ul>
+      <li><code>data-theme</code> 确实从 <code>dark</code> 变成了 <code>light</code></li>
+      <li>偏好也确实写进了本地存储</li>
+      <li>但 <code>--bg</code> 纹丝不动，仍是 <code>#0b0e14</code></li>
+      <li>而且用 CSSOM 统计，<b>含 <code>data-theme="light"</code> 的规则数为 0</b></li>
+    </ul>
+    <p>
+      也就是说：<b>切换逻辑是好的，是亮色那套 CSS 根本没被浏览器解析。</b>
+      顺着这条线找到根因 —— 基础 <code>:root</code> 块闭合之后，
+      有 6 条 <code>--glass-*</code> 声明「无主」地留在了样式表顶层：
+    </p>
+    <p>
+      CSS 不允许声明出现在规则之外。浏览器做错误恢复时，会把这些声明当作
+      「下一个规则的选择器前奏」一路读下去，于是紧随其后的
+      <code>:root[data-theme="light"] { … }</code> <b>整块被当成无效规则丢弃</b>。
+    </p>
+    <p>
+      修法是把那 6 条声明搬回 <code>:root</code> 内部。修好后实测：
+      亮色下 <code>--bg</code> 变为 <code>#f6f8fc</code>、页面背景变为
+      <code>rgb(246,248,252)</code>，恢复正常。
+    </p>
+    <p>
+      <b>这个 bug 早于我的改版就存在</b> —— 我用改版前的提交对照过，同样的位置、
+      同样的结构。所以它不是「改坏的」，而是一直坏着、只是没被触发到。
+    </p>
+  </section>
+
+  <section class="about-card card" id="measure">
+    <h2><span class="num">05</span> 先量再改</h2>
+    <p>
+      这个站改到现在，我犯过不少错，其中<b>绝大多数是「靠猜」犯的</b>。
+      举三个我自己推翻自己的例子：
+    </p>
+    <ul>
+      <li>怀疑某张卡片看不见是 <code>--card-image</code> 被当成文字渐变 —— 一查，站内<b>根本没有那种写法</b></li>
+      <li>怀疑某页溢出来自 512×512 的预览画布，因为「512 − 可用宽度 355 = 157」与实测溢出<b>完全吻合</b> —— 加了限宽后<b>数值纹丝不动</b>，纯属数字巧合</li>
+      <li>连续四轮报告某三页「语言按钮文案不切换」，最后发现是<b>我的探针用脚本模拟点击</b>、而按钮需要真实手势才响应 —— <b>页面一直是对的</b></li>
+    </ul>
+    <p>
+      还遇到过一次更根本的问题：移动端的溢出量<b>同一份代码测三次得到 87 / 132 / 157 三个数</b>。
+      查下去才发现是探针「加载后固定等 450 毫秒」就测量，抓到了脚本渲染的中间状态。
+      改成<b>反复采样、直到数值连续 5 次不变</b>之后再读，同一配置连测三次结果完全一致 ——
+      尺子准了，后面的判断才第一次有了依据。
+    </p>
+    <p>
+      <b>结论：测量工具本身也要被验证。</b>
+      尺子不准的时候，改得越多、错得越远。
+    </p>
+  </section>
+
+  <a class="about-back" href="/">← 回到首页</a>
+
+  <p class="about-foot">
+    本站为纯静态站点，源码在 GitHub 上公开。最后更新：2026 ·
+    如发现任何问题，欢迎通过首页的联系方式告诉我。
+  </p>
+
+</div>
+
+</body>
+</html>
