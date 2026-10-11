@@ -356,6 +356,59 @@ hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6);
   border-radius: var(--radius-sm);
 }
 
+/* ==========================================================================
+   作品卡片放大 + 详情页排版
+   --------------------------------------------------------------------------
+   用户反馈作品卡片偏小、详情页排版需要优化。
+   卡片：原为 3 列，改为 2 列 —— 每张卡片宽度约增加 50%，视觉分量明显提升；
+        同时靠 clamp() 的最小宽度保证窄屏自动降为单列，不产生横向溢出。
+   详情页：放宽正文可读行宽、加大字号与段间距，让长文更好读。
+   ========================================================================== */
+
+/* ---------- 作品卡片 ---------- */
+/* 首页作品区（#works）与作品总览页（.wgrid）一起放大 */
+#works .grid,
+.wgrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 32px);
+}
+@media (max-width: 860px) {
+  #works .grid,
+  .wgrid { grid-template-columns: 1fr; }
+}
+/* 卡片内部随之舒展，避免「大盒子装小字」 */
+#works .card,
+.wgrid .card {
+  padding: clamp(20px, 2.4vw, 30px);
+  gap: var(--space-4);
+}
+#works .card h3,
+.wgrid .card h3 { font-size: var(--text-lg); }
+
+/* ---------- 作品详情页排版 ---------- */
+[data-page="work"] {
+  /* 详情页是长文阅读场景：字号上调一档、行高放宽、段间距加大 */
+  font-size: 16px;
+}
+[data-page="work"] :is(p, li) {
+  line-height: 1.85;
+  margin-bottom: var(--space-4);
+}
+[data-page="work"] :is(h2, h3) {
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-4);
+}
+/* 首段与标题贴近一点，避免标题下出现过大空白 */
+[data-page="work"] :is(h2, h3) + :is(p, ul, ol) { margin-top: 0; }
+/* 正文可读行宽：太宽会让眼睛难以换行 */
+[data-page="work"] :is(p, li, blockquote) { max-width: 72ch; }
+/* 图片按容器宽度自适应并加圆角 */
+[data-page="work"] :is(img, video, canvas) {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
 /* ===== 工具页窄屏适配 =====
    tools/ 下 6 个页面是独立开发的小工具，内部容器写死了像素宽度、
    或用了 flex-nowrap，导致窄屏下横向溢出（实测 390px 下
