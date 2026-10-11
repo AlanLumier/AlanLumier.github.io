@@ -450,3 +450,53 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '初版：基础顺序结构拖拽生成。':
     'First release: drag-and-drop generation of basic sequential structures.',
 });
+
+/* ---------- 第 7 批：作品详情页正文 —— cs-sens（CS 灵敏度校准器）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  'CS 灵敏度校准器 · AlanLumier 作品详情': 'CS Sensitivity Calibrator · AlanLumier project',
+  'CS 灵敏度校准器': 'CS Sensitivity Calibrator',
+  '/ CS 灵敏度校准器': '/ CS Sensitivity Calibrator',
+  '输入 DPI 与灵敏度参数，智能评估输出最佳游戏鼠标灵敏度。':
+    'Enter your DPI and in-game sensitivity to get an informed recommendation for mouse sensitivity.',
+  '游戏工具': 'Gaming tool',
+  '灵敏度校准': 'Sensitivity tuning',
+  '外设': 'Peripherals',
+  'FPS 玩家都知道，一套适合自己的鼠标灵敏度有多重要。这个校准器通过输入你的鼠标 DPI、游戏内灵敏度与常用瞄准习惯，结合常用的 eDPI 换算与手感区间模型，给出一个科学的参考区间，帮你快速找到「打起来顺手」的灵敏度，减少反复试错的成本。':
+    'Every FPS player knows how much a sensitivity that suits you matters. Enter your mouse DPI, in-game sensitivity and aiming habits, and this calibrator combines common eDPI conversions with feel-range models to suggest a sensible range — helping you find a sensitivity that feels right and cutting down on trial and error.',
+  '适用游戏': 'Works with',
+  'CS 系列等 FPS': 'CS series and other FPS',
+  '核心计算': 'Core calculation',
+  'eDPI 换算': 'eDPI conversion',
+  '输出形式': 'Output',
+  '建议区间': 'Suggested range',
+  'DPI 与灵敏度换算：自动计算 eDPI，跨游戏对照参考。':
+    'DPI and sensitivity conversion: eDPI calculated automatically for cross-game reference.',
+  '手感区间评估：根据常用模型输出低 / 中 / 高三档建议值。':
+    'Feel-range assessment: low, medium and high suggestions based on common models.',
+  '按瞄准习惯细分：步枪点射、压枪、狙击等不同场景分别建议。':
+    'Tuned by aiming style: separate suggestions for rifle tapping, spray control and sniping.',
+  '历史记录：保存多组配置，方便对比切换。':
+    'History: save several setups for easy comparison and switching.',
+  '纯本地运行：不联网，数据只留在你的浏览器里。':
+    'Runs entirely locally: no network, your data stays in the browser.',
+  '灵敏度模型基于主流 FPS 社区公认的 eDPI 换算公式实现。':
+    'The model is built on the eDPI conversion formula widely accepted in FPS communities.',
+  '区间建议采用分段函数计算，随 DPI 与习惯自动适配。':
+    'Range suggestions use a piecewise function that adapts to your DPI and habits.',
+  '所有输入即时重算，无提交等待，交互流畅。':
+    'Every input recalculates instantly — no submit button, no waiting.',
+  '本地存储记录历史配置，支持一键清除。':
+    'Setups are kept in local storage, with one-click clearing.',
+  '输入你的鼠标 DPI（一般在鼠标驱动中可查）。':
+    'Enter your mouse DPI (usually shown in the mouse driver).',
+  '填入当前游戏内灵敏度，选择瞄准习惯。':
+    'Fill in your current in-game sensitivity and pick your aiming style.',
+  '查看建议区间与换算结果，直接套用到游戏内。':
+    'Read the suggested range and conversion result, then apply them in game.',
+  '多组配置可保存对比，找到最顺手的那一档。':
+    'Save several setups and compare to find the one that feels best.',
+  '当前版本：新增瞄准习惯分档与历史记录。':
+    'Current version: added aiming-style tiers and history.',
+  '初版：基础 eDPI 换算与建议区间。':
+    'First release: basic eDPI conversion and suggested ranges.',
+});
