@@ -604,3 +604,21 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '全面重构为校园广播播控中心：内置曲库管理与去重、播报模板、二维码远程点歌、定时与模糊播放、大屏展示、站长通知与操作日志；本地预览版上线，作为线上预览版发布。':
     'Fully rebuilt as a campus broadcasting control centre: library management with de-duplication, announcement templates, QR-code remote requests, scheduled and fuzzy playback, big-screen display, station notices and an action log; released as the online preview.',
 });
+
+/* ---------- 第 10 批：space 的动态生成片段（收尾）----------
+   这些文本由页面脚本在运行时生成，不在 HTML 里，是在浏览器里逐个查出来的：
+     在代码里构建逻辑…（打字机标题）、技能树气泡词、留言板空状态。
+   另有 3 条刻意不译：ROG 夜魔 98 HE / ROG 月刃 2 ACE / 卓威 ZOWIE 是产品与
+   品牌型号名；语言按钮上的「中」也不是待译文字（它在英文模式下就该显示「中」）。 */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '在代码里构建逻辑，在方块里搭建世界，在赛场里验证热爱。':
+    'Logic in code, worlds in blocks, passion on the field.',
+  '电路设计': 'Circuit design',
+  '红石科技': 'Redstone tech',
+  '算法思维': 'Algorithmic thinking',
+  '创意设计': 'Creative design',
+  '问题解决': 'Problem solving',
+  '学习': 'Learning',
+  '技术探索': 'Tech exploration',
+  '还没有人留名，做第一个吧！': 'No one has signed yet — be the first!',
+});
