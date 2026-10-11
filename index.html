@@ -28,7 +28,7 @@
 <meta name="twitter:title" content="AlanLumier · 欢迎你的到来">
 <meta name="twitter:description" content="欢迎来到 AlanLumier 的个人主页。这里记录着咖啡、音乐、游戏与作品。">
 <meta name="twitter:image" content="https://alanlumier.github.io/og-image.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D4AF37'/%3E%3Ctext x='32' y='44' font-family='Georgia, serif' font-size='36' font-weight='bold' fill='%23fff' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='45' font-family='Georgia, serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"AlanLumier 失眠夜空间","alternateName":"AlanLumier.github.io","url":"https://alanlumier.github.io/","inLanguage":["zh-CN","en"],"publisher":{"@type":"Person","name":"AlanLumier","url":"https://github.com/AlanLumier"}}
 </script>
@@ -2279,15 +2279,15 @@
     if (!elV) return;
     var phases = ['moon.n0', 'moon.n1', 'moon.n2', 'moon.n3', 'moon.n4', 'moon.n5', 'moon.n6', 'moon.n7'];
     var FALLBACK = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
-    var DISK = '<circle cx="50" cy="50" r="44" fill="#1e293b"/>';
-    var MARIA = '<ellipse cx="41" cy="37" rx="9" ry="7" fill="rgba(148,163,184,.4)"/><ellipse cx="57" cy="54" rx="12" ry="9" fill="rgba(148,163,184,.34)"/><ellipse cx="44" cy="71" rx="7" ry="5" fill="rgba(148,163,184,.28)"/><ellipse cx="63" cy="32" rx="5" ry="4" fill="rgba(148,163,184,.3)"/>';
+    var DISK = '<circle cx="50" cy="50" r="44" fill="#292929"/>';
+    var MARIA = '<ellipse cx="41" cy="37" rx="9" ry="7" fill="rgba(162, 162, 162,.4)"/><ellipse cx="57" cy="54" rx="12" ry="9" fill="rgba(162, 162, 162,.34)"/><ellipse cx="44" cy="71" rx="7" ry="5" fill="rgba(162, 162, 162,.28)"/><ellipse cx="63" cy="32" rx="5" ry="4" fill="rgba(162, 162, 162,.3)"/>';
     var SVGS = [
-      DISK + '<path d="M50 8 A42 42 0 0 1 50 92 A42 42 0 0 0 50 8 Z" fill="#94a3b8"/>',
+      DISK + '<path d="M50 8 A42 42 0 0 1 50 92 A42 42 0 0 0 50 8 Z" fill="#a2a2a2"/>',
       DISK + '<path d="M50 6 A44 44 0 0 1 50 94 A34 34 0 0 0 50 24 Z" fill="#e2e8f0"/>',
       DISK + '<path d="M50 6 A44 44 0 0 1 50 94 Z" fill="#f1f5f9"/>',
-      DISK + '<path d="M50 6 A44 44 0 0 1 50 94 Z" fill="#f1f5f9"/><ellipse cx="50" cy="50" rx="20" ry="44" fill="#1e293b"/>' + MARIA,
+      DISK + '<path d="M50 6 A44 44 0 0 1 50 94 Z" fill="#f1f5f9"/><ellipse cx="50" cy="50" rx="20" ry="44" fill="#292929"/>' + MARIA,
       '<circle cx="50" cy="50" r="44" fill="#f1f5f9"/>' + MARIA,
-      DISK + '<path d="M50 6 A44 44 0 0 0 50 94 Z" fill="#f1f5f9"/><ellipse cx="50" cy="50" rx="20" ry="44" fill="#1e293b"/>' + MARIA,
+      DISK + '<path d="M50 6 A44 44 0 0 0 50 94 Z" fill="#f1f5f9"/><ellipse cx="50" cy="50" rx="20" ry="44" fill="#292929"/>' + MARIA,
       DISK + '<path d="M50 6 A44 44 0 0 0 50 94 Z" fill="#f1f5f9"/>',
       DISK + '<path d="M50 6 A44 44 0 0 0 50 94 A34 34 0 0 1 50 24 Z" fill="#e2e8f0"/>'
     ];
@@ -3005,7 +3005,7 @@
       t += 0.12;
       var a = 0.45 + 0.55 * (Math.sin(t) * 0.5 + 0.5);
       ctx.clearRect(0, 0, 32, 32);
-      ctx.fillStyle = 'rgba(212,175,55,' + a.toFixed(3) + ')';
+      ctx.fillStyle = 'rgba(179, 179, 179,' + a.toFixed(3) + ')';
       roundRect(1, 1, 30, 30, 7); ctx.fill();
       ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       ctx.beginPath();
@@ -3162,8 +3162,8 @@
     for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
     var lucky = (h % 100) + 1;
     var colors = [
-      ['#D4AF37', '晴蓝', 'sky blue'], ['#D4AF37', '天青', 'azure'], ['#E8CC7A', '云青', 'cloud cyan'],
-      ['#E8CC7A', '鎏金', 'gold dust'], ['#D4AF37', '曜金', 'obsidian gold'], ['#D4AF37', '夜金', 'midnight gold']
+      ['#b3b3b3', '晴蓝', 'sky blue'], ['#b3b3b3', '天青', 'azure'], ['#cecece', '云青', 'cloud cyan'],
+      ['#cecece', '鎏金', 'gold dust'], ['#b3b3b3', '曜金', 'obsidian gold'], ['#b3b3b3', '夜金', 'midnight gold']
     ];
     var tipsZh = ['宜写代码', '宜喝咖啡', '宜听歌', '宜发呆', '宜早睡', '宜整理', '宜散步', '宜收藏', '宜分享', '宜读书'];
     var tipsEn = ['code today', 'have a coffee', 'listen to music', 'daydream', 'sleep early', 'tidy up', 'take a walk', 'collect something', 'share with a friend', 'read a book'];
@@ -3188,12 +3188,12 @@
     var grid = document.getElementById('repoGrid');
     if (!grid) return;
     var fallback = [
-      { name: 'AlanLumier.github.io', desc: '本站源码：全世界语言的欢迎页与个人标签页。', lang: 'HTML', stars: 0, forks: 0, updated: '2026-09-25', color: '#e34c26' }
+      { name: 'AlanLumier.github.io', desc: '本站源码：全世界语言的欢迎页与个人标签页。', lang: 'HTML', stars: 0, forks: 0, updated: '2026-09-25', color: '#808080' }
     ];
     var fallbackEn = [
-      { name: 'AlanLumier.github.io', desc: 'Source of this site: multilingual welcome page & personal hub.', lang: 'HTML', stars: 0, forks: 0, updated: '2026-09-25', color: '#e34c26' }
+      { name: 'AlanLumier.github.io', desc: 'Source of this site: multilingual welcome page & personal hub.', lang: 'HTML', stars: 0, forks: 0, updated: '2026-09-25', color: '#808080' }
     ];
-    var langColor = { 'HTML': '#e34c26', 'CSS': '#563d7c', 'JavaScript': '#f1e05a', 'TypeScript': '#3178c6', 'Python': '#3572A5', 'Java': '#b07219', 'C++': '#f34b7d', 'C#': '#178600', 'PHP': '#4F5D95', 'Shell': '#89e051', 'Vue': '#41b883', 'Jupyter Notebook': '#DA5B0B', 'MDX': '#fcb32c' };
+    var langColor = { 'HTML': '#808080', 'CSS': '#4a4a4a', 'JavaScript': '#dedede', 'TypeScript': '#767676', 'Python': '#6e6e6e', 'Java': '#7f7f7f', 'C++': '#8a8a8a', 'C#': '#737373', 'PHP': '#606060', 'Shell': '#cacaca', 'Vue': '#a4a4a4', 'Jupyter Notebook': '#828282', 'MDX': '#c1c1c1' };
     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"'`]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;' }[c]; }); }
     function render(list) {
       if (!list || !list.length) list = (window.YAULE_LANG === 'en') ? fallbackEn : fallback;

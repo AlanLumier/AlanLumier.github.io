@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>校园广播站 · MVP</title>
-<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%230E7C6B'/><path d='M7 8V6a5 5 0 0 1 10 0v2' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='5' y='8' width='14' height='11' rx='2' fill='white'/><circle cx='8' cy='13.5' r='1.4' fill='%230E7C6B'/><path d='M14 13.5h2M14 16.5h2' stroke='%230E7C6B' stroke-width='2' stroke-linecap='round'/></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ctext x='32' y='45' font-family='Georgia, serif' font-size='38' font-weight='bold' fill='%23ffffff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E"><rect width='24' height='24' rx='6' fill='%230E7C6B'/><path d='M7 8V6a5 5 0 0 1 10 0v2' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/><rect x='5' y='8' width='14' height='11' rx='2' fill='white'/><circle cx='8' cy='13.5' r='1.4' fill='%230E7C6B'/><path d='M14 13.5h2M14 16.5h2' stroke='%230E7C6B' stroke-width='2' stroke-linecap='round'/></svg>">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&display=swap">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -347,7 +347,7 @@ textarea:focus,.input:focus,select:focus{outline:2px solid var(--primary);outlin
 </head>
 <body>
 
-<div style="position:sticky;top:0;z-index:9999;background:#F0A63C;color:#fff;text-align:center;font-size:13px;padding:6px 10px;letter-spacing:.5px">线上预览版 · 仅展示界面与本地播放功能 · 远程点歌 / 联网搜索 / 在线下载未开放</div>
+<div style="position:sticky;top:0;z-index:9999;background:#b5b5b5;color:#fff;text-align:center;font-size:13px;padding:6px 10px;letter-spacing:.5px">线上预览版 · 仅展示界面与本地播放功能 · 远程点歌 / 联网搜索 / 在线下载未开放</div>
 
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <symbol id="i-logo" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8V6a5 5 0 0 1 10 0v2"/><circle cx="8" cy="14" r="1.5"/><path d="M14 13.5h3M14 16.5h3"/></symbol>
@@ -625,7 +625,7 @@ textarea:focus,.input:focus,select:focus{outline:2px solid var(--primary);outlin
         <div class="set-page" id="set-big">
           <div class="set-sec">
             <div class="set-row"><span class="lbl2">歌词字号</span><div class="range-flex"><input type="range" id="bsLyricSize" min="16" max="40" step="1" value="26"><span class="val" id="bsLyricSizeVal">26px</span></div></div>
-            <div class="set-row"><span class="lbl2">歌词颜色</span><select id="bsLyricColor" style="max-width:200px"><option value="#F0A63C">橙色（默认）</option><option value="#35C37B">绿色</option><option value="#7FB4FF">蓝色</option><option value="#F2F2F2">白色</option><option value="#E85D75">粉色</option></select></div>
+            <div class="set-row"><span class="lbl2">歌词颜色</span><select id="bsLyricColor" style="max-width:200px"><option value="#b5b5b5">橙色（默认）</option><option value="#acacac">绿色</option><option value="#b2b2b2">蓝色</option><option value="#F2F2F2">白色</option><option value="#8c8c8c">粉色</option></select></div>
             <div class="set-row"><span class="lbl2">歌词字体</span><select id="bsFont" style="max-width:220px"><option value="'Noto Sans SC',sans-serif">默认黑体</option><option value="'KaiTi','楷体',serif">楷体</option><option value="'Microsoft YaHei','微软雅黑',sans-serif">雅黑</option><option value="Georgia,'Times New Roman',serif">衬线</option></select></div>
             <div class="set-row"><span class="lbl2">粒子特效</span><label class="switch"><input type="checkbox" id="bsParticles"><i></i></label></div>
             <div class="set-row"><span class="lbl2">临近结束自动退出（秒）</span><div class="range-flex"><input type="range" id="bsExitAhead" min="5" max="30" step="1" value="20"><span class="val" id="bsExitAheadVal">20 秒</span></div></div>
@@ -2499,7 +2499,7 @@ function bsRender(){
   inEl.style.padding = '0';
   inEl.style.transform = '';
   inEl.style.setProperty('--bsfs', (state.bsLyricSize || 26) + 'px');
-  inEl.style.setProperty('--bscolor', state.bsLyricColor || '#F0A63C');
+  inEl.style.setProperty('--bscolor', state.bsLyricColor || '#b5b5b5');
   inEl.style.fontFamily = state.bsFont || "'Noto Sans SC',sans-serif";
   if(!bsLrc.length){
     inEl.innerHTML = '<div class="bs-empty">暂无歌词，正在播放《' + esc(t.title || t.name) + '》</div>';
@@ -2538,12 +2538,12 @@ function loadBigScreen(){
   try{
     const s = JSON.parse(localStorage.getItem(LS_BIG) || '{}');
     state.bsLyricSize = s.lyricSize || 26;
-    state.bsLyricColor = s.lyricColor || '#F0A63C';
+    state.bsLyricColor = s.lyricColor || '#b5b5b5';
     state.bsFont = s.font || "'Noto Sans SC',sans-serif";
     state.bsParticles = !!s.particles;
     state.bsExitAhead = s.exitAhead || 20;
   }catch(e){
-    state.bsLyricSize = 26; state.bsLyricColor = '#F0A63C'; state.bsFont = "'Noto Sans SC',sans-serif"; state.bsParticles = false; state.bsExitAhead = 20;
+    state.bsLyricSize = 26; state.bsLyricColor = '#b5b5b5'; state.bsFont = "'Noto Sans SC',sans-serif"; state.bsParticles = false; state.bsExitAhead = 20;
   }
 }
 function saveBigScreen(){
