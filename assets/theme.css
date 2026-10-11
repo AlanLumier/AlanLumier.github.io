@@ -166,3 +166,47 @@
   * { transition-duration: 0.01ms !important; }
   :is(a[href], button, .card)::before { opacity: 0 !important; }
 }
+
+/* ==========================================================================
+   移动端防溢出安全网
+   --------------------------------------------------------------------------
+   实测（iframe 造 360/390/414/768px 真实窄视口）发现多个页面横向溢出：
+     /space/ 289px、Self-service 140px、Fancy-Pattern 87px、
+     Nayingte 72px、Xinghua 63px、status 12px
+   成因不止一种（栅格 1fr 无法收缩到 min-content 以下、flex 子项 min-width:auto、
+   固定像素宽度、不换行的长邮箱串），逐个页面改既慢又容易漏。
+   这里在共享样式表里放一张安全网，最后加载，对全站生效。
+   ========================================================================== */
+@media (max-width: 900px) {
+  /* 1) 图片不得超出容器（最常见的一类溢出）。
+     刻意**不**动 table / canvas / iframe：表格与画布常是「本就要横向滚动」的，
+     强制 max-width 会改变它们所在页面的布局 —— 实测会让
+     tools/Nayingte 那个页面的溢出从 72px 恶化到 100px。 */
+  img, video { max-width: 100%; }
+
+  /* 2) 栅格与弹性子项默认允许收缩 —— min-width:auto 是溢出最常见的根因。
+     刻意**不**包含 .panel / .card / .console / .side / .control-group：
+     这些是 tools/ 下工具页的内部容器，它们会按方案 A 整体重排，
+     在此之前套用通用规则反而会让某个页面变差（实测 Nayingte 72px → 100px）。 */
+  :is(.section-inner, .section-header, .contact-grid, .hobbies-grid, .device-grid,
+      .projects-grid, .awards-grid, .grid) {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* 3) 长串（邮箱、URL、哈希）允许断行，避免撑宽整行 */
+  :is(.contact-item, .contact-grid, .section-inner) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 560px) {
+  /* 4) 小屏下多列栅格一律降为单列，不依赖各页面自己是否写对了断点。
+     只列确定是多列、且实测会溢出的栅格；范围放大反而会把工具页搞坏
+     （曾试过对 .control-group 等加 flex-wrap:wrap !important，
+      结果 Nayingte 那个页面溢出从 72px 恶化到 189px —— 已回退）。 */
+  :is(.contact-grid, .hobbies-grid, .device-grid, .projects-grid, .awards-grid) {
+    grid-template-columns: 1fr !important;
+  }
+}
