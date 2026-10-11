@@ -183,8 +183,8 @@
     style.id = STYLE_ID;
     style.textContent = [
       '.alan-lang-btn{position:fixed;top:14px;right:62px;z-index:9998;',
-      'min-width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;',
-      'border-radius:999px;cursor:pointer;padding:0 10px;font-size:12.5px;font-weight:700;',
+      'min-width:52px;height:44px;display:inline-flex;align-items:center;justify-content:center;',
+      'border-radius:999px;cursor:pointer;padding:0 14px;font-size:14.5px;font-weight:700;',
       'letter-spacing:.02em;font-family:inherit;',
       'border:1px solid var(--card-border,rgba(128,128,128,.35));',
       'background:var(--card-bg,#0a0a0a);color:var(--ink,#f5f5f5);',

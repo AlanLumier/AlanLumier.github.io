@@ -145,6 +145,9 @@
 
   function ensureToggle() {
     if (document.getElementById('themeToggle')) return;      // 页面自带的优先
+    // 作品（tools/ 下的工具页）按用户要求不注入主题按钮：
+    // 它们是独立配色的小工具，不跟随站点深浅色，放个切换按钮反而没有意义。
+    if (document.documentElement.getAttribute('data-page') === 'tool') return;
     if (document.querySelector('.alan-theme-btn')) return;   // 已注入
     injectStyle();
     var button = document.createElement('button');

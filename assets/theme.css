@@ -378,6 +378,32 @@ hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6);
 }
 
 /* ==========================================================================
+   顶部 hero 毛玻璃
+   --------------------------------------------------------------------------
+   用户要求 hero 背景改成毛玻璃。这里用 backdrop-filter 做真实模糊 ——
+   它需要「背后有内容」才看得出来，而本页 hero 背后正好有 Canvas 粒子背景，
+   所以模糊是真有效果的，不是贴一层半透明色糊弄。
+   注：这与之前移除的「液态玻璃」不是一回事 —— 那个是 SVG 位移贴图做折射，
+   这里是标准的背景模糊，开销小得多。
+   ========================================================================== */
+#hero {
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  border-bottom: 1px solid var(--card-border);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+/* 不支持 backdrop-filter 的浏览器退化为不透明底，不影响可读性 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  #hero { background: var(--card-bg); }
+}
+/* 尊重「减少透明度」偏好：该设置下毛玻璃会让人看不清文字 */
+@media (prefers-reduced-transparency: reduce) {
+  #hero { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--card-bg); }
+}
+
+/* ==========================================================================
    作品卡片放大 + 详情页排版
    --------------------------------------------------------------------------
    用户反馈作品卡片偏小、详情页排版需要优化。
