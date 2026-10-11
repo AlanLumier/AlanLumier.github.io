@@ -358,18 +358,41 @@ hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6);
    Self-service 140px、Nayingte 100px、Fancy-Pattern 87px、Xinghua 63px）。
    这些结构是页面的功能载体，与其逐个重写，不如用一组**只作用于工具页**的
    规则让它们自适应 —— 用 data-page="tool" 标记来限定范围，不波及其它页面。 */
-/* ===== 工具页窄屏适配：已回退，改用逐页重写 =====
-   tools/ 下 6 个页面写死了像素宽度、用了 flex-nowrap，窄屏确实会横向溢出
-   （390px 实测：Self-service 140px、Nayingte 100px、Fancy-Pattern 87px、Xinghua 63px）。
+/* ===== 工具页窄屏适配（逐条依据实测定位，不用通用兜底）=====
+   tools/ 下几个页面写死了像素宽度或用了 flex-nowrap，窄屏会横向溢出。
+   我先前试过通用兜底（width:auto / max-width:100% / flex-wrap:wrap 一把梭），
+   结果反而更差；后来又把探针改成**等页面稳定后再测量**，才拿到可信的数字
+   （同一配置连测三次结果一致），并定位到每一页真正的元凶。
+   下面每条规则都对应一个实测出来的具体元素，不再猜。 */
+@media (max-width: 900px) {
+  /* Nayingte：提示条写死 width/min-width:300px，绝对定位后顶出视口（实测溢出 92px） */
+  [data-page="tool"] .toast {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: calc(100vw - 32px) !important;
+  }
 
-   我试过用一组只作用于工具页的通用规则去兜底（data-page="tool" + 
-   width:auto / max-width:100% / flex-wrap:wrap !important），
-   实测**反而更差**：Fancy-Pattern 87 → 132px、Xinghua 63 → 91px。
-   这已经是第四次通用规则让这些页面变坏（前三次分别是
-   flex-wrap、min-width:0、媒体元素限宽）。
+  /* Xinghua：两个面板各 482.5px、双栏不塌陷（实测溢出 128px）；
+     .tabs 为 flex-nowrap，标签行也会顶宽 */
+  [data-page="tool"] :is(.console, .side) {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  [data-page="tool"] .tabs { flex-wrap: wrap !important; }
 
-   结论：这些页面的内部结构彼此差异很大，**必须逐页重写**，
-   靠外部覆盖只会按下葫芦浮起瓢。整段规则已删除，不留半吊子的兜底。
-   data-page="tool" 标记保留 —— 它对页面无副作用，且便于日后逐页定位。
+  /* Self-service：搜索框带 w-64（=256px 固定宽）直接顶出容器（实测溢出 139px） */
+  [data-page="tool"] :is(.w-64, #recSearch) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 
-   在逐页重写完成之前，这 6 个页面的窄屏溢出问题依然存在，我如实记录。 */
+  /* Fancy-Pattern：.panel 被撑到 496px，根源是 .panel-title 为 flex-nowrap、
+     其 min-content 达 446px，而栅格子项默认 min-width:auto 无法收缩
+     （实测溢出 157px）。此前我误判为预览画布 —— 这里改为对症下药。 */
+  [data-page="tool"] :is(.main, .grid) > * { min-width: 0; }
+  [data-page="tool"] :is(.panel-title, .form-group) {
+    min-width: 0;
+    flex-wrap: wrap !important;
+  }
+}
