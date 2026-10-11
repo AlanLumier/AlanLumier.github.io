@@ -500,3 +500,53 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '初版：基础 eDPI 换算与建议区间。':
     'First release: basic eDPI conversion and suggested ranges.',
 });
+
+/* ---------- 第 8 批：作品详情页正文 —— emoji-converter（表情转图片转换器）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '表情转图片转换器 · AlanLumier 作品详情': 'Emoji to Image Converter · AlanLumier project',
+  '表情转图片转换器': 'Emoji to Image Converter',
+  '/ 表情转图片转换器': '/ Emoji to Image Converter',
+  '文字、表情符号一键转图片，支持自定义背景与文字颜色，导出高清 PNG。':
+    'Turn text and emoji into an image in one click, with custom background and text colours and HD PNG export.',
+  '创意工具': 'Creative tool',
+  '表情包': 'Stickers',
+  'PNG 导出': 'PNG export',
+  '自定义配色': 'Custom colours',
+  '一个有趣的小工具：把一串文字或表情符号，排版成一张好看的图片。可以自定义背景色、文字颜色、排列方式与画布尺寸，一键导出高清 PNG。做表情包、做文案配图、做社交分享卡片，几秒钟就能搞定。':
+    'A fun little tool: lay out a string of text or emoji as a good-looking image. Customise the background colour, text colour, layout and canvas size, then export a high-resolution PNG in one click. Stickers, copy artwork or social cards — done in seconds.',
+  '导出格式': 'Export format',
+  '画布尺寸': 'Canvas size',
+  '多档可选': 'Multiple presets',
+  '应用场景': 'Use cases',
+  '表情包 / 配图': 'Stickers / artwork',
+  '文字 / 表情自由混排：中英文、Emoji、特殊符号任意组合。':
+    'Mix freely: Chinese, English, emoji and symbols in any combination.',
+  '自定义配色：背景色、文字色、强调色全部可调。':
+    'Custom colours: background, text and accent are all adjustable.',
+  '多档画布：支持方形、竖版、横版与高清大图多种尺寸。':
+    'Multiple canvases: square, portrait, landscape and high-resolution sizes.',
+  '图案背景：内置简约几何纹理可选，让图片更有设计感。':
+    'Pattern backgrounds: built-in minimal geometric textures for extra polish.',
+  '一键导出：渲染为高清 PNG 直接下载，可用于社交平台。':
+    'One-click export: rendered as an HD PNG ready for social platforms.',
+  '基于 Canvas 渲染，文字排版与表情绘制完全本地完成。':
+    'Rendered on Canvas — text layout and emoji drawing happen entirely locally.',
+  'Emoji 采用系统字体渲染，保证跨平台显示效果一致。':
+    'Emoji are drawn with system fonts for consistent cross-platform results.',
+  '导出前自动按目标尺寸重采样，保证 PNG 清晰度。':
+    'Output is resampled to the target size before export, keeping the PNG sharp.',
+  '配色方案使用 HSL 调色，颜色选择器即时预览。':
+    'Colours use HSL, with instant preview in the picker.',
+  '在上方输入框输入想转换的文字或表情。':
+    'Type the text or emoji you want to convert in the box above.',
+  '选择背景色、文字颜色与画布比例。':
+    'Choose the background colour, text colour and canvas ratio.',
+  '点击「生成预览」查看排版效果，不满意可继续调整。':
+    'Click Generate preview to see the layout, and keep adjusting until you like it.',
+  '点击「下载 PNG」保存高清图片到本地。':
+    'Click Download PNG to save the high-resolution image.',
+  '当前版本：新增几何纹理背景与竖版画布。':
+    'Current version: added geometric texture backgrounds and a portrait canvas.',
+  '初版：文字表情转图片核心功能。':
+    'First release: core text-and-emoji to image conversion.',
+});
