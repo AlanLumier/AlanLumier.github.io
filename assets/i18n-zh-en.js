@@ -550,3 +550,57 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '初版：文字表情转图片核心功能。':
     'First release: core text-and-emoji to image conversion.',
 });
+
+/* ---------- 第 9 批：作品详情页正文 —— xinghua（兴华中学广播站系统）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '兴华中学广播站系统 · AlanLumier 作品详情':
+    'Xinghua Middle School Broadcasting System · AlanLumier project',
+  '兴华中学广播站系统': 'Xinghua Middle School Broadcasting System',
+  '/ 兴华中学广播站系统': '/ Xinghua Middle School Broadcasting System',
+  '为校园广播站量身定制的播控中心：曲库、模板、远程点歌与定时播放装进一个页面，已在兴华中学投入日常使用。':
+    'A broadcast control centre built for a school radio station: music library, templates, remote requests and scheduled playback in one page — in daily use at Xinghua Middle School.',
+  '校园工具': 'Campus tool',
+  '播控系统': 'Broadcast control',
+  '远程点歌': 'Remote requests',
+  '实际部署': 'Deployed for real',
+  '这是为兴华中学广播站独立设计开发的校园广播播控系统。从曲库的管理与去重、播报模板的快速插入，到二维码远程点歌、定时与模糊播放，再到站长通知与大屏展示，全部集中在一个轻量化的网页里完成。系统已在校园实际运行，让每天的广播工作有章可循。':
+    "A campus broadcasting control system designed and built independently for the Xinghua Middle School radio station. From managing and de-duplicating the music library and inserting announcement templates, to QR-code song requests, scheduled and fuzzy playback, plus station notices and a big-screen display — all in one lightweight web page. The system runs in the school for real, giving every day's broadcast a clear routine.",
+  '校园广播站': 'Campus radio station',
+  '部署状态': 'Deployment',
+  '已实际使用': 'In real use',
+  '曲库管理：批量添加、文件夹扫描、一键去重与移除，配歌单维护与本地持久化。':
+    'Library management: bulk add, folder scanning, one-click de-duplication and removal, with playlist maintenance and local persistence.',
+  '播报模板：常用播报文案一键插入，可新增自定义模板并保存推送。':
+    'Announcement templates: insert common scripts in one click, add custom templates and save them.',
+  '远程点歌：扫码进入点歌端，支持热歌榜与快捷音乐，管理员可设置配额与锁定。':
+    'Remote requests: scan a QR code to open the request page, with a hot list and quick picks; admins can set quotas and lock it.',
+  '定时与模糊播放：5/10/15/30/60 分钟定时，模糊搜索即点即播。':
+    'Scheduled and fuzzy playback: 5/10/15/30/60-minute timers, plus fuzzy search that plays as you pick.',
+  '大屏展示与通知：大屏样式一键切换，站长通知全局推送，操作全程留日志。':
+    'Big-screen display and notices: switch display styles in one click, push station-wide notices, and log every action.',
+  '纯 HTML + CSS + JavaScript 实现，零第三方依赖，离线可用。':
+    'Built with plain HTML, CSS and JavaScript — no third-party dependencies, works offline.',
+  '曲库、点歌、通知等数据以结构化方式保存在本地，刷新不丢失，随开随用。':
+    'Library, requests and notices are stored locally in a structured form, surviving refreshes.',
+  '点歌端通过二维码扫码接入，配管理员口令、次数配额与锁定开关，兼顾开放与秩序。':
+    'The request page is reached by QR code, with an admin password, request quotas and a lock switch — open yet orderly.',
+  '界面遵循校园使用习惯，字号偏大、操作路径短，值班同学上手即会。':
+    'The interface follows campus habits: larger type and short paths, so duty students pick it up immediately.',
+  '打开页面后，先在「音乐列表 / 音乐设置」中导入并整理曲库，可一键去重。':
+    'On opening, import and tidy the library under Music list / Music settings, with one-click de-duplication.',
+  '常用播报语在「播报模板」中维护，播报时插入模板再替换内容即可。':
+    'Keep common announcements in Templates: insert one and swap in the details when broadcasting.',
+  '点歌台通过「二维码」入口分享给同学，扫码即可点歌，管理员在「日志 / 关于」中查看记录与调整配额。':
+    'Share the request page via the QR entry; students scan to request, and admins review logs and adjust quotas under Log / About.',
+  '广播时段建议固定「大屏样式」窗口常驻，配合 5–60 分钟定时播放使用。':
+    'During broadcast hours, keep the display-style window open alongside the 5–60 minute timers.',
+  '排班表 + 播放日程 + 站点信息三大模块上线，替代手写排班与纸质日程。':
+    'Shipped three modules — duty roster, playback schedule and station info — replacing handwritten rotas and paper schedules.',
+  '增加周视图自动滚动到当日，优化移动端浏览。':
+    'The week view now scrolls to today automatically, with better mobile browsing.',
+  '修复排班跨周滚动边界问题，补充节假日跳过功能。':
+    'Fixed a roster boundary issue when scrolling across weeks, and added holiday skipping.',
+  'v2.0 · 校园广播站 MVP': 'v2.0 · Campus radio station MVP',
+  '全面重构为校园广播播控中心：内置曲库管理与去重、播报模板、二维码远程点歌、定时与模糊播放、大屏展示、站长通知与操作日志；本地预览版上线，作为线上预览版发布。':
+    'Fully rebuilt as a campus broadcasting control centre: library management with de-duplication, announcement templates, QR-code remote requests, scheduled and fuzzy playback, big-screen display, station notices and an action log; released as the online preview.',
+});
