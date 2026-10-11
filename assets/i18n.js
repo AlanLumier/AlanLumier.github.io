@@ -99,6 +99,57 @@
     return applied;
   }
 
+  /* ------------------------------------------------------------------
+     动态内容补译
+     有些文字是页面脚本在运行时才生成的（留言板、运行时长、计时器、
+     图表标签等），它们不在 HTML 里，所以上面的「首次采集」抓不到。
+     这里用 MutationObserver 监听新增节点，把新出现的文本也纳入
+     originalText 与翻译，从而让动态内容同样跟随语言切换。
+
+     注意只监听 childList（不监听 characterData）：我们自己改 nodeValue
+     会产生 characterData 变更，若一起监听就会自触发、陷入死循环。
+     ------------------------------------------------------------------ */
+  function absorb(node, table) {
+    if (!node) return 0;
+    if (node.nodeType === 3) {                       // 文本节点
+      var parent = node.parentNode;
+      if (!parent) return 0;
+      var tag = (parent.nodeName || '').toLowerCase();
+      if (tag === 'script' || tag === 'style' || tag === 'noscript') return 0;
+      if (parent.isContentEditable) return 0;
+      var text = node.nodeValue;
+      if (!text || !text.trim()) return 0;
+      if (!originalText.has(node)) originalText.set(node, text);
+      var original = originalText.get(node);
+      var value = table[original.trim()];
+      if (typeof value !== 'string') return 0;
+      var next = original.match(/^\s*/)[0] + value + original.match(/\s*$/)[0];
+      if (node.nodeValue !== next) { node.nodeValue = next; return 1; }
+      return 0;
+    }
+    if (node.nodeType !== 1) return 0;               // 只处理元素与文本
+    var applied = 0;
+    var walker = document.createTreeWalker(node, 4, null);
+    var child;
+    while ((child = walker.nextNode())) applied += absorb(child, table);
+    return applied;
+  }
+
+  var observer = null;
+  function observeDynamic() {
+    if (observer || typeof MutationObserver !== 'function' || !document.body) return;
+    observer = new MutationObserver(function (records) {
+      var lang = readLang();
+      var table = (window.ALAN_TEXT_I18N || {})[lang];
+      if (!table) return;
+      for (var i = 0; i < records.length; i += 1) {
+        var added = records[i].addedNodes;
+        for (var j = 0; j < added.length; j += 1) absorb(added[j], table);
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function translate(lang) {
     var table = dict()[lang];
     if (!table) return 0;
@@ -193,6 +244,7 @@
     translate(lang);
     translateByText(lang);
     ensureButton();
+    observeDynamic();            // 运行时新生成的文字也要跟随切换
     /* 刻意**不**接管页面自带的语言按钮。
        实测教训：最初我在捕获阶段用 stopImmediatePropagation() 抢下点击，
        结果把页面自身那套已经能用的 i18n 脚本也一起挡掉了 ——
