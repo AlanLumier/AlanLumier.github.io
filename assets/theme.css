@@ -328,6 +328,27 @@ p { text-wrap: pretty; }
   line-height: 1.2;
   cursor: pointer;
 }
+/* 图标按钮必须豁免上面的内边距：
+   .theme-toggle / #langToggle 都是 40×40 的圆形按钮，左右各 18px 内边距后
+   内容区只剩 4px，20px 的图标会被挤到看不见 —— 这正是「切换深浅色时
+   太阳/月亮图标不显示」的原因（我加排版基线时引入的，属回归）。 */
+:is(.theme-toggle, .lang-toggle, .alan-theme-btn, .alan-lang-btn) {
+  padding: 0;
+}
+
+/* 作品卡片右上角的下载按钮：
+   它的底色是固定的浅色（rgba(255,255,255,.92)），但图标颜色用了 var(--ink-2)，
+   而深色模式下 --ink-2 已被调成 #d6d6d6（浅灰）→ 浅灰画在近白底上，融为一体。
+   这里把底色与图标色都写死成高对比的一对，并在悬停时改用主题色。 */
+.card-dl {
+  background: rgba(255, 255, 255, 0.94);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.card-dl:hover {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
 a { text-underline-offset: 3px; }
 
 /* ---------- 6) 表单控件统一（工具页大量使用） ---------- */

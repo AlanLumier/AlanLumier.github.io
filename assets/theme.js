@@ -153,29 +153,17 @@
   });
 
   /* ------------------------------------------------------------------
-     光晕的鼠标坐标复位
-     页面自身的脚本只在 mousemove 时写 --mx / --my，**从不清理**，
-     于是指针离开后光斑会「留在最后经过的位置」。这里在 mouseleave 时
-     把两个坐标清掉，让光斑回到默认位置，避免视觉上残留一处亮斑。
+     光晕的鼠标坐标：**刻意不复位**
+     我原先在 mouseout 时把 --mx / --my 清掉，想避免「光斑留在最后位置」。
+     但实测副作用更糟：清掉坐标后，渐变会立刻跳回默认位置（50%），
+     于是在淡出的那 0.28 秒里，光晕会先闪到元素正中再消失 ——
+     用户看到的就是「离开后中间闪一下才没了」。
+     实际上「离开后光晕残留」的真正原因是页面里那条
+     .life-panel.active::before { opacity: 1 }（选中即常亮），
+     已由 theme.css 的 opacity: 0/1 !important 规则解决，不靠这里复位。
+     因此这段复位逻辑整体移除，光晕淡出时自然停在鼠标最后所在处。
      ------------------------------------------------------------------ */
-  function resetGlowOrigin(event) {
-    var el = event.target;
-    if (!el || !el.style) return;
-    el.style.removeProperty('--mx');
-    el.style.removeProperty('--my');
-  }
-  document.addEventListener('mouseout', function (event) {
-    // 只在真正离开该元素时复位（忽略在子元素之间移动）
-    if (event.relatedTarget && event.target.contains && event.target.contains(event.relatedTarget)) return;
-    resetGlowOrigin(event);
-  }, true);
-  // 指针离开整个窗口也复位
-  window.addEventListener('blur', function () {
-    for (var el of document.querySelectorAll('[style*="--mx"]')) {
-      el.style.removeProperty('--mx');
-      el.style.removeProperty('--my');
-    }
-  });
+  // （无 coordinate reset —— 见上方说明）
 
   // 供其它脚本查询
   window.AlanTheme = { current: current, apply: apply, KEY: KEY };
