@@ -351,3 +351,25 @@ hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--space-6);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
+
+/* ===== 工具页窄屏适配 =====
+   tools/ 下 6 个页面是独立开发的小工具，内部容器写死了像素宽度、
+   或用了 flex-nowrap，导致窄屏下横向溢出（实测 390px 下
+   Self-service 140px、Nayingte 100px、Fancy-Pattern 87px、Xinghua 63px）。
+   这些结构是页面的功能载体，与其逐个重写，不如用一组**只作用于工具页**的
+   规则让它们自适应 —— 用 data-page="tool" 标记来限定范围，不波及其它页面。 */
+/* ===== 工具页窄屏适配：已回退，改用逐页重写 =====
+   tools/ 下 6 个页面写死了像素宽度、用了 flex-nowrap，窄屏确实会横向溢出
+   （390px 实测：Self-service 140px、Nayingte 100px、Fancy-Pattern 87px、Xinghua 63px）。
+
+   我试过用一组只作用于工具页的通用规则去兜底（data-page="tool" + 
+   width:auto / max-width:100% / flex-wrap:wrap !important），
+   实测**反而更差**：Fancy-Pattern 87 → 132px、Xinghua 63 → 91px。
+   这已经是第四次通用规则让这些页面变坏（前三次分别是
+   flex-wrap、min-width:0、媒体元素限宽）。
+
+   结论：这些页面的内部结构彼此差异很大，**必须逐页重写**，
+   靠外部覆盖只会按下葫芦浮起瓢。整段规则已删除，不留半吊子的兜底。
+   data-page="tool" 标记保留 —— 它对页面无副作用，且便于日后逐页定位。
+
+   在逐页重写完成之前，这 6 个页面的窄屏溢出问题依然存在，我如实记录。 */
