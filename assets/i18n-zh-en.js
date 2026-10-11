@@ -401,3 +401,52 @@ Object.assign(window.ALAN_TEXT_I18N.en, {
   '初版：五子棋上线。': 'First release: Gomoku launched.',
   '新增中国象棋，双棋合璧。': 'Added Chinese Chess — two games in one.',
 });
+
+/* ---------- 第 6 批：作品详情页正文 —— code-system（代码编写系统）---------- */
+Object.assign(window.ALAN_TEXT_I18N.en, {
+  '代码编写系统 · AlanLumier 作品详情': 'Code Writing System · AlanLumier project',
+  '代码编写系统': 'Code Writing System',
+  '/ 代码编写系统': '/ Code Writing System',
+  '可视化拖拽生成 C++ 代码，降低编程入门门槛，助力机器人编程学习。':
+    'Generate C++ code by dragging blocks — lowering the barrier to entry for robotics programming.',
+  '教育工具': 'Education tool',
+  '拖拽编程': 'Drag-and-drop coding',
+  '机器人': 'Robotics',
+  '面向机器人编程学习场景的可视化编程系统：把繁琐的 C++ 语法封装成可视化的积木块，通过拖拽、连线与参数配置，即可自动生成可直接编译运行的 C++ 代码。让初学者把注意力放在逻辑本身，而不是被语法细节绊住。':
+    'A visual programming system for learning robotics: it wraps fiddly C++ syntax into visual blocks, so dragging, connecting and configuring parameters produces compilable C++ automatically. Beginners can focus on logic instead of being tripped up by syntax.',
+  '目标语言': 'Target language',
+  '交互方式': 'Interaction',
+  '可视化拖拽': 'Visual drag-and-drop',
+  '机器人编程教学': 'Robotics programming education',
+  '拖拽式搭建：将逻辑块拖入画布，按顺序与条件组织程序结构。':
+    'Drag to build: drop logic blocks onto the canvas and organise them by sequence and condition.',
+  '参数可视化配置：数值、条件、循环次数等参数以表单方式设置。':
+    'Visual parameters: set values, conditions and loop counts through simple forms.',
+  '一键生成 C++ 代码：搭建完成后自动输出完整可编译的源码。':
+    'One-click C++ generation: a complete, compilable source file is produced when you are done.',
+  '内置常用积木：涵盖传感器读取、电机控制、循环判断等机器人常用模块。':
+    'Built-in blocks: common robotics modules such as sensor reading, motor control and loops.',
+  '即时预览：右侧实时同步代码，边拖边看。':
+    'Live preview: the code pane updates as you drag.',
+  '前端交互采用原生事件驱动，拖拽与连线逻辑完全本地执行。':
+    'The front end is driven by native events, with dragging and wiring handled entirely locally.',
+  '代码生成引擎将积木节点映射为 C++ 语法片段，支持嵌套与顺序组合。':
+    'The generator maps block nodes to C++ fragments, supporting nesting and sequential composition.',
+  '内置语法模板库：包含头文件、主函数、传感器与控制语句模板。':
+    'A built-in template library: headers, main function, sensor and control statement templates.',
+  '错误兜底：未连接的积木自动忽略并给出提示，不生成残缺代码。':
+    'Safe by default: unconnected blocks are ignored with a hint, so no broken code is emitted.',
+  '从左侧积木库拖出所需模块到画布，按逻辑顺序排列。':
+    'Drag the blocks you need from the library on the left onto the canvas, in logical order.',
+  '点击积木可展开参数面板，填写具体数值或选择项。':
+    'Click a block to open its parameter panel and fill in values or choices.',
+  '点击「生成代码」右侧即输出 C++ 源码，可直接复制到 IDE 编译。':
+    'Click Generate code and the C++ source appears on the right, ready to copy into your IDE.',
+  '建议配合机器人套件教学使用，先搭积木、再读生成的代码。':
+    'Best used alongside a robotics kit: build with blocks first, then read the generated code.',
+  '当前版本：新增循环嵌套与条件分支积木，代码生成稳定性优化。':
+    'Current version: added nested-loop and conditional branch blocks, improved generation stability.',
+  '支持传感器模块与多积木组合。': 'Added sensor modules and multi-block composition.',
+  '初版：基础顺序结构拖拽生成。':
+    'First release: drag-and-drop generation of basic sequential structures.',
+});
