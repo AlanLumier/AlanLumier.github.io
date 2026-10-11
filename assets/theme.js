@@ -18,7 +18,9 @@
   function saved() {
     try {
       var value = localStorage.getItem(KEY);
-      if (value === 'dark' || value === 'light') return value;
+      // 'auto' = 跟随系统。用户要求的第三档，与显式选择区分开：
+      // 显式选择后就不该再被系统设置覆盖。
+      if (value === 'dark' || value === 'light' || value === 'auto') return value;
     } catch (e) { /* 隐私模式下 localStorage 可能不可用 */ }
     return null;
   }
@@ -30,8 +32,29 @@
   }
 
   function current() {
-    // 优先级：用户显式选择 > 系统偏好 > 默认暗色
-    return saved() || (prefersLight() ? 'light' : 'dark');
+    // 优先级：显式选择（dark/light）> 跟随系统（auto 或从未选择过）
+    var s = saved();
+    if (s === 'dark' || s === 'light') return s;
+    return prefersLight() ? 'light' : 'dark';
+  }
+
+  /* 三档循环：深色 → 浅色 → 跟随系统 → 深色
+     之所以要有「跟随系统」这一档，是因为只有二档时，用户在系统层面
+     切换深色模式后，本站不会跟着变。 */
+  var MODES = ['dark', 'light', 'auto'];
+  function mode() { return saved() || 'auto'; }
+  function nextMode() {
+    return MODES[(MODES.indexOf(mode()) + 1) % MODES.length];
+  }
+  function isAuto() { return mode() === 'auto'; }
+  function modeLabel() {
+    if (isAuto()) return '跟随系统（当前' + (prefersLight() ? '浅色' : '深色') + '）';
+    return mode() === 'dark' ? '深色' : '浅色';
+  }
+
+  function setMode(next) {
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    apply(current());
   }
 
   function apply(theme) {
@@ -56,14 +79,15 @@
       // 两个处理器各翻一次 = 翻回原样，表现就是「点了没反应、黑色圆形点了没用」。
       // 这里用捕获阶段抢在前面执行，并阻止后续处理器，确保只翻一次。
       event.stopImmediatePropagation();
-      // 以**当前 DOM 上的主题**为准来翻，而不是以 localStorage 为准 ——
-      // 后者可能与页面实际显示的状态不一致（页面自带脚本可能没同步写存储）。
-      var now = root.getAttribute('data-theme') || current();
-      var next = now === 'dark' ? 'light' : 'dark';
+      // 三档循环：深色 → 浅色 → 跟随系统 → 深色
+      var next = nextMode();
       try { localStorage.setItem(KEY, next); } catch (e) {}
-      apply(next);
-      // 页面自带的按钮要靠自己的 CSS 切图标，这里补一个提示属性
-      toggle.setAttribute('data-theme-state', next);
+      apply(current());
+      // 页面自带的按钮要靠自己的 CSS 切图标，这里补两个提示属性
+      toggle.setAttribute('data-theme-state', current());
+      toggle.setAttribute('data-theme-mode', next);
+      toggle.setAttribute('title', '切换主题（当前：' + modeLabel() + '）');
+      toggle.setAttribute('aria-label', '切换主题（当前：' + modeLabel() + '）');
     }, true);
   }
 
@@ -91,6 +115,11 @@
       '.alan-theme-btn:hover{transform:scale(1.08);border-color:var(--accent,#fff);}',
       '.alan-theme-btn:focus-visible{outline:2px solid var(--accent,#fff);outline-offset:3px;}',
       '.alan-theme-btn svg{width:20px;height:20px;display:block;}',
+      /* 跟随系统时在右下角点一个小圆点，与手动选择的两种状态区分开 */
+      '.alan-theme-btn[data-auto="1"]::after{content:"";position:absolute;right:6px;bottom:6px;',
+      'width:6px;height:6px;border-radius:50%;background:var(--accent,#fff);',
+      'box-shadow:0 0 0 1.5px var(--card-bg,#0a0a0a);}',
+      '.alan-theme-btn{position:fixed;}',
       /* 亮色下按钮用白底黑图标，暗色下黑底白图标 —— 只靠明度区分，不引入颜色 */
       '@media (max-width:560px){.alan-theme-btn{top:10px;right:10px;width:36px;height:36px;}}',
     ].join('');
@@ -106,7 +135,10 @@
   function paint(button) {
     // 当前是暗色 → 显示太阳（点了会变亮）；亮色 → 显示月亮
     button.innerHTML = current() === 'dark' ? SUN : MOON;
-    var label = current() === 'dark' ? '切换到浅色主题' : '切换到深色主题';
+    // 跟随系统时在角上加一个小圆点，让「这一档和手动选的不一样」看得出来
+    button.setAttribute('data-auto', isAuto() ? '1' : '0');
+    var label = '切换主题（当前：' + modeLabel() + '，点击切到'
+      + ({ dark: '浅色', light: '跟随系统', auto: '深色' })[mode()] + '）';
     button.setAttribute('aria-label', label);
     button.setAttribute('title', label);
   }
@@ -120,9 +152,7 @@
     button.className = 'alan-theme-btn';
     paint(button);
     button.addEventListener('click', function () {
-      var next = current() === 'dark' ? 'light' : 'dark';
-      try { localStorage.setItem(KEY, next); } catch (e) {}
-      apply(next);
+      setMode(nextMode());       // 三档循环：深色 → 浅色 → 跟随系统
       paint(button);
     });
     // 别的地方（如 storage 事件、页面自带按钮）改了主题，这里也要跟着换图标
@@ -137,11 +167,17 @@
     ensureToggle();
   }
 
-  // 跟随系统主题变化（仅当用户没有显式选择时）
+  // 跟随系统主题变化：在「跟随系统」这一档下（含从未选择过），系统切换时本站跟着变
   try {
     if (window.matchMedia) {
       var query = window.matchMedia('(prefers-color-scheme: light)');
-      var listener = function () { if (!saved()) apply(current()); };
+      var listener = function () {
+        if (isAuto()) {
+          apply(current());
+          var btn = document.querySelector('.alan-theme-btn');
+          if (btn) paint(btn);
+        }
+      };
       if (query.addEventListener) query.addEventListener('change', listener);
       else if (query.addListener) query.addListener(listener);
     }
