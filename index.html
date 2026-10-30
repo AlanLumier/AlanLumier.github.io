@@ -194,6 +194,26 @@
       color: var(--text-secondary);
       font-size: 13px;
     }
+
+    /* 圆形扩散转场（View Transitions API） */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+      mix-blend-mode: normal;
+    }
+
+    ::view-transition-new(root) {
+      animation: circular-reveal 0.5s ease-out;
+    }
+
+    @keyframes circular-reveal {
+      from {
+        clip-path: circle(0 at var(--click-x, 50%) var(--click-y, 50%));
+      }
+      to {
+        clip-path: circle(var(--click-r, 100vmax) at var(--click-x, 50%) var(--click-y, 50%));
+      }
+    }
   </style>
 </head>
 <body>
@@ -246,12 +266,35 @@
     // 让页脚年份自动更新，避免每年手动修改
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // 点击切换主题，并记住用户选择
-    themeToggle.addEventListener("click", function () {
-      var current = document.documentElement.getAttribute("data-theme");
-      var next = current === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
+    // 点击切换主题，并记住用户选择（带圆形扩散转场）
+    themeToggle.addEventListener("click", function (event) {
+      var next =
+        document.documentElement.getAttribute("data-theme") === "dark"
+          ? "light"
+          : "dark";
+
+      // 以点击位置为圆心，计算能覆盖整个屏幕的扩散半径
+      var x = event.clientX;
+      var y = event.clientY;
+      var radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
+      document.documentElement.style.setProperty("--click-x", x + "px");
+      document.documentElement.style.setProperty("--click-y", y + "px");
+      document.documentElement.style.setProperty("--click-r", radius + "px");
+
+      var applyTheme = function () {
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      };
+
+      // 支持 View Transitions API 时使用圆形扩散转场，否则直接切换
+      if (document.startViewTransition) {
+        document.startViewTransition(applyTheme);
+      } else {
+        applyTheme();
+      }
     });
   </script>
 </body>
