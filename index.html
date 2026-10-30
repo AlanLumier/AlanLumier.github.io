@@ -93,16 +93,39 @@
       letter-spacing: 0.5px;
     }
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: 0 10px 30px rgba(31, 36, 48, 0.06);
+    .hero {
       width: 100%;
-      max-width: 560px;
-      padding: 48px 40px;
+      max-width: 720px;
+      padding: 24px;
       text-align: center;
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .greeting {
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.5px;
+      margin-top: 24px;
+    }
+
+    .wave {
+      display: inline-block;
+      animation: wave 1.6s ease-in-out infinite;
+      transform-origin: 70% 70%;
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: rotate(0); }
+      20% { transform: rotate(16deg); }
+      40% { transform: rotate(-6deg); }
+      60% { transform: rotate(12deg); }
+      80% { transform: rotate(-4deg); }
+    }
+
+    @media (max-width: 480px) {
+      .greeting {
+        font-size: 32px;
+      }
     }
 
     .theme-toggle {
@@ -141,13 +164,13 @@
     }
 
     .avatar {
-      width: 88px;
-      height: 88px;
-      margin: 0 auto 20px;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto;
       border-radius: 50%;
       background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: #fff;
-      font-size: 40px;
+      font-size: 44px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -156,27 +179,9 @@
     }
 
     .tagline {
-      margin-top: 8px;
+      margin-top: 16px;
       color: var(--text-secondary);
-      font-size: 16px;
-    }
-
-    .divider {
-      width: 48px;
-      height: 3px;
-      margin: 24px auto;
-      border-radius: 2px;
-      background: var(--accent);
-    }
-
-    .about {
-      text-align: left;
-      color: var(--text-secondary);
-      font-size: 15px;
-    }
-
-    .about p + p {
-      margin-top: 10px;
+      font-size: 18px;
     }
 
     .links {
@@ -279,19 +284,10 @@
     </button>
   </header>
 
-  <main class="card">
+  <main class="hero">
     <div class="avatar" aria-hidden="true">A</div>
+    <h1 class="greeting">你好，我是 AlanLumier <span class="wave">👋</span></h1>
     <p class="tagline">欢迎来到我的个人空间</p>
-    <div class="divider"></div>
-
-    <section class="about">
-      <p>
-        你好，我是 Alan。这里是我的个人空间，用来记录和分享我的想法、项目与生活。
-      </p>
-      <p>
-        目前内容还在逐步完善中，敬请期待。
-      </p>
-    </section>
 
     <nav class="links">
       <a class="btn btn-primary" href="https://github.com/AlanLumier" target="_blank" rel="noopener">
