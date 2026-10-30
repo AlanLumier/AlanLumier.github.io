@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Alan Lumiere 的个人空间" />
+  <title>Alan Lumiere · 个人空间</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2430;
+      --text-secondary: #5b6472;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --border: #e6e8ef;
+      --radius: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(31, 36, 48, 0.06);
+      width: 100%;
+      max-width: 560px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+      font-size: 40px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .tagline {
+      margin-top: 8px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 3px;
+      margin: 24px auto;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    .about {
+      text-align: left;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    .about p + p {
+      margin-top: 10px;
+    }
+
+    .links {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="avatar" aria-hidden="true">A</div>
+    <h1>Alan Lumiere</h1>
+    <p class="tagline">欢迎来到我的个人空间</p>
+    <div class="divider"></div>
+
+    <section class="about">
+      <p>
+        你好，我是 Alan。这里是我的个人空间，用来记录和分享我的想法、项目与生活。
+      </p>
+      <p>
+        目前内容还在逐步完善中，敬请期待。
+      </p>
+    </section>
+
+    <nav class="links">
+      <a class="btn btn-primary" href="https://github.com/AlanLumier" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> Alan Lumiere
+  </footer>
+
+  <script>
+    // 让页脚年份自动更新，避免每年手动修改
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
