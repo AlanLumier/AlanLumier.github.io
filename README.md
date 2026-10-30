@@ -1,4 +1,4 @@
-# Alan Lumiere
+# AlanLumier
 
 个人空间网站（GitHub Pages）。
 
