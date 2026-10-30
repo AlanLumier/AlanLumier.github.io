@@ -213,9 +213,37 @@
     }
 
     .footer {
-      margin-top: 24px;
+      margin-top: 48px;
+      text-align: center;
       color: var(--text-secondary);
       font-size: 13px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .footer.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer::before {
+      content: "";
+      display: block;
+      width: 100%;
+      max-width: 480px;
+      height: 1px;
+      margin: 0 auto 20px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    .footer-note {
+      margin-bottom: 8px;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      opacity: 0.85;
     }
 
     /* 圆形扩散转场（View Transitions API） */
@@ -286,8 +314,9 @@
     </nav>
   </main>
 
-  <footer class="footer">
-    © <span id="year"></span> AlanLumier
+  <footer class="footer" id="footer">
+    <p class="footer-note">记录与分享我的想法、项目与生活</p>
+    <p class="footer-copyright">Copyright © <span id="year"></span> AlanLumier</p>
   </footer>
 
   <script>
@@ -295,6 +324,22 @@
 
     // 让页脚年份自动更新，避免每年手动修改
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // 页脚淡入：进入视口时添加 is-visible 类触发淡入
+    var footerEl = document.getElementById("footer");
+    if ("IntersectionObserver" in window) {
+      var footerObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            footerEl.classList.add("is-visible");
+            footerObserver.unobserve(footerEl);
+          }
+        });
+      }, { threshold: 0.15 });
+      footerObserver.observe(footerEl);
+    } else {
+      footerEl.classList.add("is-visible");
+    }
 
     // 点击切换主题，并记住用户选择（带圆形扩散转场）
     themeToggle.addEventListener("click", function (event) {
