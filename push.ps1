@@ -10,3 +10,6 @@ if (-not $token) {
 }
 
 git push "https://AlanLumier:$token@github.com/AlanLumier/AlanLumier.github.io.git" main
+
+# 同步远程追踪分支，避免 git status 显示虚假的 ahead/behind
+git fetch origin main
