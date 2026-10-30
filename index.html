@@ -215,8 +215,6 @@
     .footer {
       margin-top: 48px;
       text-align: center;
-      color: var(--text-secondary);
-      font-size: 13px;
       opacity: 0;
       transform: translateY(16px);
       transition: opacity 0.7s ease, transform 0.7s ease;
@@ -227,23 +225,11 @@
       transform: translateY(0);
     }
 
-    .footer::before {
-      content: "";
-      display: block;
-      width: 100%;
-      max-width: 480px;
-      height: 1px;
-      margin: 0 auto 20px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-    }
-
-    .footer-note {
-      margin-bottom: 8px;
-    }
-
-    .footer-copyright {
-      font-size: 12px;
-      opacity: 0.85;
+    .footer-brand {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
     }
 
     /* 圆形扩散转场（View Transitions API） */
@@ -315,15 +301,11 @@
   </main>
 
   <footer class="footer" id="footer">
-    <p class="footer-note">记录与分享我的想法、项目与生活</p>
-    <p class="footer-copyright">Copyright © <span id="year"></span> AlanLumier</p>
+    <span class="footer-brand">AlanLumier</span>
   </footer>
 
   <script>
     var themeToggle = document.getElementById("theme-toggle");
-
-    // 让页脚年份自动更新，避免每年手动修改
-    document.getElementById("year").textContent = new Date().getFullYear();
 
     // 页脚淡入：进入视口时添加 is-visible 类触发淡入
     var footerEl = document.getElementById("footer");
