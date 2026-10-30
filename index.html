@@ -214,6 +214,11 @@
         clip-path: circle(var(--click-r, 100vmax) at var(--click-x, 50%) var(--click-y, 50%));
       }
     }
+
+    /* 转场播放期间禁用普通 transition，避免新快照捕获到过渡中间色 */
+    .vt-active * {
+      transition: none !important;
+    }
   </style>
 </head>
 <body>
@@ -291,7 +296,12 @@
 
       // 支持 View Transitions API 时使用圆形扩散转场，否则直接切换
       if (document.startViewTransition) {
-        document.startViewTransition(applyTheme);
+        var rootEl = document.documentElement;
+        rootEl.classList.add("vt-active");
+        var vt = document.startViewTransition(applyTheme);
+        vt.finished.finally(function () {
+          rootEl.classList.remove("vt-active");
+        });
       } else {
         applyTheme();
       }
