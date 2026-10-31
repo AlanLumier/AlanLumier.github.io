@@ -1,7 +1,7 @@
 /* Morphicons 1.7.1 (MIT) — bundled to a plain script for file:// compatibility */
 (function (global) {
 "use strict";
-var __exports = {};
+var __mod_0 = {}, __mod_1 = {}, __mod_2 = {}, __mod_3 = {}, __mod_4 = {};
 
 (function () {
 //#region src/core/parse.ts
@@ -252,6 +252,8 @@ function parsePath(d) {
 function fmt(v) {
 	return String(Math.round(v * 100) / 100);
 }
+/** Sampled subpaths → polyline `d` attribute. `closed[k]` appends Z to
+*  subpath k (closed loops in flight); without flags everything is open. */
 function serialize(subs, closed) {
 	let d = "";
 	for (let k = 0; k < subs.length; k++) {
@@ -266,6 +268,8 @@ function serialize(subs, closed) {
 function fmtCanon(v) {
 	return String(Math.round(v * 1e4) / 1e4);
 }
+/** Cubic subpaths → canonical `d`, quantized to 4 decimals (engine-stable
+*  bytes; see fmtCanon). */
 function cubicsToPathD(paths) {
 	let d = "";
 	for (const { pts, closed } of paths) {
@@ -277,6 +281,7 @@ function cubicsToPathD(paths) {
 }
 //#endregion
 //#region src/core/normalize.ts
+/** Control-point offset for a quarter circle: (4/3)·tan(π/8) ≈ 0.5523. */
 const KAPPA = 4 / 3 * Math.tan(Math.PI / 8);
 const TAU = 2 * Math.PI;
 function builder(x0, y0) {
@@ -460,6 +465,7 @@ function rectPath(attrs) {
 	cubic(x, ya - ky, xa - kx, y, xa, y);
 	return finish(true);
 }
+/** Icon (IconNode or `d` string) → list of cubic subpaths. */
 function iconToCubics(input) {
 	const out = [];
 	const push = (p) => {
@@ -516,6 +522,14 @@ function parseViewBox(vb) {
 		h
 	];
 }
+/** Re-grids an icon drawn on `viewBox` onto the shared `grid` (24 by default),
+*  centred and preserving aspect ratio — the SVG `xMidYMid meet` rule.
+*
+*  Both endpoints of a morph must live on the same coordinate space. Lucide and
+*  Tabler already draw on 24×24; packs on 20 (Heroicons solid) or 32 (Carbon)
+*  do not, and mixing them unfitted makes Procrustes read the scale/offset gap
+*  as rotation. Apply once at module scope (not per render) and pass the
+*  resulting `d` anywhere an icon is accepted. */
 function fitIcon(input, viewBox, grid = 24) {
 	const [minX, minY, w, h] = parseViewBox(viewBox);
 	const s = Math.min(grid / w, grid / h);
@@ -529,16 +543,17 @@ function fitIcon(input, viewBox, grid = 24) {
 	return cubicsToPathD(paths);
 }
 //#endregion
-__exports.i = serialize;
-__exports.n = iconToCubics;
-__exports.r = cubicsToPathD;
-__exports.t = fitIcon;
+__mod_0.i = serialize;
+__mod_0.n = iconToCubics;
+__mod_0.r = cubicsToPathD;
+__mod_0.t = fitIcon;
 
 })();
 
 (function () {
-var iconToCubics = __exports.n;
+var iconToCubics = __mod_0.n;
 //#region src/core/interpolate.ts
+/** Preallocated output buffers for a plan (zero allocation per frame). */
 function allocOutputs(plan) {
 	return plan.items.map(() => new Float64Array(2 * plan.n));
 }
@@ -570,6 +585,7 @@ function interpPolar(plan, t, out) {
 		}
 	}
 }
+/** Raw coordinate lerp (same correspondence, no decomposition). */
 function interpLinear(plan, t, out) {
 	for (let k = 0; k < plan.items.length; k++) {
 		const it = plan.items[k];
@@ -583,9 +599,17 @@ function interpLinear(plan, t, out) {
 }
 //#endregion
 //#region src/core/plan.ts
+/** Weight of |ΔL| in the subpath pairing cost. */
 const LEN_WEIGHT = .35;
+/** λ of the minimal-rotation tie-break: score = res + λ·|θ|/π.
+*  It exists because shapes symmetric under inversion (lines) tie in
+*  residual for both traversal orientations yet produce different rotations. */
 const LAMBDA = .05;
+/** Global residual below which the whole icon counts as congruent and the
+*  plan shares (θ, σ) across all items (hybrid variant of Procrustes). */
 const GLOBAL_EPS = .005;
+/** Bounds for exhaustive matching; above them it falls back to greedy with
+*  repair. 8! = 40 320 permutations / 1e5 assignments — both sub-ms. */
 const PERM_MAX = 8;
 const SURJ_MAX = 1e5;
 function centroid(p) {
@@ -613,6 +637,8 @@ function reversePts(p) {
 	}
 	return out;
 }
+/** Circular re-indexing of a loop: out[i] = p[(i+off) mod n]. Same point
+*  set, different cut point — the circular degree of freedom of closed paths. */
 function rotatePts(p, off) {
 	const n = p.length / 2;
 	const out = new Float64Array(2 * n);
@@ -623,6 +649,9 @@ function rotatePts(p, off) {
 	}
 	return out;
 }
+/** Optimal similarity (θ, σ) minimizing Σ|σ·R(θ)·(a−c_A) − (b−c_B)|².
+*  θ* = atan2(S_xy − S_yx, S_xx + S_yy); σ* by zero derivative.
+*  res = RMS residual normalized by b's energy (0 → same shape). */
 function procrustes(a, b, ca, cb) {
 	const n = a.length / 2;
 	let sxx = 0;
@@ -655,6 +684,11 @@ function procrustes(a, b, ca, cb) {
 		res
 	};
 }
+/** Best index-to-index correspondence between a and b: tries both traversal
+*  directions and, if there is a closed loop, its N circular offsets,
+*  scoring with score = res + λ·|θ|/π. The freedom is applied to ONE cloud
+*  — the closed one (b if both are); varying both at once would be
+*  redundant. */
 function alignPair(aPts, bPts, aClosed = false, bClosed = false) {
 	const ca = centroid(aPts);
 	const cb = centroid(bPts);
@@ -836,6 +870,9 @@ function applyGlobal(items, n) {
 		};
 	}
 }
+/** Builds the morph plan between two lists of sampled subpaths. The plan is
+*  cacheable and serializable; it accepts any list — including intermediate
+*  shapes (interruptions). */
 function buildPlan(srcSubs, dstSubs) {
 	const p = srcSubs.length;
 	const q = dstSubs.length;
@@ -894,6 +931,7 @@ function buildPlan(srcSubs, dstSubs) {
 }
 //#endregion
 //#region src/core/resample.ts
+/** Default angular threshold for a segment joint to count as a corner. */
 const CORNER_THRESHOLD = Math.PI / 8;
 const GX = [
 	.18343464249564978,
@@ -952,6 +990,9 @@ function tangent(p, k, atEnd) {
 	}
 	return null;
 }
+/** Segment boundaries (index of the segment starting at the corner) whose
+*  tangent discontinuity exceeds the threshold. For closed paths this
+*  includes the closing joint (boundary = first active segment). */
 function detectCorners(path, threshold = CORNER_THRESHOLD) {
 	const p = path.pts;
 	const m = (p.length / 2 - 1) / 3;
@@ -987,6 +1028,11 @@ function invert(p, k, s, ls) {
 	}
 	return t;
 }
+/** Samples a cubic subpath at N points equidistant by arc length, anchoring
+*  corners and endpoints as exact samples. Returns Float64Array(2N). Closed
+*  paths distribute N intervals around the loop (without duplicating the
+*  first point); the circular start-point freedom is resolved by the plan's
+*  circular correspondence. */
 function resamplePath(path, N = 64, cornerThreshold = CORNER_THRESHOLD) {
 	const p = path.pts;
 	const m = (p.length / 2 - 1) / 3;
@@ -1071,6 +1117,8 @@ function resamplePath(path, N = 64, cornerThreshold = CORNER_THRESHOLD) {
 	}
 	return out;
 }
+/** Full input pipeline: icon → cubics → sampled subpaths with their
+*  topology (the plan needs to know which subpaths are closed loops). */
 function resampleIcon(input, N = 64) {
 	return iconToCubics(input).map((path) => ({
 		pts: resamplePath(path, N),
@@ -1088,11 +1136,13 @@ var Spring = class {
 		this.k = k;
 		this.c = c;
 	}
+	/** Starts (or restarts mid-flight) preserving velocity. */
 	start() {
 		this.x = 0;
 		if (this.v > 14) this.v = 14;
 		if (this.v < -14) this.v = -14;
 	}
+	/** Advances dt seconds. Returns true on settle (|1−x| < 0.001 ∧ |v| < 0.02). */
 	step(dt) {
 		const steps = Math.max(1, Math.min(16, Math.ceil(dt / (1 / 240))));
 		const s = dt / steps;
@@ -1104,42 +1154,46 @@ var Spring = class {
 		return Math.abs(1 - this.x) < .001 && Math.abs(this.v) < .02;
 	}
 };
+/** Spring presets (ζ = c/(2√k)) with the API's public names. */
 const SPRING_PRESETS = {
+	/** ζ = 1.00 — critically damped, no overshoot. */
 	smooth: {
 		k: 170,
 		c: 26
 	},
+	/** ζ = 0.73 — fast, subtle overshoot. */
 	snappy: {
 		k: 420,
 		c: 30
 	},
+	/** ζ = 0.40 — playful. */
 	bouncy: {
 		k: 300,
 		c: 14
 	}
 };
 //#endregion
-__exports.a = buildPlan;
-__exports.c = interpPolar;
-__exports.i = resamplePath;
-__exports.n = Spring;
-__exports.o = allocOutputs;
-__exports.r = resampleIcon;
-__exports.s = interpLinear;
-__exports.t = SPRING_PRESETS;
+__mod_1.a = buildPlan;
+__mod_1.c = interpPolar;
+__mod_1.i = resamplePath;
+__mod_1.n = Spring;
+__mod_1.o = allocOutputs;
+__mod_1.r = resampleIcon;
+__mod_1.s = interpLinear;
+__mod_1.t = SPRING_PRESETS;
 
 })();
 
 (function () {
-var buildPlan = __exports.a;
-var interpPolar = __exports.c;
-var Spring = __exports.n;
-var allocOutputs = __exports.o;
-var resampleIcon = __exports.r;
-var SPRING_PRESETS = __exports.t;
-var serialize = __exports.i;
-var iconToCubics = __exports.n;
-var cubicsToPathD = __exports.r;
+var buildPlan = __mod_1.a;
+var interpPolar = __mod_1.c;
+var Spring = __mod_1.n;
+var allocOutputs = __mod_1.o;
+var resampleIcon = __mod_1.r;
+var SPRING_PRESETS = __mod_1.t;
+var serialize = __mod_0.i;
+var iconToCubics = __mod_0.n;
+var cubicsToPathD = __mod_0.r;
 //#region src/dom/index.ts
 const tickers = /* @__PURE__ */ new Set();
 let rafId = 0;
@@ -1181,6 +1235,10 @@ function sampledOf(icon) {
 	}
 	return s;
 }
+/** Canonical `d` of an icon: the input string verbatim, or the real cubics
+*  quantized to 4 decimals (the at-rest snap; engine-stable bytes so SSR
+*  hydration matches, see fmtCanon in core/serialize). Exported because it
+*  is what a binding renders at SSR/rest before any runtime exists. */
 function canonicalD(icon) {
 	if (typeof icon === "string") return icon;
 	let d = canon.get(icon);
@@ -1212,6 +1270,7 @@ function resolveSpring(s) {
 		c: s?.damping ?? d.c
 	};
 }
+/** Creates the morph instance over a `<path>` and paints the initial icon. */
 function createMorph(el, icon, options) {
 	const spring = new Spring();
 	let reducedMotion = options?.reducedMotion ?? "never";
@@ -1256,6 +1315,8 @@ function createMorph(el, icon, options) {
 		spring.v = 0;
 		el.setAttribute("d", canonicalD(target));
 	};
+	/** The current shape as plan source: the at-rest icon, or the rendered
+	*  buffers (already N points per subpath). */
 	const snapshot = () => {
 		const p = plan;
 		const o = out;
@@ -1277,6 +1338,7 @@ function createMorph(el, icon, options) {
 		target = icon;
 		settle();
 	};
+	/** True when the policy says this morphTo must jump instead of flying. */
 	const motionOff = () => {
 		if (reducedMotion === "always") return true;
 		if (reducedMotion !== "user") return false;
@@ -1335,20 +1397,22 @@ function createMorph(el, icon, options) {
 	};
 }
 //#endregion
-__exports.canonicalD = canonicalD;
-__exports.createMorph = createMorph;
+__mod_2.canonicalD = canonicalD;
+__mod_2.createMorph = createMorph;
 
 })();
 
 (function () {
-var buildPlan = __exports.a;
-var interpPolar = __exports.c;
-var allocOutputs = __exports.o;
-var resampleIcon = __exports.r;
-var serialize = __exports.i;
-var canonicalD = __exports.canonicalD;
-var createMorph = __exports.createMorph;
+var buildPlan = __mod_1.a;
+var interpPolar = __mod_1.c;
+var allocOutputs = __mod_1.o;
+var resampleIcon = __mod_1.r;
+var serialize = __mod_0.i;
+var canonicalD = __mod_2.canonicalD;
+var createMorph = __mod_2.createMorph;
 //#region src/dom/controller.ts
+/** Frozen shape of the from→to pair at t, using the pure core (SSR-safe).
+*  At exact endpoints returns the canonical `d` (real curves, not polyline). */
 function frozenD(from, to, t) {
 	if (t <= 0) return canonicalD(from);
 	if (t >= 1) return canonicalD(to);
@@ -1357,11 +1421,31 @@ function frozenD(from, to, t) {
 	interpPolar(plan, t, out);
 	return serialize(out, plan.items.map((it) => it.closed));
 }
+/** The initial d is a constant for every binding: computed once from the
+*  mount-time props (server and client produce the same string → hydration
+*  without mismatch) and from then on only the driver mutates it outside the
+*  template. */
 function computeInitialD({ icon, from, to, progress }) {
 	if (from !== void 0 && to !== void 0) return frozenD(from, to, progress ?? 0);
 	const first = icon ?? from ?? to;
 	return first !== void 0 ? canonicalD(first) : "";
 }
+/** Per-instance driver state — the exact logic of the React/Vue bindings
+*  (mount, mode watch, controlled seek with re-basing, imperative). Takes the
+*  init-time props: they seed the watch baselines so a watcher that fires on
+*  mount (Svelte's $effect, unlike Vue's watch) is a no-op. All change
+*  detection lives HERE, under tsc — the shells only wire their reactive
+*  surface to these methods.
+*
+*  Lifecycle contract (shared verbatim by the bindings):
+*  - Lazy driver: an iconless mount keeps the element and births the driver
+*    on the FIRST icon that shows up (prop or imperative). `morphTo` with no
+*    driver behaves as `set` — there is nothing to fly from.
+*  - Controlled wins: while `from` and `to` are both present the pair owns
+*    the path and `icon` changes are ignored; dropping the pair hands the
+*    path back to `icon`.
+*  - Every exit from controlled mode (imperative call or icon takeover)
+*    invalidates the frozen pair, so returning to it re-bases on `from`. */
 function createController({ icon, from, to, progress, reducedMotion }) {
 	let el = null;
 	let dead = false;
@@ -1374,12 +1458,14 @@ function createController({ icon, from, to, progress, reducedMotion }) {
 	let prevFrom = from;
 	let prevTo = to;
 	let prevProgress = progress;
+	/** Driver birth, lazy included: the first icon to show up creates it. */
 	const ensure = (birth) => {
 		if (morph) return morph;
 		if (dead || !el) return null;
 		morph = createMorph(el, birth, { reducedMotion: rm });
 		return morph;
 	};
+	/** Controlled mode: freeze the pair at `progress` via seek (no spring). */
 	const applyPair = (from, to, progress) => {
 		const m = morph;
 		if (!m) return;
@@ -1430,6 +1516,9 @@ function createController({ icon, from, to, progress, reducedMotion }) {
 			based = false;
 			pair = null;
 		},
+		/** Prop watcher: ONE owner decides per run — the controlled pair while it
+		*  is fully present, `icon` otherwise (mount doesn't fire thanks to the
+		*  init-time baselines). */
 		watch({ icon, from, to, progress, spring, reducedMotion }) {
 			rm = reducedMotion ?? "never";
 			if (morph) morph.reducedMotion = rm;
@@ -1469,14 +1558,14 @@ function createController({ icon, from, to, progress, reducedMotion }) {
 	};
 }
 //#endregion
-__exports.n = createController;
-__exports.t = computeInitialD;
+__mod_3.n = createController;
+__mod_3.t = computeInitialD;
 
 })();
 
 (function () {
-var createController = __exports.n;
-var computeInitialD = __exports.t;
+var createController = __mod_3.n;
+var computeInitialD = __mod_3.t;
 //#region src/element/index.ts
 const SVG_NS = "http://www.w3.org/2000/svg";
 const REACTIVE = [
@@ -1647,6 +1736,8 @@ var MorphIconElement = class extends Base {
 		}
 		this.#watch();
 	}
+	/** A property assigned before the element was defined lands as an own
+	*  value that shadows the accessor; re-route it through the setter. */
 	#upgradeProperty(key) {
 		if (Object.hasOwn(this, key)) {
 			const self = this;
@@ -1663,12 +1754,19 @@ var MorphIconElement = class extends Base {
 		}
 		ctrl.watch(this.#props);
 	}
+	/** Imperative call before the controller exists: adopt the icon as the
+	*  mount state AND exit controlled mode — "every imperative call
+	*  invalidates the frozen pair" must hold pre-connect too, or a pending
+	*  pair would win the mount and silently discard this call. */
 	#imperativeBeforeDriver(icon) {
 		this.#props.icon = icon;
 		this.#props.from = void 0;
 		this.#props.to = void 0;
 		this.#preConnectDirty = true;
 	}
+	/** SSR markup is adopted verbatim (the element never rewrites server bytes
+	*  at rest); without it, the element renders its own <svg> like the
+	*  framework shells do. */
 	#adoptOrRender() {
 		const existing = this.querySelector("path");
 		if (existing) {
@@ -1719,18 +1817,20 @@ var MorphIconElement = class extends Base {
 	}
 };
 let registered = false;
+/** Defines `<morph-icon>` (or a custom tag). Idempotent per tag; a no-op
+*  without a DOM (safe to call from code that also runs during SSR). */
 function defineMorphIcon(tag = "morph-icon") {
 	if (typeof customElements === "undefined" || customElements.get(tag)) return;
 	customElements.define(tag, registered ? class extends MorphIconElement {} : MorphIconElement);
 	registered = true;
 }
 //#endregion
-__exports.MorphIconElement = MorphIconElement;
-__exports.computeInitialD = computeInitialD;
-__exports.defineMorphIcon = defineMorphIcon;
+__mod_4.MorphIconElement = MorphIconElement;
+__mod_4.computeInitialD = computeInitialD;
+__mod_4.defineMorphIcon = defineMorphIcon;
 
 })();
 
-global.defineMorphIcon = __exports.defineMorphIcon;
-global.MorphIconElement = __exports.MorphIconElement;
+global.defineMorphIcon = __mod_4.defineMorphIcon;
+global.MorphIconElement = __mod_4.MorphIconElement;
 })(typeof window !== "undefined" ? window : globalThis);
