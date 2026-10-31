@@ -146,35 +146,8 @@
       color: var(--text);
     }
 
-    .theme-toggle .icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 20px;
-      height: 20px;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-    }
-
-    /* 月亮：浅色主题可见 */
-    .icon-moon {
-      opacity: 1;
-      transform: translate(-50%, -50%) rotate(0deg) scale(1);
-    }
-
-    /* 太阳：浅色主题隐藏 */
-    .icon-sun {
-      opacity: 0;
-      transform: translate(-50%, -50%) rotate(90deg) scale(0.3);
-    }
-
-    /* 暗色主题：月亮旋转缩小淡出，太阳旋转放大淡入 */
-    [data-theme="dark"] .icon-moon {
-      opacity: 0;
-      transform: translate(-50%, -50%) rotate(-90deg) scale(0.3);
-    }
-    [data-theme="dark"] .icon-sun {
-      opacity: 1;
-      transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    .theme-toggle morph-icon {
+      display: inline-flex;
     }
 
     .avatar {
@@ -283,20 +256,7 @@
   <header class="topbar">
     <span class="brand">AlanLumier</span>
     <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
-      <svg class="icon icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
-      <svg class="icon icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
+      <morph-icon id="theme-icon" size="20" stroke-width="2" color="currentColor"></morph-icon>
     </button>
   </header>
 
@@ -320,8 +280,6 @@
   </footer>
 
   <script>
-    var themeToggle = document.getElementById("theme-toggle");
-
     // 页脚淡入：进入视口时添加 is-visible 类触发淡入
     var footerEl = document.getElementById("footer");
     if ("IntersectionObserver" in window) {
@@ -337,15 +295,38 @@
     } else {
       footerEl.classList.add("is-visible");
     }
+  </script>
 
-    // 点击切换主题，并记住用户选择（带圆形扩散转场）
+  <script type="module">
+    import { defineMorphIcon } from "./dist/element.js";
+    defineMorphIcon();
+
+    var MOON = [["path", { d: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" }]];
+    var SUN = [
+      ["circle", { cx: "12", cy: "12", r: "5" }],
+      ["line", { x1: "12", y1: "1", x2: "12", y2: "3" }],
+      ["line", { x1: "12", y1: "21", x2: "12", y2: "23" }],
+      ["line", { x1: "4.22", y1: "4.22", x2: "5.64", y2: "5.64" }],
+      ["line", { x1: "18.36", y1: "18.36", x2: "19.78", y2: "19.78" }],
+      ["line", { x1: "1", y1: "12", x2: "3", y2: "12" }],
+      ["line", { x1: "21", y1: "12", x2: "23", y2: "12" }],
+      ["line", { x1: "4.22", y1: "19.78", x2: "5.64", y2: "18.36" }],
+      ["line", { x1: "18.36", y1: "5.64", x2: "19.78", y2: "4.22" }]
+    ];
+
+    var themeToggle = document.getElementById("theme-toggle");
+    var themeIcon = document.getElementById("theme-icon");
+    var isDark = function () {
+      return document.documentElement.getAttribute("data-theme") === "dark";
+    };
+
+    // 初始图标（birth，不触发动画）
+    themeIcon.icon = isDark() ? SUN : MOON;
+
+    // 点击切换主题（圆形扩散转场 + 图标形变）
     themeToggle.addEventListener("click", function (event) {
-      var next =
-        document.documentElement.getAttribute("data-theme") === "dark"
-          ? "light"
-          : "dark";
+      var next = isDark() ? "light" : "dark";
 
-      // 以点击位置为圆心，计算能覆盖整个屏幕的扩散半径
       var x = event.clientX;
       var y = event.clientY;
       var radius = Math.hypot(
@@ -361,7 +342,6 @@
         localStorage.setItem("theme", next);
       };
 
-      // 支持 View Transitions API 时使用圆形扩散转场，否则直接切换
       if (document.startViewTransition) {
         var rootEl = document.documentElement;
         rootEl.classList.add("vt-active");
@@ -372,6 +352,9 @@
       } else {
         applyTheme();
       }
+
+      // 月亮 ↔ 太阳形变
+      themeIcon.morphTo(next === "dark" ? SUN : MOON, "snappy");
     });
   </script>
 </body>
