@@ -17,6 +17,20 @@
       );
     })();
   </script>
+  <script>
+    // 首次访问（未完成引导设置）先进入 onboarding 引导页
+    (function () {
+      var saved = localStorage.getItem("oobe");
+      var done = false;
+      if (saved) {
+        try {
+          var d = JSON.parse(saved);
+          if (d && d.completedAt) done = true;
+        } catch (e) {}
+      }
+      if (!done) location.replace("onboarding.html");
+    })();
+  </script>
   <style>
     :root {
       --bg-gradient: linear-gradient(135deg, #ffeae1 0%, #b6faff 100%);
@@ -163,6 +177,13 @@
       align-items: center;
       justify-content: center;
       user-select: none;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .tagline {
@@ -356,6 +377,48 @@
       // 月亮 ↔ 太阳形变
       themeIcon.morphTo(next === "dark" ? SUN : MOON, "snappy");
     });
+  </script>
+
+  <script>
+    // 用引导页设置的名字 / 头像填充 Hero 区
+    (function () {
+      var saved = localStorage.getItem("oobe");
+      if (!saved) return;
+      var data;
+      try {
+        data = JSON.parse(saved);
+      } catch (e) {
+        return;
+      }
+      if (!data) return;
+
+      // 名字：替换问候语中的名字文本节点（保留挥手手势）
+      if (data.name) {
+        var greeting = document.querySelector(".greeting");
+        if (greeting) {
+          var prefix = data.language === "en" ? "Hi, I'm " : "你好，我是 ";
+          for (var i = 0; i < greeting.childNodes.length; i++) {
+            var node = greeting.childNodes[i];
+            if (node.nodeType === 3) {
+              node.textContent = prefix + data.name + " ";
+              break;
+            }
+          }
+        }
+      }
+
+      // 头像
+      if (data.avatar) {
+        var avatar = document.querySelector(".avatar");
+        if (avatar) {
+          avatar.innerHTML = "";
+          var img = document.createElement("img");
+          img.src = data.avatar;
+          img.alt = "";
+          avatar.appendChild(img);
+        }
+      }
+    })();
   </script>
 </body>
 </html>
