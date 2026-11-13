@@ -27,6 +27,12 @@
       --border: #e6e8ef;
       --radius: 16px;
       --glass: rgba(255, 255, 255, 0.55);
+      --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      /* 覆盖中文、日文、韩文、阿拉伯文、天城文、泰文等主要书写系统 */
+      --font-display: "Segoe UI", system-ui, "PingFang SC", "Microsoft YaHei",
+        "Hiragino Sans", "Yu Gothic", "Meiryo", "Malgun Gothic", "Nirmala UI",
+        "Leelawadee UI", Tahoma, sans-serif;
     }
 
     [data-theme="dark"] {
@@ -45,19 +51,22 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-        "Microsoft YaHei", sans-serif;
+      font-family: var(--font-ui);
       background: var(--bg-gradient);
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      padding-top: 84px;
       transition: color 0.3s ease;
     }
 
@@ -84,48 +93,6 @@
       letter-spacing: 0.5px;
     }
 
-    .hero {
-      width: 100%;
-      max-width: 720px;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .greeting {
-      font-size: 44px;
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: 0.5px;
-      margin-top: 24px;
-    }
-
-    .wave {
-      display: inline-block;
-      animation: wave 1.6s ease-in-out infinite;
-      transform-origin: 60% 85%;
-      vertical-align: middle;
-    }
-
-    .wave-hand {
-      display: block;
-      width: 0.92em;
-      height: 0.92em;
-    }
-
-    @keyframes wave {
-      0%, 100% { transform: rotate(0); }
-      20% { transform: rotate(16deg); }
-      40% { transform: rotate(-6deg); }
-      60% { transform: rotate(12deg); }
-      80% { transform: rotate(-4deg); }
-    }
-
-    @media (max-width: 480px) {
-      .greeting {
-        font-size: 32px;
-      }
-    }
-
     .theme-toggle {
       position: relative;
       width: 40px;
@@ -150,14 +117,177 @@
       display: inline-flex;
     }
 
+    /* ---------- 第一块：世界各地的欢迎语 ---------- */
+
+    .welcome {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 24px 104px;
+    }
+
+    .welcome-stage {
+      width: 100%;
+      max-width: 1080px;
+      /* 不加 min-width:0 时，nowrap 的整行最小宽度会把这块撑出视口 */
+      min-width: 0;
+      text-align: center;
+    }
+
+    .welcome-line {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      line-height: 1.14;
+      letter-spacing: 0.01em;
+      font-size: 88px;
+      transition: opacity 0.6s ease;
+    }
+
+    /* 每个字默认不可见，由 is-in / is-out 两个状态驱动动画 */
+    .welcome-char {
+      display: inline-block;
+      opacity: 0;
+      will-change: opacity, filter, transform;
+    }
+
+    .welcome-stage.is-in .welcome-char {
+      animation: char-in var(--char-in-duration) cubic-bezier(0.22, 0.68, 0.24, 1) both;
+      animation-delay: calc(var(--i) * var(--char-in-stagger));
+    }
+
+    .welcome-stage.is-out .welcome-char {
+      animation: char-out var(--char-out-duration) cubic-bezier(0.4, 0, 0.7, 1) both;
+      animation-delay: calc(var(--i) * var(--char-out-stagger));
+    }
+
+    /* 从虚空中浮现：模糊 + 上浮 + 极轻微放大 */
+    @keyframes char-in {
+      from {
+        opacity: 0;
+        filter: blur(14px);
+        transform: translateY(0.26em) scale(1.04);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* 再散回虚空 */
+    @keyframes char-out {
+      from {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
+      }
+      to {
+        opacity: 0;
+        filter: blur(16px);
+        transform: translateY(-0.22em) scale(0.98);
+      }
+    }
+
+    .welcome-label {
+      margin-top: 22px;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: var(--text-secondary);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .welcome-stage.is-in .welcome-label {
+      opacity: 0.85;
+    }
+
+    /* 用户偏好减少动效时：整行淡入淡出，不做逐字动画 */
+    .welcome-stage.is-reduced .welcome-char {
+      animation: none;
+      opacity: 1;
+    }
+
+    .welcome-stage.is-reduced .welcome-line {
+      opacity: 0;
+    }
+
+    .welcome-stage.is-reduced.is-in .welcome-line {
+      opacity: 1;
+    }
+
+    .welcome-stage.is-reduced.is-out .welcome-line {
+      opacity: 0;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--text-secondary);
+      text-decoration: none;
+      opacity: 0.75;
+      transition: opacity 0.2s ease;
+    }
+
+    .scroll-cue:hover {
+      opacity: 1;
+    }
+
+    .scroll-cue svg {
+      width: 18px;
+      height: 18px;
+      animation: cue-bob 1.8s ease-in-out infinite;
+    }
+
+    @keyframes cue-bob {
+      0%, 100% {
+        transform: translateY(0);
+        opacity: 0.7;
+      }
+      50% {
+        transform: translateY(5px);
+        opacity: 1;
+      }
+    }
+
+    /* ---------- 第二块：社交 ---------- */
+
+    .social {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px 96px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* 锚点跳转时避开顶部固定栏 */
+      scroll-margin-top: 76px;
+    }
+
     .avatar {
-      width: 96px;
-      height: 96px;
+      width: 56px;
+      height: 56px;
       margin: 0 auto;
       border-radius: 50%;
       background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: #fff;
-      font-size: 44px;
+      font-size: 26px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -172,49 +302,100 @@
       object-fit: cover;
     }
 
-    .tagline {
+    .greeting {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0.5px;
       margin-top: 16px;
+    }
+
+    .wave {
+      display: inline-block;
+      animation: wave 1.6s ease-in-out infinite;
+      transform-origin: 60% 85%;
+      vertical-align: middle;
+    }
+
+    .wave-hand {
+      display: block;
+      width: 0.92em;
+      height: 0.92em;
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: rotate(0); }
+      20% { transform: rotate(16deg); }
+      40% { transform: rotate(-6deg); }
+      60% { transform: rotate(12deg); }
+      80% { transform: rotate(-4deg); }
+    }
+
+    .tagline {
+      margin-top: 12px;
       color: var(--text-secondary);
-      font-size: 18px;
+      font-size: 17px;
     }
 
-    .links {
-      margin-top: 28px;
+    .social-grid {
+      width: 100%;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
+      gap: 14px;
+    }
+
+    .social-card {
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    .btn {
-      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: 10px;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--glass);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
       text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: background-color 0.2s ease, transform 0.1s ease;
+      color: inherit;
+      text-align: left;
+      transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
+    .social-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
     }
 
-    .btn-primary:hover {
-      background: var(--accent-hover);
+    .social-icon {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--accent);
     }
 
-    .btn-icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
+    .social-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .social-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .social-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+      word-break: break-all;
     }
 
     .footer {
-      margin-top: 48px;
+      padding: 0 24px 40px;
       text-align: center;
       opacity: 0;
       transform: translateY(16px);
@@ -231,6 +412,20 @@
       font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+      .welcome {
+        padding: 88px 20px 96px;
+      }
+
+      .greeting {
+        font-size: 24px;
+      }
+
+      .tagline {
+        font-size: 15px;
+      }
     }
 
     /* 圆形扩散转场（View Transitions API） */
@@ -257,7 +452,6 @@
     .vt-active * {
       transition: none !important;
     }
-
   </style>
 </head>
 <body>
@@ -268,41 +462,237 @@
     </button>
   </header>
 
-  <main class="hero">
+  <section class="welcome" id="welcome">
+    <div class="welcome-stage" id="welcome-stage" aria-hidden="true">
+      <div class="welcome-line" id="welcome-line"></div>
+      <p class="welcome-label" id="welcome-label"></p>
+    </div>
+    <a class="scroll-cue" href="#social">
+      往下滑
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 5v14" />
+        <path d="m6 13 6 6 6-6" />
+      </svg>
+    </a>
+  </section>
+
+  <section class="social" id="social">
     <div class="avatar" aria-hidden="true">A</div>
     <h1 class="greeting">你好，我是 AlanLumier <span class="wave" aria-hidden="true"><svg class="wave-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span></h1>
     <p class="tagline">欢迎来到我的个人空间</p>
 
-    <nav class="links">
-      <a class="btn btn-primary" href="https://github.com/AlanLumier" target="_blank" rel="noopener">
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.814 1.102.814 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 21.796 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        GitHub
+    <div class="social-grid">
+      <a class="social-card" href="https://github.com/AlanLumier" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.003-.404c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.118 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.624-5.48 5.92.43.372.814 1.102.814 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 21.796 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </span>
+        <span>
+          <span class="social-name">GitHub</span>
+          <br />
+          <span class="social-meta">@AlanLumier</span>
+        </span>
       </a>
-    </nav>
-  </main>
+
+      <a class="social-card" href="mailto:1957784559@qq.com">
+        <span class="social-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3.5 7 8.5 6 8.5-6" />
+          </svg>
+        </span>
+        <span>
+          <span class="social-name">邮箱</span>
+          <br />
+          <span class="social-meta">1957784559@qq.com</span>
+        </span>
+      </a>
+    </div>
+  </section>
 
   <footer class="footer" id="footer">
     <span class="footer-brand">AlanLumier</span>
   </footer>
 
   <script>
-    // 页脚淡入：进入视口时添加 is-visible 类触发淡入
-    var footerEl = document.getElementById("footer");
-    if ("IntersectionObserver" in window) {
-      var footerObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            footerEl.classList.add("is-visible");
-            footerObserver.unobserve(footerEl);
-          }
+    // 第一块：逐字浮现、逐字消散，循环切换语种
+    (function () {
+      var LANGUAGES = [
+        { label: "中文", text: "欢迎你的到来" },
+        { label: "English", text: "Welcome" },
+        { label: "Español", text: "Bienvenido" },
+        { label: "Français", text: "Bienvenue" },
+        { label: "Deutsch", text: "Willkommen" },
+        { label: "Italiano", text: "Benvenuto" },
+        { label: "Português", text: "Bem-vindo" },
+        { label: "日本語", text: "ようこそ" },
+        { label: "한국어", text: "환영합니다" },
+        { label: "Русский", text: "Добро пожаловать" },
+        // 阿拉伯文连写，必须整词成形，所以按词而不是按字母入场
+        { label: "العربية", text: "أهلاً وسهلاً", dir: "rtl", unit: "word" },
+        { label: "हिन्दी", text: "स्वागत है" },
+        { label: "ไทย", text: "ยินดีต้อนรับ" },
+        { label: "Tiếng Việt", text: "Chào mừng bạn" }
+      ];
+
+      var BASE_SIZE = 100; // 测量基准字号，最终字号按可用宽度等比换算
+      var MAX_SIZE = 132;
+      var MIN_SIZE = 32;
+      var IN_DURATION = 760;
+      var IN_STAGGER = 85;
+      var HOLD = 1250;
+      var OUT_DURATION = 560;
+      var OUT_STAGGER = 48;
+      var GAP = 220;
+
+      var stage = document.getElementById("welcome-stage");
+      var line = document.getElementById("welcome-line");
+      var label = document.getElementById("welcome-label");
+      var section = document.getElementById("welcome");
+      if (!stage || !line || !label || !section) return;
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var segmenter =
+        typeof Intl !== "undefined" && Intl.Segmenter
+          ? new Intl.Segmenter(undefined, { granularity: "grapheme" })
+          : null;
+
+      var index = 0;
+      var timer = 0;
+      var paused = false;
+
+      stage.style.setProperty("--char-in-duration", IN_DURATION + "ms");
+      stage.style.setProperty("--char-in-stagger", IN_STAGGER + "ms");
+      stage.style.setProperty("--char-out-duration", OUT_DURATION + "ms");
+      stage.style.setProperty("--char-out-stagger", OUT_STAGGER + "ms");
+      if (reduceMotion.matches) stage.classList.add("is-reduced");
+
+      // 按字素切分，避免把泰文/天城文的组合符号拆散
+      function toUnits(text, language) {
+        if (language.unit === "word") {
+          return text.split(/\s+/).filter(function (word) {
+            return word.length > 0;
+          });
+        }
+        if (segmenter) {
+          return Array.from(segmenter.segment(text), function (part) {
+            return part.segment;
+          });
+        }
+        return Array.from(text);
+      }
+
+      // 居中容器溢出时 scrollWidth 只计到一侧，这里直接用首尾字元素量实际宽度
+      function contentWidth() {
+        var first = line.firstElementChild;
+        var last = line.lastElementChild;
+        if (!first || !last) return 0;
+        return last.getBoundingClientRect().right - first.getBoundingClientRect().left;
+      }
+
+      // 字号缩放到整行刚好占满可用宽度；窄屏放不下时允许换行
+      function fit() {
+        var available = stage.clientWidth;
+        if (!available) return;
+        line.style.fontSize = BASE_SIZE + "px";
+        line.style.flexWrap = "nowrap";
+        var measured = contentWidth();
+        // 留 2% 余量，避免取整误差触发换行
+        var size = measured > 0 ? (BASE_SIZE * available * 0.98) / measured : MAX_SIZE;
+        line.style.fontSize = Math.max(MIN_SIZE, Math.min(MAX_SIZE, size)) + "px";
+        if (contentWidth() > available) line.style.flexWrap = "wrap";
+      }
+
+      function render(language) {
+        stage.classList.remove("is-in", "is-out");
+        line.textContent = "";
+        line.setAttribute("dir", language.dir || "ltr");
+        var units = toUnits(language.text, language);
+        line.style.gap = language.unit === "word" ? "0.26em" : "0";
+
+        units.forEach(function (unit, i) {
+          var span = document.createElement("span");
+          span.className = "welcome-char";
+          span.textContent = unit;
+          span.style.setProperty("--i", i);
+          line.appendChild(span);
         });
-      }, { threshold: 0.15 });
-      footerObserver.observe(footerEl);
-    } else {
-      footerEl.classList.add("is-visible");
-    }
+
+        label.textContent = language.label;
+        fit();
+      }
+
+      function play() {
+        if (paused) return;
+        var language = LANGUAGES[index];
+        index = (index + 1) % LANGUAGES.length;
+        render(language);
+
+        var count = line.children.length;
+        var inMs = IN_DURATION + (count - 1) * IN_STAGGER;
+
+        if (reduceMotion.matches) {
+          stage.classList.add("is-in");
+          timer = window.setTimeout(function () {
+            stage.classList.remove("is-in");
+            stage.classList.add("is-out");
+            timer = window.setTimeout(play, 900);
+          }, 3200);
+          return;
+        }
+
+        stage.classList.add("is-in");
+        timer = window.setTimeout(function () {
+          stage.classList.remove("is-in");
+          stage.classList.add("is-out");
+          var outMs = OUT_DURATION + (count - 1) * OUT_STAGGER;
+          timer = window.setTimeout(play, outMs + GAP);
+        }, inMs + HOLD);
+      }
+
+      // 滑到社交区块后暂停，避免离屏空转
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(
+          function (entries) {
+            if (entries[0].isIntersecting) {
+              if (paused) {
+                paused = false;
+                play();
+              }
+            } else if (!paused) {
+              paused = true;
+              window.clearTimeout(timer);
+            }
+          },
+          { threshold: 0.2 }
+        ).observe(section);
+      }
+
+      window.addEventListener("resize", fit);
+      play();
+    })();
+  </script>
+
+  <script>
+    // 页脚淡入：进入视口时添加 is-visible 类触发淡入
+    (function () {
+      var footerEl = document.getElementById("footer");
+      if (!footerEl) return;
+      if ("IntersectionObserver" in window) {
+        var footerObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              footerEl.classList.add("is-visible");
+              footerObserver.unobserve(footerEl);
+            }
+          });
+        }, { threshold: 0.15 });
+        footerObserver.observe(footerEl);
+      } else {
+        footerEl.classList.add("is-visible");
+      }
+    })();
   </script>
 
   <script src="./dist/morphicons.bundle.js"></script>
