@@ -23,11 +23,25 @@
 
 主题偏好只存在浏览器本地（localStorage），不上传任何数据。
 
+## 视觉规范
+
+整站由一条品牌渐变派生，新增任何元素都优先从这几个变量取色，不要引入新的色系：
+
+| 变量 | 明色 | 暗色 | 用途 |
+| --- | --- | --- | --- |
+| `--grad-warm` / `--grad-cool` | `#ffeae1` → `#b6faff` | `#221c1e` → `#0c181c` | 页面背景渐变的两端 |
+| `--line-gradient` | 加深版 `#ffc4ac` → `#8ce6f4` | 半透明粉色 → 青色 | 所有描边：卡片、顶栏、标签、进度条 |
+| `--brand-gradient` | `#ffb79e` → `#7fdcf0` | 同左 | 头像、当前语言圆点等实心块 |
+| `--accent` | `#0f7a86` | `#7ee3ef` | 图标、链接等需要保证可读性的强调色 |
+
+描边统一用「渐变边框」实现：卡片类是 `background: linear-gradient(变量) padding-box, var(--line-gradient) border-box`；标签、徽章这类小控件用 `::before` 加 `mask` 挖出 1px 环。
+
 ## 维护提示
 
 - 照片墙：把 `<section id="gallery">` 里 `<figure class="tile">` 占位块换成真实图片（`class="tile card-surface"` 加 `<img>` 即可，`aspect-ratio` 控制高度）。
 - 项目列表：在 `#projects` 的 `.project-list` 里复制一个 `<a class="project-row">` 结构。
 - 欢迎语：脚本顶部 `LANGUAGES` 数组，新增条目需带 `code`（对应浏览器语言前缀）、`label`、`text`。
+- 主题切换：转场期间会给 `<html>` 加 `.vt-active`，它会暂停欢迎语动画并挂起轮播倒计时（`theme:suspend` / `theme:resume` 事件），新增动效时记得一起处理，否则转场结束后会「追帧」卡顿。
 
 ## 提交规范
 
