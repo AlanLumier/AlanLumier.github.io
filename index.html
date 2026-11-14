@@ -648,9 +648,8 @@
       color: var(--text-secondary);
     }
 
-    /* ---------- 照片墙（跑马灯 + 3D 悬浮） ---------- */
+    /* ---------- 照片墙（三列纵向循环 + 3D 悬浮 + 放大查看） ---------- */
 
-    /* 照片带通铺整行，标题仍居中在正文宽度内 */
     .gallery {
       padding: 88px 0;
       scroll-margin-top: 76px;
@@ -666,54 +665,66 @@
       padding: 0 24px;
     }
 
-    .marquee {
-      position: relative;
+    .photo-wall {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      width: 100%;
+      max-width: 1000px;
+      height: clamp(520px, 64vh, 700px);
+      margin: 0 auto;
+      padding: 0 24px;
       overflow: hidden;
-      padding: 26px 0;
-      /* 两端渐隐，让照片带自然淡出屏幕边缘 */
+      /* 上下两端渐隐，照片像从虚空中浮出 */
       -webkit-mask-image: linear-gradient(
-        90deg,
+        180deg,
         transparent 0,
-        #000 6%,
-        #000 94%,
+        #000 7%,
+        #000 93%,
         transparent 100%
       );
-      mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0, #000 7%, #000 93%, transparent 100%);
     }
 
-    .marquee-track {
+    .wall-col {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .wall-track {
       display: flex;
-      width: max-content;
-      animation: marquee-scroll 110s linear infinite;
+      flex-direction: column;
+      animation: wall-scroll linear infinite;
       will-change: transform;
     }
 
-    /* 每组尾部留一个间距，两组拼起来正好是无缝的 */
-    .marquee-group {
+    /* 每组尾部留一个间距，两份拼起来正好无缝 */
+    .wall-group {
       display: flex;
-      gap: 16px;
-      padding-right: 16px;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 14px;
     }
 
-    @keyframes marquee-scroll {
+    @keyframes wall-scroll {
       from {
         transform: translate3d(0, 0, 0);
       }
       to {
-        transform: translate3d(-50%, 0, 0);
+        transform: translate3d(0, -50%, 0);
       }
     }
 
-    /* 鼠标进入照片带就暂停，方便看细节 */
-    .marquee:hover .marquee-track,
-    .marquee:focus-within .marquee-track {
+    /* 鼠标停在某一列上，只暂停这一列 */
+    .wall-col:hover .wall-track,
+    .wall-col:focus-within .wall-track {
       animation-play-state: paused;
     }
 
     .photo {
       position: relative;
-      flex: 0 0 auto;
-      height: clamp(150px, 18vw, 240px);
+      width: 100%;
+      margin: 0;
       overflow: hidden;
       border: 1px solid transparent;
       border-radius: 14px;
@@ -721,6 +732,7 @@
         linear-gradient(var(--glass), var(--glass)) padding-box,
         var(--line-gradient) border-box;
       box-shadow: 0 8px 20px rgba(31, 36, 48, 0.1);
+      cursor: zoom-in;
       transform:
         perspective(900px)
         rotateX(var(--rx, 0deg))
@@ -736,6 +748,12 @@
       height: 100%;
       object-fit: cover;
       pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+
+    /* 未解码完先藏起来，避免出现半张空白图 */
+    .photo img.is-pending {
+      opacity: 0;
     }
 
     /* 跟随鼠标时用很短的过渡，离开后回到 0.45s 的缓动，收得更柔和 */
@@ -743,6 +761,140 @@
       transition: transform 0.08s linear, box-shadow 0.45s ease;
       box-shadow: 0 30px 60px rgba(31, 36, 48, 0.28);
       z-index: 2;
+    }
+
+    /* ---------- 放大查看 ---------- */
+
+    .lightbox {
+      width: 100vw;
+      max-width: none;
+      height: 100vh;
+      max-height: none;
+      margin: 0;
+      padding: 24px;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .lightbox:not([open]) {
+      display: none;
+    }
+
+    .lightbox::backdrop {
+      background: rgba(12, 16, 22, 0.74);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .lightbox-frame {
+      margin: 0;
+      max-width: 92vw;
+      max-height: 86vh;
+      padding: 1px;
+      border-radius: 18px;
+      background: var(--line-gradient);
+      box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .lightbox-image {
+      display: block;
+      max-width: calc(92vw - 2px);
+      max-height: calc(86vh - 2px);
+      border-radius: 17px;
+      object-fit: contain;
+      background: var(--glass);
+    }
+
+    .lightbox-btn {
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid transparent;
+      border-radius: 50%;
+      background: rgba(22, 26, 32, 0.76);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      color: #eef4f7;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .lightbox-btn:hover {
+      background: var(--tint);
+      transform: scale(1.06);
+    }
+
+    .lightbox-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .lightbox-close {
+      top: 20px;
+      right: 20px;
+    }
+
+    .lightbox-prev {
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox-prev:hover {
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .lightbox-next {
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .lightbox-next:hover {
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .lightbox-counter {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(22, 26, 32, 0.76);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      border: 1px solid transparent;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: #eef4f7;
+    }
+
+    .lightbox-btn::before,
+    .lightbox-counter::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      border-radius: inherit;
+      background: var(--line-gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    body.lightbox-open {
+      overflow: hidden;
     }
 
     /* ---------- 社交 ---------- */
@@ -903,9 +1055,9 @@
       }
     }
 
-    /* 减少动态效果：照片带不自动滚动，也不做 3D 跟随 */
+    /* 减少动态效果：照片列不自动滚动，也不做 3D 跟随 */
     @media (prefers-reduced-motion: reduce) {
-      .marquee-track {
+      .wall-track {
         animation: none;
       }
 
@@ -1064,193 +1216,234 @@
       <h2 class="section-title">照片墙</h2>
     </div>
 
-    <div class="marquee" id="photo-marquee">
-      <div class="marquee-track">
+    <div class="photo-wall" id="photo-wall">
       <!-- PHOTOS_START -->
-      <div class="marquee-group">
-        <figure class="photo" style="aspect-ratio: 1.8;">
-          <img src="./assets/photos/p01.webp" alt="照片 1" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p02.webp" alt="照片 2" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p03.webp" alt="照片 3" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.7466;">
-          <img src="./assets/photos/p04.webp" alt="照片 4" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p05.webp" alt="照片 5" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p06.webp" alt="照片 6" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.7466;">
-          <img src="./assets/photos/p07.webp" alt="照片 7" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p08.webp" alt="照片 8" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p09.webp" alt="照片 9" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.1688;">
-          <img src="./assets/photos/p10.webp" alt="照片 10" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.6667;">
-          <img src="./assets/photos/p11.webp" alt="照片 11" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p12.webp" alt="照片 12" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p13.webp" alt="照片 13" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p14.webp" alt="照片 14" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p15.webp" alt="照片 15" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p16.webp" alt="照片 16" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7822;">
-          <img src="./assets/photos/p17.webp" alt="照片 17" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.7533;">
-          <img src="./assets/photos/p18.webp" alt="照片 18" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p19.webp" alt="照片 19" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p20.webp" alt="照片 20" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.5411;">
-          <img src="./assets/photos/p21.webp" alt="照片 21" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.5622;">
-          <img src="./assets/photos/p22.webp" alt="照片 22" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p23.webp" alt="照片 23" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.5411;">
-          <img src="./assets/photos/p24.webp" alt="照片 24" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.3333;">
-          <img src="./assets/photos/p25.webp" alt="照片 25" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p26.webp" alt="照片 26" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p27.webp" alt="照片 27" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p28.webp" alt="照片 28" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p29.webp" alt="照片 29" loading="lazy" decoding="async" />
-        </figure>
+      <div class="wall-col">
+        <div class="wall-track">
+          <div class="wall-group">
+            <figure class="photo" style="aspect-ratio: 1.8;" data-photo="1">
+              <img src="./assets/photos/p01.webp" data-large="./assets/photos/large/p01.webp" alt="照片 1" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7466;" data-photo="4">
+              <img src="./assets/photos/p04.webp" data-large="./assets/photos/large/p04.webp" alt="照片 4" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7466;" data-photo="7">
+              <img src="./assets/photos/p07.webp" data-large="./assets/photos/large/p07.webp" alt="照片 7" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.1688;" data-photo="10">
+              <img src="./assets/photos/p10.webp" data-large="./assets/photos/large/p10.webp" alt="照片 10" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="13">
+              <img src="./assets/photos/p13.webp" data-large="./assets/photos/large/p13.webp" alt="照片 13" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="16">
+              <img src="./assets/photos/p16.webp" data-large="./assets/photos/large/p16.webp" alt="照片 16" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="19">
+              <img src="./assets/photos/p19.webp" data-large="./assets/photos/large/p19.webp" alt="照片 19" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.562;" data-photo="22">
+              <img src="./assets/photos/p22.webp" data-large="./assets/photos/large/p22.webp" alt="照片 22" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.3333;" data-photo="25">
+              <img src="./assets/photos/p25.webp" data-large="./assets/photos/large/p25.webp" alt="照片 25" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="28">
+              <img src="./assets/photos/p28.webp" data-large="./assets/photos/large/p28.webp" alt="照片 28" loading="lazy" decoding="async" />
+            </figure>
+          </div>
+          <div class="wall-group" aria-hidden="true">
+            <figure class="photo" style="aspect-ratio: 1.8;" data-photo="1">
+              <img src="./assets/photos/p01.webp" data-large="./assets/photos/large/p01.webp" alt="照片 1" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7466;" data-photo="4">
+              <img src="./assets/photos/p04.webp" data-large="./assets/photos/large/p04.webp" alt="照片 4" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7466;" data-photo="7">
+              <img src="./assets/photos/p07.webp" data-large="./assets/photos/large/p07.webp" alt="照片 7" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.1688;" data-photo="10">
+              <img src="./assets/photos/p10.webp" data-large="./assets/photos/large/p10.webp" alt="照片 10" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="13">
+              <img src="./assets/photos/p13.webp" data-large="./assets/photos/large/p13.webp" alt="照片 13" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="16">
+              <img src="./assets/photos/p16.webp" data-large="./assets/photos/large/p16.webp" alt="照片 16" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="19">
+              <img src="./assets/photos/p19.webp" data-large="./assets/photos/large/p19.webp" alt="照片 19" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.562;" data-photo="22">
+              <img src="./assets/photos/p22.webp" data-large="./assets/photos/large/p22.webp" alt="照片 22" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.3333;" data-photo="25">
+              <img src="./assets/photos/p25.webp" data-large="./assets/photos/large/p25.webp" alt="照片 25" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="28">
+              <img src="./assets/photos/p28.webp" data-large="./assets/photos/large/p28.webp" alt="照片 28" loading="lazy" decoding="async" />
+            </figure>
+          </div>
+        </div>
       </div>
-      <div class="marquee-group" aria-hidden="true">
-        <figure class="photo" style="aspect-ratio: 1.8;">
-          <img src="./assets/photos/p01.webp" alt="照片 1" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p02.webp" alt="照片 2" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p03.webp" alt="照片 3" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.7466;">
-          <img src="./assets/photos/p04.webp" alt="照片 4" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p05.webp" alt="照片 5" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p06.webp" alt="照片 6" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.7466;">
-          <img src="./assets/photos/p07.webp" alt="照片 7" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p08.webp" alt="照片 8" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p09.webp" alt="照片 9" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.1688;">
-          <img src="./assets/photos/p10.webp" alt="照片 10" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.6667;">
-          <img src="./assets/photos/p11.webp" alt="照片 11" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p12.webp" alt="照片 12" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p13.webp" alt="照片 13" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p14.webp" alt="照片 14" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p15.webp" alt="照片 15" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p16.webp" alt="照片 16" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7822;">
-          <img src="./assets/photos/p17.webp" alt="照片 17" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.7533;">
-          <img src="./assets/photos/p18.webp" alt="照片 18" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p19.webp" alt="照片 19" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p20.webp" alt="照片 20" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.5411;">
-          <img src="./assets/photos/p21.webp" alt="照片 21" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.5622;">
-          <img src="./assets/photos/p22.webp" alt="照片 22" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p23.webp" alt="照片 23" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.5411;">
-          <img src="./assets/photos/p24.webp" alt="照片 24" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.3333;">
-          <img src="./assets/photos/p25.webp" alt="照片 25" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7787;">
-          <img src="./assets/photos/p26.webp" alt="照片 26" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.7751;">
-          <img src="./assets/photos/p27.webp" alt="照片 27" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 1.6014;">
-          <img src="./assets/photos/p28.webp" alt="照片 28" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="photo" style="aspect-ratio: 0.75;">
-          <img src="./assets/photos/p29.webp" alt="照片 29" loading="lazy" decoding="async" />
-        </figure>
+      <div class="wall-col">
+        <div class="wall-track">
+          <div class="wall-group">
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="2">
+              <img src="./assets/photos/p02.webp" data-large="./assets/photos/large/p02.webp" alt="照片 2" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="5">
+              <img src="./assets/photos/p05.webp" data-large="./assets/photos/large/p05.webp" alt="照片 5" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="8">
+              <img src="./assets/photos/p08.webp" data-large="./assets/photos/large/p08.webp" alt="照片 8" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.6665;" data-photo="11">
+              <img src="./assets/photos/p11.webp" data-large="./assets/photos/large/p11.webp" alt="照片 11" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="14">
+              <img src="./assets/photos/p14.webp" data-large="./assets/photos/large/p14.webp" alt="照片 14" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7808;" data-photo="17">
+              <img src="./assets/photos/p17.webp" data-large="./assets/photos/large/p17.webp" alt="照片 17" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="20">
+              <img src="./assets/photos/p20.webp" data-large="./assets/photos/large/p20.webp" alt="照片 20" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="23">
+              <img src="./assets/photos/p23.webp" data-large="./assets/photos/large/p23.webp" alt="照片 23" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="26">
+              <img src="./assets/photos/p26.webp" data-large="./assets/photos/large/p26.webp" alt="照片 26" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.75;" data-photo="29">
+              <img src="./assets/photos/p29.webp" data-large="./assets/photos/large/p29.webp" alt="照片 29" loading="lazy" decoding="async" />
+            </figure>
+          </div>
+          <div class="wall-group" aria-hidden="true">
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="2">
+              <img src="./assets/photos/p02.webp" data-large="./assets/photos/large/p02.webp" alt="照片 2" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="5">
+              <img src="./assets/photos/p05.webp" data-large="./assets/photos/large/p05.webp" alt="照片 5" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="8">
+              <img src="./assets/photos/p08.webp" data-large="./assets/photos/large/p08.webp" alt="照片 8" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.6665;" data-photo="11">
+              <img src="./assets/photos/p11.webp" data-large="./assets/photos/large/p11.webp" alt="照片 11" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="14">
+              <img src="./assets/photos/p14.webp" data-large="./assets/photos/large/p14.webp" alt="照片 14" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7808;" data-photo="17">
+              <img src="./assets/photos/p17.webp" data-large="./assets/photos/large/p17.webp" alt="照片 17" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="20">
+              <img src="./assets/photos/p20.webp" data-large="./assets/photos/large/p20.webp" alt="照片 20" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="23">
+              <img src="./assets/photos/p23.webp" data-large="./assets/photos/large/p23.webp" alt="照片 23" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="26">
+              <img src="./assets/photos/p26.webp" data-large="./assets/photos/large/p26.webp" alt="照片 26" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.75;" data-photo="29">
+              <img src="./assets/photos/p29.webp" data-large="./assets/photos/large/p29.webp" alt="照片 29" loading="lazy" decoding="async" />
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="wall-col">
+        <div class="wall-track">
+          <div class="wall-group">
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="3">
+              <img src="./assets/photos/p03.webp" data-large="./assets/photos/large/p03.webp" alt="照片 3" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="6">
+              <img src="./assets/photos/p06.webp" data-large="./assets/photos/large/p06.webp" alt="照片 6" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="9">
+              <img src="./assets/photos/p09.webp" data-large="./assets/photos/large/p09.webp" alt="照片 9" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="12">
+              <img src="./assets/photos/p12.webp" data-large="./assets/photos/large/p12.webp" alt="照片 12" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="15">
+              <img src="./assets/photos/p15.webp" data-large="./assets/photos/large/p15.webp" alt="照片 15" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7534;" data-photo="18">
+              <img src="./assets/photos/p18.webp" data-large="./assets/photos/large/p18.webp" alt="照片 18" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.5409;" data-photo="21">
+              <img src="./assets/photos/p21.webp" data-large="./assets/photos/large/p21.webp" alt="照片 21" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.5407;" data-photo="24">
+              <img src="./assets/photos/p24.webp" data-large="./assets/photos/large/p24.webp" alt="照片 24" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="27">
+              <img src="./assets/photos/p27.webp" data-large="./assets/photos/large/p27.webp" alt="照片 27" loading="lazy" decoding="async" />
+            </figure>
+          </div>
+          <div class="wall-group" aria-hidden="true">
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="3">
+              <img src="./assets/photos/p03.webp" data-large="./assets/photos/large/p03.webp" alt="照片 3" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="6">
+              <img src="./assets/photos/p06.webp" data-large="./assets/photos/large/p06.webp" alt="照片 6" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.6;" data-photo="9">
+              <img src="./assets/photos/p09.webp" data-large="./assets/photos/large/p09.webp" alt="照片 9" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7499;" data-photo="12">
+              <img src="./assets/photos/p12.webp" data-large="./assets/photos/large/p12.webp" alt="照片 12" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7778;" data-photo="15">
+              <img src="./assets/photos/p15.webp" data-large="./assets/photos/large/p15.webp" alt="照片 15" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 0.7534;" data-photo="18">
+              <img src="./assets/photos/p18.webp" data-large="./assets/photos/large/p18.webp" alt="照片 18" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.5409;" data-photo="21">
+              <img src="./assets/photos/p21.webp" data-large="./assets/photos/large/p21.webp" alt="照片 21" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.5407;" data-photo="24">
+              <img src="./assets/photos/p24.webp" data-large="./assets/photos/large/p24.webp" alt="照片 24" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="photo" style="aspect-ratio: 1.7769;" data-photo="27">
+              <img src="./assets/photos/p27.webp" data-large="./assets/photos/large/p27.webp" alt="照片 27" loading="lazy" decoding="async" />
+            </figure>
+          </div>
+        </div>
       </div>
       <!-- PHOTOS_END -->
-      </div>
     </div>
 
-    <p class="section-note">悬停或轻触看看</p>
+    <p class="section-note">点开可以放大看</p>
   </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="照片预览">
+    <figure class="lightbox-frame">
+      <img class="lightbox-image" id="lightbox-image" alt="" />
+    </figure>
+    <button class="lightbox-btn lightbox-close" id="lightbox-close" type="button" aria-label="关闭预览">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12" />
+        <path d="M18 6L6 18" />
+      </svg>
+    </button>
+    <button class="lightbox-btn lightbox-prev" id="lightbox-prev" type="button" aria-label="上一张">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m15 5-7 7 7 7" />
+      </svg>
+    </button>
+    <button class="lightbox-btn lightbox-next" id="lightbox-next" type="button" aria-label="下一张">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m9 5 7 7-7 7" />
+      </svg>
+    </button>
+    <p class="lightbox-counter" id="lightbox-counter"></p>
+  </dialog>
 
   <section class="section" id="social">
     <div class="section-head">
@@ -1592,52 +1785,206 @@
   </script>
 
   <script>
-    // 照片墙：鼠标跟随的 3D 倾斜
+    // 照片墙：三列纵向循环、图片预载、3D 悬浮与放大查看
     (function () {
-      var marquee = document.getElementById("photo-marquee");
-      if (!marquee) return;
+      var wall = document.getElementById("photo-wall");
+      if (!wall) return;
+
       var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      if (reduceMotion.matches) return;
+      var tracks = Array.prototype.slice.call(wall.querySelectorAll(".wall-track"));
+      var images = Array.prototype.slice.call(wall.querySelectorAll("img"));
+      var prefetched = {};
 
-      var active = null;
-      var frame = 0;
+      /* ---- 1. 图片淡入 + 快进入视口时提前加载，避免空图被展示 ---- */
+      images.forEach(function (img) {
+        var settle = function () {
+          img.classList.remove("is-pending");
+          img.removeEventListener("load", settle);
+          img.removeEventListener("error", settle);
+        };
+        img.classList.add("is-pending");
+        if (img.complete && img.naturalWidth) settle();
+        else {
+          img.addEventListener("load", settle);
+          img.addEventListener("error", settle);
+        }
+      });
 
-      function tilt(event) {
-        frame = 0;
-        if (!active) return;
-        var rect = active.getBoundingClientRect();
-        if (!rect.width || !rect.height) return;
-        var x = (event.clientX - rect.left) / rect.width - 0.5;
-        var y = (event.clientY - rect.top) / rect.height - 0.5;
-        active.style.setProperty("--ry", (x * 16).toFixed(2) + "deg");
-        active.style.setProperty("--rx", (-y * 14).toFixed(2) + "deg");
-        active.style.setProperty("--tz", "42px");
-        active.style.setProperty("--sc", "1.05");
+      if ("IntersectionObserver" in window) {
+        var loader = new IntersectionObserver(
+          function (entries) {
+            if (!entries[0].isIntersecting) return;
+            loader.disconnect();
+            images.forEach(function (img) {
+              img.loading = "eager";
+            });
+          },
+          { rootMargin: "150% 0px" }
+        );
+        loader.observe(wall);
       }
 
-      marquee.addEventListener("pointerover", function (event) {
-        var photo = event.target.closest(".photo");
-        if (!photo || photo === active) return;
-        active = photo;
-        photo.classList.add("is-tilting");
-      });
-
-      marquee.addEventListener("pointermove", function (event) {
-        if (!active || frame) return;
-        frame = window.requestAnimationFrame(function () {
-          tilt(event);
+      /* ---- 2. 每列速度不同、起始相错，高度变化时重算 ---- */
+      function layoutColumns() {
+        tracks.forEach(function (track, index) {
+          var group = track.querySelector(".wall-group");
+          if (!group) return;
+          var height = group.getBoundingClientRect().height;
+          if (!height) return;
+          var speed = 26 + index * 6; // px/秒，三列各不相同
+          var duration = height / speed;
+          track.style.animationDuration = duration.toFixed(2) + "s";
+          track.style.animationDelay = (-duration * (0.14 + index * 0.29)).toFixed(2) + "s";
         });
-      });
+      }
 
-      marquee.addEventListener("pointerout", function (event) {
-        var photo = event.target.closest(".photo");
-        if (!photo || photo !== active || photo.contains(event.relatedTarget)) return;
+      if (reduceMotion.matches) {
+        tracks.forEach(function (track) {
+          track.style.animation = "none";
+        });
+      } else {
+        layoutColumns();
+        var resizeTimer = 0;
+        window.addEventListener("resize", function () {
+          window.clearTimeout(resizeTimer);
+          resizeTimer = window.setTimeout(layoutColumns, 200);
+        });
+      }
+
+      /* ---- 3. 鼠标跟随的 3D 悬浮（顺便预取大图） ---- */
+      var activePhoto = null;
+      var frame = 0;
+
+      function resetPhoto(photo) {
         photo.classList.remove("is-tilting");
         photo.style.setProperty("--rx", "0deg");
         photo.style.setProperty("--ry", "0deg");
         photo.style.setProperty("--tz", "0px");
         photo.style.setProperty("--sc", "1");
-        active = null;
+        activePhoto = null;
+      }
+
+      function tilt(event) {
+        frame = 0;
+        if (!activePhoto) return;
+        var rect = activePhoto.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var x = (event.clientX - rect.left) / rect.width - 0.5;
+        var y = (event.clientY - rect.top) / rect.height - 0.5;
+        activePhoto.style.setProperty("--ry", (x * 14).toFixed(2) + "deg");
+        activePhoto.style.setProperty("--rx", (-y * 12).toFixed(2) + "deg");
+        activePhoto.style.setProperty("--tz", "34px");
+        activePhoto.style.setProperty("--sc", "1.04");
+      }
+
+      wall.addEventListener("pointerover", function (event) {
+        var photo = event.target.closest(".photo");
+        if (!photo || photo === activePhoto) return;
+        activePhoto = photo;
+        photo.classList.add("is-tilting");
+
+        var img = photo.querySelector("img");
+        var large = img && img.getAttribute("data-large");
+        if (large && !prefetched[large]) {
+          prefetched[large] = true;
+          new Image().src = large;
+        }
+      });
+
+      wall.addEventListener("pointermove", function (event) {
+        if (!activePhoto || frame) return;
+        frame = window.requestAnimationFrame(function () {
+          tilt(event);
+        });
+      });
+
+      wall.addEventListener("pointerout", function (event) {
+        var photo = event.target.closest(".photo");
+        if (!photo || photo !== activePhoto || photo.contains(event.relatedTarget)) return;
+        resetPhoto(photo);
+      });
+
+      /* ---- 4. 点击放大 ---- */
+      var lightbox = document.getElementById("lightbox");
+      var lightboxImage = document.getElementById("lightbox-image");
+      var lightboxCounter = document.getElementById("lightbox-counter");
+      var closeButton = document.getElementById("lightbox-close");
+      var prevButton = document.getElementById("lightbox-prev");
+      var nextButton = document.getElementById("lightbox-next");
+      if (!lightbox || !lightboxImage || !lightboxCounter) return;
+
+      var byIndex = {};
+      Array.prototype.forEach.call(wall.querySelectorAll("img[data-large]"), function (img) {
+        var figure = img.closest(".photo");
+        var index = Number(figure.getAttribute("data-photo"));
+        if (!figure || !index) return;
+        if (!byIndex[index]) {
+          byIndex[index] = { large: img.getAttribute("data-large"), alt: img.alt };
+        }
+      });
+      var order = Object.keys(byIndex).map(Number).sort(function (a, b) {
+        return a - b;
+      });
+      var current = 0;
+
+      function showPhoto(position) {
+        if (!order.length) return;
+        current = (position + order.length) % order.length;
+        var item = byIndex[order[current]];
+        lightboxImage.src = item.large;
+        lightboxImage.alt = item.alt;
+        lightboxCounter.textContent = current + 1 + " / " + order.length;
+      }
+
+      function openLightbox(index) {
+        if (typeof lightbox.showModal !== "function") return;
+        var position = order.indexOf(index);
+        showPhoto(position < 0 ? 0 : position);
+        lightbox.showModal();
+        document.body.classList.add("lightbox-open");
+      }
+
+      function closeLightbox() {
+        if (lightbox.open) lightbox.close();
+      }
+
+      wall.addEventListener("click", function (event) {
+        var photo = event.target.closest(".photo");
+        if (!photo) return;
+        openLightbox(Number(photo.getAttribute("data-photo")));
+      });
+
+      lightbox.addEventListener("close", function () {
+        document.body.classList.remove("lightbox-open");
+        lightboxImage.removeAttribute("src");
+      });
+
+      // 点空白处（dialog 自身）关闭，点图片或按钮不关
+      lightbox.addEventListener("click", function (event) {
+        if (event.target === lightbox) closeLightbox();
+      });
+
+      if (closeButton) closeButton.addEventListener("click", closeLightbox);
+      if (prevButton) {
+        prevButton.addEventListener("click", function () {
+          showPhoto(current - 1);
+        });
+      }
+      if (nextButton) {
+        nextButton.addEventListener("click", function () {
+          showPhoto(current + 1);
+        });
+      }
+
+      document.addEventListener("keydown", function (event) {
+        if (!lightbox.open) return;
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          showPhoto(current - 1);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          showPhoto(current + 1);
+        }
       });
     })();
   </script>
