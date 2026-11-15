@@ -1,5 +1,5 @@
 """
-把桌面 photo 文件夹里的照片处理成网页用图，生成「三列纵向循环」的照片墙，并注入 index.html。
+把桌面 photo 文件夹里的照片处理成网页用图，生成横向滚动的照片带，并注入 index.html。
 
 两套尺寸：
   缩略图  assets/photos/pNN.webp        长边 720px，墙上展示够清晰又轻
@@ -28,7 +28,6 @@ THUMB_SIDE = 720
 THUMB_QUALITY = 78
 LARGE_SIDE = 1200
 LARGE_QUALITY = 80
-COLUMNS = 3
 START = "<!-- PHOTOS_START -->"
 END = "<!-- PHOTOS_END -->"
 
@@ -85,31 +84,22 @@ def figure(photo, index):
 
 
 def build_group(photos):
-    return "\n".join(figure(photo, index) for index, photo in photos)
+    return "\n".join(figure(photo, index) for index, photo in enumerate(photos, start=1))
 
 
 def build_wall(photos):
-    """三列错开：按顺序轮流分到每一列，每列放两份实现无缝循环"""
-    columns = [[] for _ in range(COLUMNS)]
-    for offset, photo in enumerate(photos, start=1):
-        columns[(offset - 1) % COLUMNS].append((photo, offset))
-
-    blocks = []
-    for column in columns:
-        group = "\n".join(figure(photo, index) for photo, index in column)
-        blocks.append(
-            '      <div class="wall-col">\n'
-            '        <div class="wall-track">\n'
-            '          <div class="wall-group">\n'
-            f"{group}\n"
-            "          </div>\n"
-            '          <div class="wall-group" aria-hidden="true">\n'
-            f"{group}\n"
-            "          </div>\n"
-            "        </div>\n"
-            "      </div>"
-        )
-    return "\n".join(blocks)
+    """横向照片带：一整行按顺序排列，复制一份实现无缝循环"""
+    group = build_group(photos)
+    return (
+        '      <div class="wall-track">\n'
+        '        <div class="wall-group">\n'
+        f"{group}\n"
+        "        </div>\n"
+        '        <div class="wall-group" aria-hidden="true">\n'
+        f"{group}\n"
+        "        </div>\n"
+        "      </div>"
+    )
 
 
 def inject(block):
@@ -138,7 +128,7 @@ def main():
     with open(manifest, "w", encoding="utf-8") as handle:
         json.dump(photos, handle, ensure_ascii=False, indent=2)
 
-    print(f"\n共 {len(photos)} 张，分 {COLUMNS} 列")
+    print(f"\n共 {len(photos)} 张")
     print(f"注入 index.html：{size} 字符")
 
 

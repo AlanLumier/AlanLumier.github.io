@@ -16,7 +16,7 @@
 | 欢迎（`#welcome`） | 14 种语言的欢迎语循环播放，逐字从虚空中浮现再逐字消散；可点击大字或圆点手动切换，首屏语种跟随浏览器语言 |
 | 关于我（`#about`） | 头像、简介、标签，配一张实时本地时间卡片和站点说明 |
 | 项目 / 作品（`#projects`） | 项目列表，每项带简介与技术栈标签 |
-| 照片墙（`#gallery`） | 29 张实拍照片分三列纵向循环滚动（每列速度与起始位置都错开）；鼠标停在某列上只暂停该列，单张跟随光标做 3D 悬浮；点击任意照片打开放大查看 |
+| 照片墙（`#gallery`） | 29 张实拍照片横向无缝滚动的照片带（两端渐隐）；鼠标移入暂停，单张跟随光标做 3D 悬浮；点击任意照片打开放大查看 |
 | 联系我（`#social`） | GitHub / 邮箱入口 |
 
 其他交互：顶栏导航锚点跳转、顶部阅读进度条、右下角回到顶部、明暗主题切换（圆形扩散转场 + 图标形变）。
@@ -38,8 +38,8 @@
 
 ## 维护提示
 
-- 照片墙：把照片丢进 `C:\Users\19577\Desktop\photo`，然后运行 `python tools/build-photos.py`（可传目录参数）。脚本会输出两套图——缩略图 `assets/photos/pNN.webp`（长边 720px，墙上用）与大图 `assets/photos/large/pNN.webp`（长边 1200px，放大查看用），都经过重编码以去掉 EXIF，然后按顺序轮流分配到三列、每列复制一份做无缝循环，并重写 `index.html` 里 `<!-- PHOTOS_START -->` 到 `<!-- PHOTOS_END -->` 之间的内容。
-- 放大查看：`<dialog class="lightbox">` 实现，点击照片打开，支持左右方向键翻页、Esc 或点空白关闭；大图在悬停缩略图时预取，点开基本即时显示。
+- 照片墙：把照片丢进 `C:\Users\19577\Desktop\photo`，然后运行 `python tools/build-photos.py`（可传目录参数）。脚本会输出两套图——缩略图 `assets/photos/pNN.webp`（长边 720px，墙上用）与大图 `assets/photos/large/pNN.webp`（长边 1200px，放大查看用），都经过重编码以去掉 EXIF，然后生成「两份相同照片带」实现无缝横向滚动，并重写 `index.html` 里 `<!-- PHOTOS_START -->` 到 `<!-- PHOTOS_END -->` 之间的内容。
+- 放大查看：`<dialog class="lightbox">` 实现，点击照片打开，支持左右方向键翻页、Esc 或点空白关闭。画框尺寸固定（不随照片长宽比跳动），两层 `<img>` 交叉淡入换图，并预取相邻大图。
 - 项目列表：在 `#projects` 的 `.project-list` 里复制一个 `<a class="project-row">` 结构。
 - 欢迎语：脚本顶部 `LANGUAGES` 数组，新增条目需带 `code`（对应浏览器语言前缀）、`label`、`text`。
 - 主题切换：转场期间会给 `<html>` 加 `.vt-active`，它会暂停欢迎语动画并挂起轮播倒计时（`theme:suspend` / `theme:resume` 事件），新增动效时记得一起处理，否则转场结束后会「追帧」卡顿。
