@@ -24,6 +24,7 @@ OUT_DIR = os.path.join(ROOT, "assets", "photos")
 LARGE_DIR = os.path.join(OUT_DIR, "large")
 DEFAULT_SOURCE = r"C:\Users\19577\Desktop\photo"
 
+ROWS = 3
 THUMB_SIDE = 720
 THUMB_QUALITY = 78
 LARGE_SIDE = 1200
@@ -88,18 +89,28 @@ def build_group(photos):
 
 
 def build_wall(photos):
-    """横向照片带：一整行按顺序排列，复制一份实现无缝循环"""
-    group = build_group(photos)
-    return (
-        '      <div class="wall-track">\n'
-        '        <div class="wall-group">\n'
-        f"{group}\n"
-        "        </div>\n"
-        '        <div class="wall-group" aria-hidden="true">\n'
-        f"{group}\n"
-        "        </div>\n"
-        "      </div>"
-    )
+    """三行横向照片带：照片轮流分到每一行，每行复制一份实现无缝循环"""
+    rows = []
+    for row in range(ROWS):
+        subset = [
+            (photo, index)
+            for index, photo in enumerate(photos, start=1)
+            if (index - 1) % ROWS == row
+        ]
+        group = "\n".join(figure(photo, index) for photo, index in subset)
+        rows.append(
+            '      <div class="wall-row">\n'
+            '        <div class="wall-track">\n'
+            '          <div class="wall-group">\n'
+            f"{group}\n"
+            "          </div>\n"
+            '          <div class="wall-group" aria-hidden="true">\n'
+            f"{group}\n"
+            "          </div>\n"
+            "        </div>\n"
+            "      </div>"
+        )
+    return "\n".join(rows)
 
 
 def inject(block):
