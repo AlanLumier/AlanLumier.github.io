@@ -25,6 +25,12 @@
       --bg-gradient: linear-gradient(135deg, var(--grad-warm) 0%, var(--grad-cool) 100%);
       /* 描边用加深版：直接拿背景渐变在浅色底上会看不见 */
       --line-gradient: linear-gradient(135deg, #ffc4ac 0%, #8ce6f4 100%);
+      /* 卡片底色：浅青 -> 浅粉 */
+      --card-fill: linear-gradient(
+        135deg,
+        rgba(208, 253, 248, 0.94) 0%,
+        rgba(255, 197, 206, 0.94) 100%
+      );
       --brand-gradient: linear-gradient(135deg, #ffb79e 0%, #7fdcf0 100%);
       --dot: #8ce6f4;
       --tint: rgba(140, 230, 244, 0.18);
@@ -53,6 +59,8 @@
         rgba(255, 214, 196, 0.34) 0%,
         rgba(150, 232, 246, 0.34) 100%
       );
+      /* 暗色下压成淡淡的青粉，保证卡片上的浅色文字仍清晰 */
+      --card-fill: linear-gradient(135deg, #243c3e 0%, #402a30 100%);
       --dot: #7ee3ef;
       --tint: rgba(126, 227, 239, 0.16);
       --border: rgba(126, 200, 214, 0.28);
@@ -213,9 +221,7 @@
       border: 1px solid transparent;
       border-radius: var(--radius);
       /* 双层背景：内层是毛玻璃底色，外层渐变露出 1px 作为边框 */
-      background:
-        linear-gradient(var(--glass), var(--glass)) padding-box,
-        var(--line-gradient) border-box;
+      background: var(--card-fill) padding-box, var(--line-gradient) border-box;
       backdrop-filter: blur(14px) saturate(160%);
       -webkit-backdrop-filter: blur(14px) saturate(160%);
     }

@@ -31,10 +31,11 @@
 | --- | --- | --- | --- |
 | `--grad-warm` / `--grad-cool` | `#ffeae1` → `#b6faff` | `#221c1e` → `#0c181c` | 页面背景渐变的两端 |
 | `--line-gradient` | 加深版 `#ffc4ac` → `#8ce6f4` | 半透明粉色 → 青色 | 所有描边：卡片、顶栏、标签、进度条 |
+| `--card-fill` | `#d0fdf8` → `#ffc5ce` | `#243c3e` → `#402a30` | 所有卡片（`.card-surface`）的底色 |
 | `--brand-gradient` | `#ffb79e` → `#7fdcf0` | 同左 | 头像、当前语言圆点等实心块 |
 | `--accent` | `#0f7a86` | `#7ee3ef` | 图标、链接等需要保证可读性的强调色 |
 
-描边统一用「渐变边框」实现：卡片类是 `background: linear-gradient(变量) padding-box, var(--line-gradient) border-box`；标签、徽章这类小控件用 `::before` 加 `mask` 挖出 1px 环。
+描边统一用「渐变边框」实现：卡片类是 `background: var(--card-fill) padding-box, var(--line-gradient) border-box`；标签、徽章这类小控件用 `::before` 加 `mask` 挖出 1px 环。
 
 ## 维护提示
 
