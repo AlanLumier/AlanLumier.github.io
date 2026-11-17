@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>页面走丢了 · AlanLumier</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <script>
+    // 与首页一致：先定主题，避免暗色用户看到浅色闪烁
+    (function () {
+      var stored = localStorage.getItem("theme");
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.setAttribute(
+        "data-theme",
+        stored || (prefersDark ? "dark" : "light")
+      );
+    })();
+  </script>
+  <style>
+    :root {
+      --grad-warm: #ffeae1;
+      --grad-cool: #b6faff;
+      --bg-gradient: linear-gradient(135deg, var(--grad-warm) 0%, var(--grad-cool) 100%);
+      --line-gradient: linear-gradient(135deg, #ffc4ac 0%, #8ce6f4 100%);
+      --card-fill: linear-gradient(
+        135deg,
+        rgba(208, 253, 248, 0.94) 0%,
+        rgba(255, 197, 206, 0.94) 100%
+      );
+      --text: #1f2430;
+      --text-secondary: #5b6472;
+      --accent: #0f7a86;
+      --radius: 16px;
+    }
+
+    [data-theme="dark"] {
+      --grad-warm: #221c1e;
+      --grad-cool: #0c181c;
+      --bg-gradient: linear-gradient(135deg, var(--grad-warm) 0%, var(--grad-cool) 100%);
+      --line-gradient: linear-gradient(
+        135deg,
+        rgba(255, 214, 196, 0.34) 0%,
+        rgba(150, 232, 246, 0.34) 100%
+      );
+      --card-fill: linear-gradient(135deg, #243c3e 0%, #402a30 100%);
+      --text: #e6e8ee;
+      --text-secondary: #9aa3b2;
+      --accent: #7ee3ef;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: var(--bg-gradient);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      padding: 44px 36px;
+      text-align: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      background: var(--card-fill) padding-box, var(--line-gradient) border-box;
+      box-shadow: 0 20px 50px rgba(31, 36, 48, 0.12);
+    }
+
+    .code {
+      font-size: 68px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    h1 {
+      margin-top: 14px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 26px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 14px;
+      text-decoration: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    a:hover {
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+    a svg {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p class="code">404</p>
+    <h1>这个页面走丢了</h1>
+    <p>链接可能过期了，或者地址打错了一个字。</p>
+    <a href="./index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5" />
+        <path d="m11 18-6-6 6-6" />
+      </svg>
+      回到首页
+    </a>
+  </main>
+</body>
+</html>

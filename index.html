@@ -6,6 +6,19 @@
   <meta name="description" content="AlanLumier 的个人空间：作品、照片与联系方式" />
   <meta name="color-scheme" content="light dark" />
   <title>AlanLumier · 个人空间</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AlanLumier · 个人空间" />
+  <meta property="og:description" content="作品、照片与联系方式。" />
+  <meta property="og:url" content="https://alanlumier.github.io/" />
+  <meta property="og:image" content="https://alanlumier.github.io/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AlanLumier · 个人空间" />
+  <meta name="twitter:description" content="作品、照片与联系方式。" />
+  <meta name="twitter:image" content="https://alanlumier.github.io/assets/og.png" />
   <script>
     // 在样式解析前确定主题，避免暗色用户看到浅色闪烁（FOUC）
     (function () {
@@ -15,6 +28,8 @@
         "data-theme",
         stored || (prefersDark ? "dark" : "light")
       );
+      // 渐进增强标记：只有脚本可用时才启用滚动渐入
+      document.documentElement.classList.add("js");
     })();
   </script>
   <style>
@@ -654,6 +669,152 @@
       color: var(--text-secondary);
     }
 
+    /* ---------- 每日一言 ---------- */
+
+    .daily {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 30px 32px;
+      text-align: center;
+    }
+
+    .daily-quote {
+      margin-top: 14px;
+      font-size: clamp(17px, 2.1vw, 21px);
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+    }
+
+    .daily-meta {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .daily-next {
+      padding: 3px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--accent);
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .daily-next:hover {
+      background: var(--tint);
+    }
+
+    .daily-next::before {
+      content: none;
+    }
+
+    /* ---------- 项目：超过 4 条自动折叠 ---------- */
+
+    .project-row.is-extra {
+      display: none;
+    }
+
+    .project-list.is-expanded .project-row.is-extra {
+      display: flex;
+    }
+
+    .project-more {
+      display: block;
+      margin: 16px auto 0;
+      padding: 8px 20px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--accent);
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .project-more:hover {
+      background: var(--tint);
+    }
+
+    .project-more[hidden] {
+      display: none;
+    }
+
+    /* ---------- 首屏渐入与滚动渐显 ---------- */
+
+    @keyframes page-fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    body {
+      animation: page-fade 0.5s ease both;
+    }
+
+    .js .section,
+    .js .gallery {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .js .section.is-visible,
+    .js .gallery.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* 图片解码前给一块流动的骨架，避免空白卡片 */
+    .photo:has(img.is-pending)::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        100deg,
+        transparent 32%,
+        rgba(255, 255, 255, 0.42) 50%,
+        transparent 68%
+      );
+      background-size: 220% 100%;
+      animation: photo-shimmer 1.5s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes photo-shimmer {
+      from {
+        background-position: 140% 0;
+      }
+      to {
+        background-position: -40% 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body {
+        animation: none;
+      }
+
+      .js .section,
+      .js .gallery {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .photo:has(img.is-pending)::after {
+        animation: none;
+      }
+    }
+
     /* ---------- 照片墙（横向照片带 + 3D 悬浮 + 放大查看） ---------- */
 
     .gallery {
@@ -1173,11 +1334,13 @@
   <section class="section" id="about">
     <div class="about-grid">
       <div class="about-card card-surface">
-        <div class="avatar" aria-hidden="true">A</div>
+        <div class="avatar">
+          <img src="./assets/avatar.webp" alt="AlanLumier 的头像" width="320" height="320" />
+        </div>
         <p class="section-eyebrow">关于我</p>
         <h1 class="about-name">你好，我是 AlanLumier <span class="wave" aria-hidden="true"><svg class="wave-hand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span></h1>
-        <p class="about-text">这里放我的作品、一些笔记，和偶尔冒出来的想法。</p>
-        <p class="about-text">喜欢把界面做得干净顺手，也在持续折腾网页里的细节——这个站点就是其中之一。</p>
+        <p class="about-text">这里放我做过的东西、随手拍的照片，还有一些还没想明白的想法。</p>
+        <p class="about-text">喜欢把界面做得干净顺手，也常在细节上反复较劲——这个站点就是一点点磨出来的。</p>
         <div class="chips">
           <span class="chip">纯静态</span>
           <span class="chip">无框架</span>
@@ -1211,34 +1374,54 @@
     </div>
   </section>
 
+  <section class="section" id="daily">
+    <div class="daily card-surface">
+      <p class="section-eyebrow">每日一言</p>
+      <p class="daily-quote" id="daily-quote"></p>
+      <p class="daily-meta">
+        <span id="daily-author"></span>
+        <button class="daily-next" id="daily-next" type="button">换一句</button>
+      </p>
+    </div>
+  </section>
+
   <section class="section" id="projects">
     <div class="section-head">
       <p class="section-eyebrow">Projects</p>
       <h2 class="section-title">项目 / 作品</h2>
     </div>
 
-    <div class="project-list">
+    <div class="project-list" id="project-list">
+      <!-- PROJECTS_START -->
       <a class="project-row card-surface" href="https://github.com/AlanLumier/AlanLumier.github.io" target="_blank" rel="noopener">
         <span class="project-main">
-          <span class="project-name">
-            AlanLumier.github.io
-            <span class="project-badge">本站</span>
-          </span>
-          <span class="project-desc">纯静态个人主页：多语言欢迎动画、明暗主题圆形扩散转场、图标形变。</span>
-          <span class="project-tech">
-            <span>HTML</span>
-            <span>CSS</span>
-            <span>JavaScript</span>
-          </span>
+          <span class="project-name">AlanLumier.github.io<span class="project-badge">HTML</span></span>
+          <span class="project-desc">My Personal Dashboard</span>
+          
         </span>
-        <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M7 17 17 7" />
-          <path d="M8 7h9v9" />
-        </svg>
+        <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
       </a>
+      <a class="project-row card-surface" href="https://github.com/AlanLumier/encoding-converter" target="_blank" rel="noopener">
+        <span class="project-main">
+          <span class="project-name">encoding-converter<span class="project-badge">Rust</span></span>
+          <span class="project-desc">进制与编码转换工具,支持多种格式互转( Base and Encoding Conversion Tool, Supporting Multiple Format Interconversion)</span>
+          
+        </span>
+        <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+      </a>
+      <a class="project-row card-surface" href="https://github.com/AlanLumier/code-frame-studio" target="_blank" rel="noopener">
+        <span class="project-main">
+          <span class="project-name">code-frame-studio<span class="project-badge">JavaScript</span></span>
+          <span class="project-desc">由 AI 编写代码逐帧渲染画面并合成视频(AI writes code to render every frame, then composites them into video.)</span>
+          
+        </span>
+        <svg class="project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+      </a>
+      <!-- PROJECTS_END -->
     </div>
 
-    <p class="section-note">更多项目整理中</p>
+    <button class="project-more" id="project-more" type="button" hidden></button>
+    <p class="section-note">自动同步自 GitHub 公开仓库</p>
   </section>
 
   <section class="gallery" id="gallery">
@@ -2052,6 +2235,102 @@
           event.preventDefault();
           showPhoto(current + 1);
         }
+      });
+    })();
+  </script>
+
+  <script>
+    // 每日一言：按日期固定挑一条，可手动换
+    (function () {
+      var QUOTES = [
+        { text: "把简单的事做到极致，本身就是一种不动声色的野心。", from: "佚名" },
+        { text: "慢慢来，比较快。", from: "手工艺人的老话" },
+        { text: "不要因为走得太远，忘记为什么出发。", from: "纪伯伦" },
+        { text: "凡是过往，皆为序章。", from: "莎士比亚" },
+        { text: "纸上得来终觉浅，绝知此事要躬行。", from: "陆游" },
+        { text: "工具的尽头是手感，手感的尽头是审美。", from: "佚名" },
+        { text: "你只需要比昨天的自己好一点点。", from: "佚名" },
+        { text: "所有的完美，都是一堆细节堆出来的。", from: "佚名" },
+        { text: "知之者不如好之者，好之者不如乐之者。", from: "孔子" },
+        { text: "海阔凭鱼跃，天高任鸟飞。", from: "古谚" },
+        { text: "认真做事的人，运气都不会太差。", from: "佚名" },
+        { text: "路虽远，行则将至；事虽难，做则必成。", from: "荀子" },
+        { text: "保持好奇，是抵抗无聊最便宜的办法。", from: "佚名" },
+        { text: "不积跬步，无以至千里。", from: "荀子" }
+      ];
+
+      var quoteEl = document.getElementById("daily-quote");
+      var authorEl = document.getElementById("daily-author");
+      var nextButton = document.getElementById("daily-next");
+      if (!quoteEl || !authorEl) return;
+
+      // 同一天固定同一条：用当天的日期序号取模
+      var now = new Date();
+      var dayKey =
+        (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000) | 0;
+      var index = dayKey % QUOTES.length;
+
+      function render() {
+        var quote = QUOTES[index % QUOTES.length];
+        quoteEl.textContent = "「" + quote.text + "」";
+        authorEl.textContent = "—— " + quote.from;
+        document.documentElement.style.setProperty("--daily-index", index);
+      }
+
+      render();
+      if (nextButton) {
+        nextButton.addEventListener("click", function () {
+          index = (index + 1) % QUOTES.length;
+          render();
+        });
+      }
+    })();
+  </script>
+
+  <script>
+    // 项目列表：超过 4 条时折叠，点按钮展开
+    (function () {
+      var list = document.getElementById("project-list");
+      var button = document.getElementById("project-more");
+      if (!list || !button) return;
+
+      var extra = list.querySelectorAll(".project-row.is-extra");
+      if (!extra.length) return;
+
+      button.hidden = false;
+      button.setAttribute("aria-expanded", "false");
+      button.textContent = "展开全部 (" + (list.querySelectorAll(".project-row").length) + ")";
+
+      button.addEventListener("click", function () {
+        var expanded = list.classList.toggle("is-expanded");
+        button.setAttribute("aria-expanded", expanded ? "true" : "false");
+        button.textContent = expanded
+          ? "收起"
+          : "展开全部 (" + list.querySelectorAll(".project-row").length + ")";
+      });
+    })();
+  </script>
+
+  <script>
+    // 区块滚动渐显
+    (function () {
+      if (!("IntersectionObserver" in window)) return;
+      var targets = document.querySelectorAll(".section, .gallery");
+      if (!targets.length) return;
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -60px 0px" }
+      );
+
+      Array.prototype.forEach.call(targets, function (target) {
+        observer.observe(target);
       });
     })();
   </script>
