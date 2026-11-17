@@ -42,6 +42,7 @@
 
 - 项目列表：运行 `python tools/build-projects.py`，脚本会读取 GitHub 公开仓库（按最近推送排序、过滤 fork），重写 `<!-- PROJECTS_START -->` 到 `<!-- PROJECTS_END -->` 区间；超过 4 条的部分默认折叠，页面出现「展开全部」按钮。
 - 头像 / 站点图标 / 分享图：`python tools/build-assets.py <头像图片路径>`，会生成 `assets/avatar.webp`、`assets/apple-touch-icon.png`、`assets/og.png`、`assets/favicon.svg`。
+- 站点地址：首页有 `<link rel="canonical">`，并在地址栏出现 `/index.html` 时用 `history.replaceState` 收回根路径；404 页的站内链接统一写根路径 `/`，本地 `file://` 打开时脚本会回退成相对路径。
 - 404 页：根目录 `404.html`，GitHub Pages 会自动接管错误的路径；页面含纸飞机插画、渐变 404、回首页/看照片两个入口与站内快捷链接。
 - 照片墙：把照片丢进 `C:\Users\19577\Desktop\photo`，然后运行 `python tools/build-photos.py`（可传目录参数）。脚本会输出两套图——缩略图 `assets/photos/pNN.webp`（长边 720px，墙上用）与大图 `assets/photos/large/pNN.webp`（长边 1200px，放大查看用），都经过重编码以去掉 EXIF，然后按行轮流分配照片、每行复制一份实现无缝横向滚动，并重写 `index.html` 里 `<!-- PHOTOS_START -->` 到 `<!-- PHOTOS_END -->` 之间的内容。
 - 放大查看：`<dialog class="lightbox">` 实现，点击照片打开，支持左右方向键翻页、Esc 或点空白关闭。画框尺寸固定（不随照片长宽比跳动），两层 `<img>` 交叉淡入换图，并预取相邻大图。

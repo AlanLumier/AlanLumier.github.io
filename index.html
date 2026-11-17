@@ -6,6 +6,7 @@
   <meta name="description" content="AlanLumier 的个人空间：作品、照片与联系方式" />
   <meta name="color-scheme" content="light dark" />
   <title>AlanLumier · 个人空间</title>
+  <link rel="canonical" href="https://alanlumier.github.io/" />
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
   <meta property="og:type" content="website" />
@@ -30,6 +31,15 @@
       );
       // 渐进增强标记：只有脚本可用时才启用滚动渐入
       document.documentElement.classList.add("js");
+
+      // 访问 /index.html 时把地址栏收回站点根路径，保持网址干净
+      if (location.protocol !== "file:" && /\/index\.html$/.test(location.pathname)) {
+        history.replaceState(
+          null,
+          "",
+          location.pathname.replace(/index\.html$/, "") + location.search + location.hash
+        );
+      }
     })();
   </script>
   <style>

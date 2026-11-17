@@ -234,24 +234,36 @@
     <p class="hint">链接可能过期，或者地址里少了一个字符。</p>
 
     <div class="actions">
-      <a class="btn btn-primary" href="./index.html">
+      <a class="btn btn-primary" href="/" data-file-href="./index.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M19 12H5" />
           <path d="m11 18-6-6 6-6" />
         </svg>
         回到首页
       </a>
-      <a class="btn btn-ghost" href="./index.html#gallery">看看照片</a>
+      <a class="btn btn-ghost" href="/#gallery" data-file-href="./index.html#gallery">看看照片</a>
     </div>
 
     <nav class="quick" aria-label="站内快捷入口">
-      <a href="./index.html#welcome">欢迎</a>
-      <a href="./index.html#about">关于</a>
-      <a href="./index.html#projects">项目</a>
-      <a href="./index.html#social">联系</a>
+      <a href="/#welcome" data-file-href="./index.html#welcome">欢迎</a>
+      <a href="/#about" data-file-href="./index.html#about">关于</a>
+      <a href="/#projects" data-file-href="./index.html#projects">项目</a>
+      <a href="/#social" data-file-href="./index.html#social">联系</a>
     </nav>
 
     <p class="brand">AlanLumier</p>
   </main>
+  <script>
+    // 本地 file:// 打开时走相对路径；线上统一用站点根路径，避免地址栏出现 /index.html
+    (function () {
+      if (location.protocol !== "file:") return;
+      Array.prototype.forEach.call(
+        document.querySelectorAll("[data-file-href]"),
+        function (link) {
+          link.setAttribute("href", link.getAttribute("data-file-href"));
+        }
+      );
+    })();
+  </script>
 </body>
 </html>
