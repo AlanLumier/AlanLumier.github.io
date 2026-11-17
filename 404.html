@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light dark" />
-  <title>页面走丢了 · AlanLumier</title>
+  <meta name="robots" content="noindex" />
+  <title>这一页不见了 · AlanLumier</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
   <script>
     // 与首页一致：先定主题，避免暗色用户看到浅色闪烁
     (function () {
@@ -28,10 +30,11 @@
         rgba(208, 253, 248, 0.94) 0%,
         rgba(255, 197, 206, 0.94) 100%
       );
+      --code-gradient: linear-gradient(135deg, #0f7a86 0%, #c2566c 100%);
       --text: #1f2430;
       --text-secondary: #5b6472;
       --accent: #0f7a86;
-      --radius: 16px;
+      --radius: 20px;
     }
 
     [data-theme="dark"] {
@@ -44,6 +47,7 @@
         rgba(150, 232, 246, 0.34) 100%
       );
       --card-fill: linear-gradient(135deg, #243c3e 0%, #402a30 100%);
+      --code-gradient: linear-gradient(135deg, #7ee3ef 0%, #ffb3c1 100%);
       --text: #e6e8ee;
       --text-secondary: #9aa3b2;
       --accent: #7ee3ef;
@@ -60,7 +64,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 32px 24px;
       background: var(--bg-gradient);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
@@ -68,73 +72,186 @@
       line-height: 1.6;
     }
 
-    .card {
+    .stage {
       width: 100%;
-      max-width: 460px;
-      padding: 44px 36px;
+      max-width: 520px;
+      padding: 48px 36px 36px;
       text-align: center;
       border: 1px solid transparent;
       border-radius: var(--radius);
       background: var(--card-fill) padding-box, var(--line-gradient) border-box;
-      box-shadow: 0 20px 50px rgba(31, 36, 48, 0.12);
+      box-shadow: 0 24px 60px rgba(31, 36, 48, 0.14);
+    }
+
+    .art {
+      width: 116px;
+      height: 116px;
+      margin: 0 auto 6px;
+      animation: float 6.5s ease-in-out infinite;
+    }
+
+    .art svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0) rotate(-2deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(2deg);
+      }
     }
 
     .code {
-      font-size: 68px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
+      font-size: clamp(62px, 13vw, 96px);
+      font-weight: 800;
       line-height: 1;
+      letter-spacing: 0.06em;
+      background: var(--code-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     h1 {
-      margin-top: 14px;
-      font-size: 20px;
+      margin-top: 10px;
+      font-size: 21px;
       font-weight: 700;
     }
 
-    p {
+    .hint {
       margin-top: 10px;
       font-size: 14px;
       color: var(--text-secondary);
     }
 
-    a {
+    .actions {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin-top: 26px;
-      padding: 10px 20px;
+      padding: 10px 22px;
+      border: 1px solid transparent;
       border-radius: 999px;
-      background: var(--accent);
-      color: #fff;
       font-size: 14px;
       text-decoration: none;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
-    a:hover {
+    .btn:hover {
       transform: translateY(-2px);
-      opacity: 0.92;
     }
 
-    a svg {
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* 暗色下强调色是浅青，主按钮改用深色文字保证对比 */
+    [data-theme="dark"] .btn-primary {
+      color: #10222a;
+    }
+
+    .btn-ghost {
+      background: var(--card-fill) padding-box, var(--line-gradient) border-box;
+      color: var(--text);
+    }
+
+    .btn svg {
       width: 16px;
       height: 16px;
+    }
+
+    .quick {
+      margin-top: 26px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line-gradient);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .quick a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .quick a:hover {
+      color: var(--accent);
+    }
+
+    .brand {
+      margin-top: 22px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .art {
+        animation: none;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="card">
-    <p class="code">404</p>
-    <h1>这个页面走丢了</h1>
-    <p>链接可能过期了，或者地址打错了一个字。</p>
-    <a href="./index.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M19 12H5" />
-        <path d="m11 18-6-6 6-6" />
+  <main class="stage">
+    <div class="art" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none">
+        <defs>
+          <linearGradient id="plane" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#8ce6f4" />
+            <stop offset="100%" stop-color="#ffb3c1" />
+          </linearGradient>
+        </defs>
+        <circle cx="60" cy="60" r="46" stroke="url(#plane)" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="4 9" />
+        <path d="M24 70 98 34 68 96 58 74Z" stroke="url(#plane)" stroke-width="3" stroke-linejoin="round" />
+        <path d="M58 74 98 34" stroke="url(#plane)" stroke-width="3" stroke-linecap="round" />
       </svg>
-      回到首页
-    </a>
+    </div>
+
+    <p class="code">404</p>
+    <h1>这一页不见了</h1>
+    <p class="hint">链接可能过期，或者地址里少了一个字符。</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="./index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5" />
+          <path d="m11 18-6-6 6-6" />
+        </svg>
+        回到首页
+      </a>
+      <a class="btn btn-ghost" href="./index.html#gallery">看看照片</a>
+    </div>
+
+    <nav class="quick" aria-label="站内快捷入口">
+      <a href="./index.html#welcome">欢迎</a>
+      <a href="./index.html#about">关于</a>
+      <a href="./index.html#projects">项目</a>
+      <a href="./index.html#social">联系</a>
+    </nav>
+
+    <p class="brand">AlanLumier</p>
   </main>
 </body>
 </html>

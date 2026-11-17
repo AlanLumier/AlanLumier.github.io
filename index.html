@@ -714,6 +714,21 @@
       content: none;
     }
 
+    .daily-next:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .daily-src {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dotted currentColor;
+    }
+
+    .daily-src:hover {
+      opacity: 0.8;
+    }
+
     /* ---------- 项目：超过 4 条自动折叠 ---------- */
 
     .project-row.is-extra {
@@ -2240,48 +2255,144 @@
   </script>
 
   <script>
-    // 每日一言：按日期固定挑一条，可手动换
+    // 每日一言：优先读在线一言（hitokoto），按天缓存；失败则回退到本地句子
     (function () {
-      var QUOTES = [
+      var FALLBACK = [
         { text: "把简单的事做到极致，本身就是一种不动声色的野心。", from: "佚名" },
         { text: "慢慢来，比较快。", from: "手工艺人的老话" },
         { text: "不要因为走得太远，忘记为什么出发。", from: "纪伯伦" },
         { text: "凡是过往，皆为序章。", from: "莎士比亚" },
         { text: "纸上得来终觉浅，绝知此事要躬行。", from: "陆游" },
-        { text: "工具的尽头是手感，手感的尽头是审美。", from: "佚名" },
-        { text: "你只需要比昨天的自己好一点点。", from: "佚名" },
-        { text: "所有的完美，都是一堆细节堆出来的。", from: "佚名" },
         { text: "知之者不如好之者，好之者不如乐之者。", from: "孔子" },
-        { text: "海阔凭鱼跃，天高任鸟飞。", from: "古谚" },
-        { text: "认真做事的人，运气都不会太差。", from: "佚名" },
         { text: "路虽远，行则将至；事虽难，做则必成。", from: "荀子" },
-        { text: "保持好奇，是抵抗无聊最便宜的办法。", from: "佚名" },
-        { text: "不积跬步，无以至千里。", from: "荀子" }
+        { text: "保持好奇，是抵抗无聊最便宜的办法。", from: "佚名" }
       ];
+
+      var API = "https://v1.hitokoto.cn/?c=d&c=i&c=k&encode=json&charset=utf-8";
+      var CACHE_KEY = "daily-quote.v1";
+      var TIMEOUT = 5000;
 
       var quoteEl = document.getElementById("daily-quote");
       var authorEl = document.getElementById("daily-author");
       var nextButton = document.getElementById("daily-next");
       if (!quoteEl || !authorEl) return;
 
-      // 同一天固定同一条：用当天的日期序号取模
       var now = new Date();
-      var dayKey =
+      var today =
+        now.getFullYear() +
+        "-" +
+        String(now.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(now.getDate()).padStart(2, "0");
+      var dayIndex =
         (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000) | 0;
-      var index = dayKey % QUOTES.length;
+      var fallbackIndex = dayIndex % FALLBACK.length;
 
-      function render() {
-        var quote = QUOTES[index % QUOTES.length];
-        quoteEl.textContent = "「" + quote.text + "」";
-        authorEl.textContent = "—— " + quote.from;
-        document.documentElement.style.setProperty("--daily-index", index);
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, function (char) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          }[char];
+        });
       }
 
-      render();
+      function paint(quote) {
+        quoteEl.textContent = "「" + quote.text + "」";
+        if (quote.online) {
+          authorEl.innerHTML =
+            "—— " + escapeHtml(quote.from) +
+            ' <a class="daily-src" href="https://hitokoto.cn" target="_blank" rel="noopener">一言</a>';
+        } else {
+          authorEl.textContent = "—— " + quote.from;
+        }
+      }
+
+      function readCache() {
+        try {
+          var raw = localStorage.getItem(CACHE_KEY);
+          if (!raw) return null;
+          var cached = JSON.parse(raw);
+          return cached && cached.day === today && cached.text ? cached : null;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function writeCache(quote) {
+        try {
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ day: today, text: quote.text, from: quote.from })
+          );
+        } catch (error) {
+          /* 隐私模式下写不了就算了 */
+        }
+      }
+
+      function fetchOnline() {
+        if (typeof fetch !== "function") return Promise.resolve(null);
+        var controller = typeof AbortController === "function" ? new AbortController() : null;
+        var timer = controller
+          ? window.setTimeout(function () {
+              controller.abort();
+            }, TIMEOUT)
+          : 0;
+
+        return fetch(API, controller ? { signal: controller.signal } : {})
+          .then(function (response) {
+            return response.ok ? response.json() : null;
+          })
+          .then(function (data) {
+            if (!data || !data.hitokoto) return null;
+            return {
+              text: String(data.hitokoto).trim(),
+              from: String(data.from_who || data.from || "一言").trim(),
+              online: true
+            };
+          })
+          .catch(function () {
+            return null;
+          })
+          .then(function (quote) {
+            if (timer) window.clearTimeout(timer);
+            return quote;
+          });
+      }
+
+      var cached = readCache();
+      if (cached) {
+        paint({ text: cached.text, from: cached.from, online: true });
+      } else {
+        paint({ text: FALLBACK[fallbackIndex].text, from: FALLBACK[fallbackIndex].from, online: false });
+        fetchOnline().then(function (quote) {
+          if (!quote) return;
+          paint(quote);
+          writeCache(quote);
+        });
+      }
+
       if (nextButton) {
         nextButton.addEventListener("click", function () {
-          index = (index + 1) % QUOTES.length;
-          render();
+          nextButton.disabled = true;
+          fetchOnline().then(function (quote) {
+            nextButton.disabled = false;
+            if (quote) {
+              paint(quote);
+              writeCache(quote);
+              return;
+            }
+            // 网络不通就本地翻一条，保证按钮永远有反馈
+            fallbackIndex = (fallbackIndex + 1) % FALLBACK.length;
+            paint({
+              text: FALLBACK[fallbackIndex].text,
+              from: FALLBACK[fallbackIndex].from,
+              online: false
+            });
+          });
         });
       }
     })();

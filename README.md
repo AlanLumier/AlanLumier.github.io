@@ -15,7 +15,7 @@
 | --- | --- |
 | 欢迎（`#welcome`） | 14 种语言的欢迎语循环播放，逐字从虚空中浮现再逐字消散；可点击大字或圆点手动切换，首屏语种跟随浏览器语言 |
 | 关于我（`#about`） | 头像、简介、标签，配一张实时本地时间卡片和站点说明 |
-| 每日一言（`#daily`） | 每天固定一条短句（按日期取模），可点「换一句」手动切换 |
+| 每日一言（`#daily`） | 读取在线一言接口（hitokoto），按天缓存在 localStorage；「换一句」可手动换，网络不通时回退到本地句子 |
 | 项目 / 作品（`#projects`） | 自动同步自 GitHub 公开仓库，每项带语言徽章与 topics；超过 4 条自动折叠 |
 | 照片墙（`#gallery`） | 29 张实拍照片分三行横向无缝滚动（行与行速度、方向、起点都错开，两端渐隐）；鼠标停在某一行只暂停该行；单张跟随光标做 3D 悬浮；点击任意照片打开放大查看 |
 | 联系我（`#social`） | GitHub / 邮箱入口 |
@@ -42,7 +42,7 @@
 
 - 项目列表：运行 `python tools/build-projects.py`，脚本会读取 GitHub 公开仓库（按最近推送排序、过滤 fork），重写 `<!-- PROJECTS_START -->` 到 `<!-- PROJECTS_END -->` 区间；超过 4 条的部分默认折叠，页面出现「展开全部」按钮。
 - 头像 / 站点图标 / 分享图：`python tools/build-assets.py <头像图片路径>`，会生成 `assets/avatar.webp`、`assets/apple-touch-icon.png`、`assets/og.png`、`assets/favicon.svg`。
-- 404 页：根目录 `404.html`，GitHub Pages 会自动接管错误的路径。
+- 404 页：根目录 `404.html`，GitHub Pages 会自动接管错误的路径；页面含纸飞机插画、渐变 404、回首页/看照片两个入口与站内快捷链接。
 - 照片墙：把照片丢进 `C:\Users\19577\Desktop\photo`，然后运行 `python tools/build-photos.py`（可传目录参数）。脚本会输出两套图——缩略图 `assets/photos/pNN.webp`（长边 720px，墙上用）与大图 `assets/photos/large/pNN.webp`（长边 1200px，放大查看用），都经过重编码以去掉 EXIF，然后按行轮流分配照片、每行复制一份实现无缝横向滚动，并重写 `index.html` 里 `<!-- PHOTOS_START -->` 到 `<!-- PHOTOS_END -->` 之间的内容。
 - 放大查看：`<dialog class="lightbox">` 实现，点击照片打开，支持左右方向键翻页、Esc 或点空白关闭。画框尺寸固定（不随照片长宽比跳动），两层 `<img>` 交叉淡入换图，并预取相邻大图。
 - 项目列表：在 `#projects` 的 `.project-list` 里复制一个 `<a class="project-row">` 结构。
